@@ -1,0 +1,39 @@
+=============================================================
+TaskList
+=============================================================
+
+Screens:
+ - Start Screens
+   This screen will show a glimpse of what the game will be like, with the game title shown.
+   There will be a time delay of 3 seconds before the screen changes to the Main Menu.
+   
+ - Main Menu
+   This screen is where the player selects what they want to do : read the instructions, see the credits or
+   start playing the game.
+   
+ - Instructions
+   This screen will shown how to play the game. There will be a option to go back to the main menu.
+   
+ - Credits
+   This screen shows what is done by which member. There will be a option to go back to the main menu.
+   
+ - Loading 
+   This screen will indicate that the game is loading.
+
+ - Pause
+   This screen will be only available when in game. 
+   It will pause the game and spawn a menu with the following options:
+    - return to game
+	- restart level
+	- main menu
+	- quit
+	
+ - Death 
+   This screen will show only when the player dies. It wil allow the player to go back to the main menu
+   , restart the level, or quit the game
+ 
+ - Win
+   This screen will show only when the player clears all the levels and win the game. It will allow the
+   player to return to main menu or quit the game.
+   
+   
