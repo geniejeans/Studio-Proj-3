@@ -1,28 +1,2 @@
-﻿  Win32Input.cpp
-  Vector3.cpp
-  Vector2.cpp
-  Utility.cpp
-  timer.cpp
-  ShaderProgram.cpp
-  SceneManager.cpp
-  RenderHelper.cpp
-  Mtx44.cpp
-  MouseController.cpp
-  MeshBuilder.cpp
-d:\sp3\studioproject3\common\source\meshbuilder.cpp(542): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-d:\sp3\studioproject3\common\source\meshbuilder.cpp(543): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-  Mesh.cpp
-  MatrixStack.cpp
-  MathUtility.cpp
-  LoadTGA.cpp
-  LoadOBJ.cpp
-  LightBase.cpp
-  KeyboardController.cpp
-  GraphicsManager.cpp
-  EntityBase.cpp
-  Generating Code...
-  Compiling...
-  Collider.cpp
-  CameraBase.cpp
-  Generating Code...
+﻿  EntityBase.cpp
   Common.vcxproj -> D:\SP3\StudioProject3\Debug\Common.lib

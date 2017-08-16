@@ -1,12 +1,1 @@
-﻿  SceneText.cpp
-d:\sp3\studioproject3\base\source\scenetext.cpp(138): warning C4101: 'a' : unreferenced local variable
-d:\sp3\studioproject3\base\source\scenetext.cpp(262): warning C4244: 'argument' : conversion from 'double' to 'const float', possible loss of data
-d:\sp3\studioproject3\base\source\scenetext.cpp(265): warning C4244: 'argument' : conversion from 'double' to 'const float', possible loss of data
-  PlayerInfo.cpp
-d:\sp3\studioproject3\base\source\playerinfo\playerinfo.cpp(124): warning C4244: 'argument' : conversion from 'float' to 'const int', possible loss of data
-d:\sp3\studioproject3\base\source\playerinfo\playerinfo.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'const int', possible loss of data
-  Minimap.cpp
-  Generating Code...
-CameraEffects.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Base.vcxproj -> D:\SP3\StudioProject3\Debug\Base.exe
+﻿  Base.vcxproj -> D:\SP3\StudioProject3\Debug\Base.exe

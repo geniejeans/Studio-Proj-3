@@ -11,18 +11,27 @@ class CEnemy3D :
 	public GenericEntity
 {
 protected:
+	enum CENEMY3D_TYPE
+	{
+		NONE = 0,
+		TROOP,
+		TURRET,
+		NINJA,
+		TOTAL
+	};
+
 	Mesh* modelMesh;
 
 	Vector3 defaultPosition, defaultTarget, defaultUp;
-	Vector3 target, up;
+	Vector3 destination, target, up, rotate;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
-	
+	CENEMY3D_TYPE type;
+
 	double m_dSpeed;
 	double m_dAcceleration;
 	float m_fElapsedTimeBeforeUpdate;
-	float m_fTimeAsGoodEnemy; 
-	bool changeEnemy;
+	bool m_bChangeDir;
 
 public:
 	CEnemy3D(Mesh* _modelMesh);
@@ -45,6 +54,8 @@ public:
 	void SetBoundary(Vector3 max, Vector3 min);
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
+	void SetType(int type);
+	void SetDestination(Vector3 destination);
 
 	// Get position
 	Vector3 GetPos(void) const;
@@ -70,5 +81,6 @@ namespace Create
 {
 	CEnemy3D* Enemy3D(const std::string& _meshName,
 						const Vector3& _position,
-						const Vector3& _scale = Vector3(1.0f, 1.0f, 1.0f));
+						const Vector3& _scale = Vector3(1.0f, 1.0f, 1.0f),
+						const int type = 1);
 };

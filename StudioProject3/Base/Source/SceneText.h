@@ -39,7 +39,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[23];
+	TextEntity* textObj[1];
 	Light* lights[2];
 
 	CMinimap *theMinimap;
@@ -47,6 +47,10 @@ private:
 	static SceneText* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
 	CMouse* theMouse;
+
+	CEnemy3D* testTroop[3];
+	CEnemy3D* turret;
+	int spawnedTroops = 23;
 };
 
 #endif

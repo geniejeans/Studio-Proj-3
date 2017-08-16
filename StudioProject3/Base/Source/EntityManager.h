@@ -17,8 +17,10 @@ public:
 	void RenderUI();
 
 	void AddEntity(EntityBase* _newEntity);
+	void AddTurretEntity(EntityBase* _newEntity);
+	void AddTroopEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
-
+	float m_fBuffer = 0.0f;
 private:
 	EntityManager();
 	virtual ~EntityManager();
@@ -32,15 +34,14 @@ private:
 	// Check if any Collider is colliding with another Collider
 	bool CheckForCollision(void);
 
-	bool CheckPlayerSphereCollision(CPlayerInfo *Player, EntityBase *ThisEnity);
-
 	void CollisionResponse(EntityBase *ThisEntity, EntityBase *ThatEntity);
-
-	void CollisionPlayerResponse(CPlayerInfo *Player, EntityBase *ThisEntity);
 
 	void ResetGame(CPlayerInfo *Player);
 
 	std::list<EntityBase*> entityList;
+	std::list<EntityBase*> turretList;
+	std::list<EntityBase*> troopList;
+
 };
 
 #endif // ENTITY_MANAGER_H

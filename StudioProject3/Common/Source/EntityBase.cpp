@@ -4,10 +4,12 @@
 EntityBase::EntityBase() 
 	: position(0.0f, 0.0f, 0.0f)
 	, scale(1.0f, 1.0f, 1.0f)
+	, objAvoidPos(0.0f,0.0f,0.0f)
 	, meshName ("")
 	, isDone(false)
 	, m_bCollider(false)
-	, m_bCollidePlayer(false)
+	, m_bCollide(false)
+	,m_bActionDone(false)
 {
 }
 

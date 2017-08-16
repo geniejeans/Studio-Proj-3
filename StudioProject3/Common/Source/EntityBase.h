@@ -37,8 +37,17 @@ public:
 	virtual void SetMesh(Mesh* mesh);
 
 	//Set collision with player
-	virtual void SetCollidePlayer(const bool _value) { m_bCollidePlayer = _value; };
-	virtual bool GetCollidePlayer() { return m_bCollidePlayer; };
+	virtual void SetCollide(const bool _value) { m_bCollide = _value; };
+	virtual bool GetCollide() { return m_bCollide; };
+
+	virtual void SetActionDone(const bool _value) { m_bActionDone = _value; };
+	virtual bool GetActionDone() { return m_bActionDone; };
+
+	virtual void SetAvoidPos(Vector3 _value) { objAvoidPos = _value; };
+	virtual Vector3 GetAvoidPos() { return objAvoidPos; };
+
+	virtual void SetBuffer(float _value) { m_fBuffer = _value; };
+	virtual float GetBuffer() { return m_fBuffer; };
 
 	//Reset 
 	virtual void ResetGame();
@@ -47,10 +56,15 @@ protected:
 	Vector3 position;
 	Vector3 scale;
 	string meshName;
+	Vector3 objAvoidPos;
+	//Vector3 objAvoidScale;
 
 	bool isDone;
-	bool m_bCollider;
-	bool m_bCollidePlayer;
+	bool m_bCollider; //Has CCollider as parent class
+	bool m_bCollide; //Has collided with an object
+	bool m_bActionDone; //Action has been done  
+	
+	float m_fBuffer;
 
 	Mesh* modelMesh;
 };

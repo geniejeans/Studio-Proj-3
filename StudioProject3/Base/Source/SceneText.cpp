@@ -158,6 +158,9 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+//	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
+	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
 
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
@@ -186,7 +189,7 @@ void SceneText::Init()
 											 "SKYBOX_TOP", "SKYBOX_BOTTOM");
 
 	// Customise the ground entity
-	groundEntity->SetPosition(Vector3(0, -10, 0));
+	groundEntity->SetPosition(Vector3(0, 0, 0));
 	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 	playerInfo->SetTerrain(groundEntity);
@@ -196,7 +199,7 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 23; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
@@ -214,10 +217,91 @@ void SceneText::Init()
 	theKeyboard->Create(playerInfo);
 	theMouse = new CMouse();
 	theMouse->Create(playerInfo);
+
+	testTroop[0] = Create::Enemy3D("testTroop", Vector3(0, 10, 200), Vector3(1, 1, 1));
+	testTroop[0]->Init();
+	testTroop[0]->SetTerrain(groundEntity);
+	testTroop[0]->SetType(1);
+	testTroop[0]->SetDestination(Vector3(0, 10, 0));
+
+	testTroop[1] = Create::Enemy3D("testTroop", Vector3(40, 10, 200), Vector3(1, 1, 1));
+	testTroop[1]->Init();
+	testTroop[1]->SetTerrain(groundEntity);
+	testTroop[1]->SetType(1);
+	testTroop[1]->SetDestination(Vector3(0, 10, 0));
+
+	testTroop[2] = Create::Enemy3D("testTroop", Vector3(0, 10, -100), Vector3(1, 1, 1));
+	testTroop[2]->Init();
+	testTroop[2]->SetTerrain(groundEntity);
+	testTroop[2]->SetType(1);
+	testTroop[2]->SetDestination(Vector3(0, 10, 0));
+
+
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	CEnemy3D* newTroop;
+	//	newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+	//	newTroop->Init();
+	//	newTroop->SetTerrain(groundEntity);
+	//	newTroop->SetType(1);
+	//	newTroop->SetDestination(Vector3(0, 10, 0));
+	//}
+
+	for (int i = 0; i < 20; ++i)
+	{
+		turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
+		turret->Init();
+		turret->SetTerrain(groundEntity);
+		turret->SetType(2);
+	}
+
+
+	turret = Create::Enemy3D("sphere", Vector3(0, 10, -50), Vector3(4, 4, 4),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+
+	turret = Create::Enemy3D("sphere", Vector3(7, 10, -30), Vector3(4, 4, 4),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+
+	turret = Create::Enemy3D("sphere", Vector3(0, 10, 100), Vector3(4, 4, 4),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+
+	turret = Create::Enemy3D("sphere", Vector3(-10, 10, 105), Vector3(10, 10, 10),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+
+	turret = Create::Enemy3D("sphere", Vector3(0, 10, 50), Vector3(4, 4, 4),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+	turret = Create::Enemy3D("sphere", Vector3(20, 10, 40), Vector3(4, 4, 4),2);
+	turret->Init();
+	turret->SetTerrain(groundEntity);
+	turret->SetType(2);
+
 }
 
 void SceneText::Update(double dt)
 {
+	
+	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE))
+	{
+		CEnemy3D* newTroop;
+		newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+		newTroop->Init();
+		newTroop->SetTerrain(groundEntity);
+		newTroop->SetType(1);
+		newTroop->SetDestination(Vector3(0, 10, 0));
+		spawnedTroops++;
+	}
+	//You can see the number of spawned Troops troops here
+//	std::cout << spawnedTroops << std::endl; 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
@@ -257,6 +341,7 @@ void SceneText::Update(double dt)
 	if(KeyboardController::GetInstance()->IsKeyDown('P'))
 		lights[0]->position.y += (float)(10.f * dt);
 
+
 	//Hardware Abstraction
 	if(theKeyboard)
 		theKeyboard->Read(dt);
@@ -274,7 +359,7 @@ void SceneText::Update(double dt)
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
-	textObj[22]->SetText(ss.str());
+	textObj[0]->SetText(ss.str());
 }
 
 void SceneText::Render()

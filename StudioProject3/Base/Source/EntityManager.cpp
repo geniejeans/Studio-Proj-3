@@ -11,37 +11,46 @@ using namespace std;
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	bool playerCollide = false;
-	std::list<EntityBase*>::iterator it, it2, end;
+	std::list<EntityBase*>::iterator it, it2, end, it3;
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
 		(*it)->Update(_dt);
+		//Resetting all collision to false
+		if ((*it)->GetMeshName() == "testTroop")
+			(*it)->SetCollide(false);
 	}
-
-	for (it = entityList.begin(); it != end; ++it)
+	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		if ((*it)->HasCollider())
+		//WIP
+		/*for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
 		{
-			//Checking for PLAYER colliding into objects 
-			if (CheckPlayerSphereCollision(CPlayerInfo::GetInstance(), *it))
+			if ((*it != *it3) && (!(*it)->GetActionDone() && (*it3)->GetActionDone()))
 			{
-				CollisionPlayerResponse(CPlayerInfo::GetInstance(), *it);
-				playerCollide = true;
-			}
-			else if (!playerCollide)
-			{
-				CPlayerInfo::GetInstance()->SetCollision(false);
-				(*it)->SetCollidePlayer(false);
-			}
-			//Checking for OBJECTS colliding into objects
-			for (it2 = it; it2 != end; ++it2)
-			{
-				if ((*it2)->HasCollider())
+				if (CheckSphereCollision(*it, *it3))
 				{
+					(*it)->SetBuffer(3);
+					(*it)->SetAvoidPos((*it3)->GetPosition());
+					(*it)->SetCollide(true);
+					break;
 				}
 			}
-		}
+		}*/
+			//Checking for TURRETS colliding into TROOPS
+			for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+			{
+				if (CheckSphereCollision(*it, *it2))
+				{
+					(*it)->SetBuffer(2);
+					(*it)->SetAvoidPos((*it2)->GetPosition());
+					(*it)->SetCollide(true);
+				}
+			}
+			//If TROOPS are never in any collision after checking through all objects
+			if (!(*it)->GetCollide())
+			{
+				(*it)->SetBuffer(0);
+			}
 	}
 
 	// Clean up entities that are done
@@ -102,6 +111,16 @@ void EntityManager::AddEntity(EntityBase* _newEntity)
 	entityList.push_back(_newEntity);
 }
 
+void EntityManager::AddTurretEntity(EntityBase* _newEntity)
+{
+	turretList.push_back(_newEntity);
+}
+
+void EntityManager::AddTroopEntity(EntityBase* _newEntity)
+{
+	troopList.push_back(_newEntity);
+}
+
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {
@@ -139,40 +158,16 @@ bool EntityManager::CheckOverlap(Vector3 thisMinAABB, Vector3 thisMaxAABB, Vecto
 // Check if this entity's bounding sphere collided with that entity's bounding sphere 
 bool EntityManager::CheckSphereCollision(EntityBase *ThisEntity, EntityBase *ThatEntity)
 {
-
-	double distance = sqrt(((ThatEntity->GetPosition().x - ThisEntity->GetPosition().x) * (ThatEntity->GetPosition().x - ThisEntity->GetPosition().x))
-		+ ((ThatEntity->GetPosition().y - ThisEntity->GetPosition().y) * (ThatEntity->GetPosition().y - ThisEntity->GetPosition().y))
+	float distance = sqrt(((ThatEntity->GetPosition().x - ThisEntity->GetPosition().x) * (ThatEntity->GetPosition().x - ThisEntity->GetPosition().x))
 		+ ((ThatEntity->GetPosition().z - ThisEntity->GetPosition().z) * (ThatEntity->GetPosition().z - ThisEntity->GetPosition().z)));
 
-	double ObjOneRadius = ThisEntity->GetScale().x;
+	float ObjOneRadius = ThisEntity->GetScale().x + 1 + ThisEntity->GetBuffer();
 
-	double ObjTwoRadius = ThatEntity->GetScale().x;
+	float ObjTwoRadius = ThatEntity->GetScale().x + 1 + ThisEntity->GetBuffer();
 
-	double sumOfRadius = ObjOneRadius + ObjTwoRadius;
+	float sumOfRadius = ObjOneRadius + ObjTwoRadius;
 
 	if (distance > sumOfRadius)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-bool EntityManager::CheckPlayerSphereCollision(CPlayerInfo *Player, EntityBase *ThisEntity)
-{
-	double distance = sqrt(((ThisEntity->GetPosition().x - Player->GetPos().x) * (ThisEntity->GetPosition().x - Player->GetPos().x))
-
-		+ ((ThisEntity->GetPosition().z - Player->GetPos().z) * (ThisEntity->GetPosition().z - Player->GetPos().z)));
-
-	double PlayerRadius = 5;
-
-	double ObjOneRadius = ThisEntity->GetScale().x;
-
-	double sumOfRadius = PlayerRadius + ObjOneRadius;
-
-	if (distance > sumOfRadius + 5)
 	{
 		return false;
 	}
@@ -199,12 +194,6 @@ bool EntityManager::CheckForCollision(void)
 void EntityManager::CollisionResponse(EntityBase *ThisEntity, EntityBase *ThatEntity)
 {
 
-}
-
-void EntityManager::CollisionPlayerResponse(CPlayerInfo *Player, EntityBase *ThisEntity)
-{
-
-	Player->SetCollision(true);
 }
 
 

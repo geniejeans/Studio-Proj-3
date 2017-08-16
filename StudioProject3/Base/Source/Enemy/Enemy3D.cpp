@@ -15,8 +15,8 @@ CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	, minBoundary(Vector3(0.0f, 0.0f, 0.0f))
 	, m_pTerrain(NULL)
 	, m_fElapsedTimeBeforeUpdate(0.0f)
-	, m_fTimeAsGoodEnemy(0.0f)
-	, changeEnemy(false)
+	, m_bChangeDir(false)
+	, rotate(0.0)
 {
 	this->modelMesh = _modelMesh;
 }
@@ -35,7 +35,8 @@ void CEnemy3D::Init(void)
 
 	// Set the current values
 //	position.Set(10.0f, 0.0f, 0.0f);
-	target.Set(position.x, position.y, 450.0f);
+//	target.Set(position.x, position.y, 450.0f);
+	target.Set(0, 0, 0);
 	up.Set(0.0f, 1.0f, 0.0f);
 
 	// Set Boundary
@@ -44,10 +45,6 @@ void CEnemy3D::Init(void)
 
 	// Set speed
 	m_dSpeed = 10.0;
-
-	// Add to EntityManager
-//	EntityManager::GetInstance()->AddEntity(this);
-
 }
 
 // Reset this player instance to default
@@ -60,9 +57,7 @@ void CEnemy3D::Reset(void)
 }
 void CEnemy3D::ResetGame()
 {
-	m_fTimeAsGoodEnemy = 0;
-	this->modelMesh = MeshBuilder::GetInstance()->GetMesh("enemy");
-	SetMeshName("enemy");
+
 }
 // Set position
 void CEnemy3D::SetPos(const Vector3& pos)
@@ -102,6 +97,26 @@ void CEnemy3D::SetMesh(Mesh* mesh)
 	this->modelMesh = mesh;
 }
 
+void CEnemy3D::SetType(int type)
+{
+	switch (type)
+	{
+	case 1:
+		this->type = CENEMY3D_TYPE::TROOP;
+		break;
+	case 2:
+		this->type = CENEMY3D_TYPE::TURRET;
+		break;
+	default:
+		break;
+	}
+}
+
+void CEnemy3D::SetDestination(Vector3 destination)
+{
+	this->destination = destination;
+}
+
 // Get position
 Vector3 CEnemy3D::GetPos(void) const
 {
@@ -127,42 +142,52 @@ GroundEntity* CEnemy3D::GetTerrain(void)
 // Update
 void CEnemy3D::Update(double dt)
 {
-	Vector3 viewVector = (target - position).Normalized();
-	position += viewVector * (float)m_dSpeed * (float)dt;
-	//cout << position << "..." << viewVector << endl;
-
-	// Constrain the position
-	Constrain();
-
-	// This is RealTime Loop control
-	// Update the target once every 5 seconds. 
-	// Doing more of these calculations will not affect the outcome.
-	m_fElapsedTimeBeforeUpdate += dt;
-	if (m_fElapsedTimeBeforeUpdate > 5.0f)
+	if (type == CENEMY3D_TYPE::TROOP)
 	{
-	//	cout << m_fElapsedTimeBeforeUpdate << endl;
-		m_fElapsedTimeBeforeUpdate = 0.0f;
-		if (position.z > 400.0f)
-			target.z = position.z * -1;
-		else if (position.z < -400.0f)
-			target.z = position.z * -1;
-	}
+		if (!m_bCollide)
+			target = destination;
+		//If troop is not at the selected position
+		if ((position - destination).Length() > 1.0f)
+		{
+			rotate = (destination - position).Normalized();
+			Vector3 viewVector = (target - position).Normalized();
+			if (m_fBuffer == 0)
+			{
+				m_bChangeDir = false;
+			}
 
-	if (GetMeshName() == "goodEnemy" || GetMeshName() == "goodEnemy2")
-		m_fTimeAsGoodEnemy += dt;
+			if (!m_bCollide || m_bChangeDir)
+				position += viewVector * (float)m_dSpeed * (float)dt;
 
-	if (m_fTimeAsGoodEnemy >= 8.0f && GetMeshName() == "goodEnemy")
-	{
-		m_fTimeAsGoodEnemy = 0;
-		this->modelMesh = MeshBuilder::GetInstance()->GetMesh("enemy");
-		SetMeshName("enemy");
+			else
+			{
+				Vector3 viewVector = (target - position).Normalized();
+				Vector3 backwardPosition = position;
+				backwardPosition -= viewVector * (float)(m_dSpeed * 2);
+				Vector3 laterPosition = position; Vector3 laterPosition2 = position;
+
+				Vector3 newPosLeft = backwardPosition.Cross(objAvoidPos);
+				Vector3 newPosRight = objAvoidPos.Cross(backwardPosition);
+
+				laterPosition += (newPosLeft - position).Normalized();
+				laterPosition2 += (newPosRight - position).Normalized();
+
+				//check dist between troop and the thing that it is trying to avoid
+				if ((laterPosition - objAvoidPos).LengthSquared() < (laterPosition2 - objAvoidPos).LengthSquared())
+					target = Vector3(newPosRight.x, destination.y, newPosRight.z);
+				else
+					target = Vector3(newPosLeft.x, destination.y, newPosLeft.z);
+
+				m_bChangeDir = true;
+			}
+		}
+
+		else
+			m_bActionDone = true;
+		// Constrain the position
+		Constrain();
 	}
-	else if (m_fTimeAsGoodEnemy >= 15.0f && GetMeshName() == "goodEnemy2")
-	{
-		m_fTimeAsGoodEnemy = 0;
-		this->modelMesh = MeshBuilder::GetInstance()->GetMesh("enemy");
-		SetMeshName("enemy");
-	}
+	
 }
 
 // Constrain the position within the borders
@@ -190,6 +215,7 @@ void CEnemy3D::Render(void)
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
+	modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
@@ -197,7 +223,8 @@ void CEnemy3D::Render(void)
 
 CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 						const Vector3& _position,
-						const Vector3& _scale)
+						const Vector3& _scale,
+						const int type)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -209,5 +236,9 @@ CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 	result->SetCollider(true);
 	result->SetMeshName(_meshName);
 	EntityManager::GetInstance()->AddEntity(result);
+	if (type == 1)
+		EntityManager::GetInstance()->AddTroopEntity(result);
+	else if (type == 2)
+		EntityManager::GetInstance()->AddTurretEntity(result);
 	return result;
 }
