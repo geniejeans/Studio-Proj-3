@@ -4,6 +4,7 @@
 #include "../EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "../Enemy/Enemy3D.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -91,13 +92,13 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 }
 
 // Set the source of the projectile
-void CProjectile::SetSource(CPlayerInfo* _source)
+void CProjectile::SetSource(CEnemy3D* _source)
 {
 	theSource = _source;
 }
 
 // Get the source of the projectile
-CPlayerInfo* CProjectile::GetSource(void) const
+CEnemy3D* CProjectile::GetSource(void) const
 {
 	return theSource;
 }
@@ -147,7 +148,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const Vector3& _direction, 
 								const float m_fLifetime, 
 								const float m_fSpeed,
-								CPlayerInfo* _source)
+	                            CEnemy3D* _source)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -159,6 +160,14 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetCollider(true);
 	result->SetSource(_source);
 	EntityManager::GetInstance()->AddEntity(result);
-
+	switch (_source->GetType())
+	{
+	case 1:
+		EntityManager::GetInstance()->AddTroopProjectileEntity(result);
+		break;
+	case 2:
+		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
+		break;
+	}
 	return result;
 }

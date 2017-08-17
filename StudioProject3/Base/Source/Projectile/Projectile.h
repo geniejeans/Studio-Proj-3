@@ -4,7 +4,7 @@
 #include "Collider/Collider.h"
 
 class Mesh;
-class CPlayerInfo;
+class CEnemy3D;
 
 class CProjectile : public EntityBase, public CCollider
 {
@@ -34,10 +34,11 @@ public:
 	// Get the speed of the projectile
 	float GetSpeed(void) const;
 	// Set the source of the projectile
-	void SetSource(CPlayerInfo* _source);
+	void SetSource(CEnemy3D* _source);
 	// Get the source of the projectile
-	CPlayerInfo* GetSource(void) const;
-
+	CEnemy3D* GetSource(void) const;
+	void SetFireDestination(Vector3 destination) { fireDestination = destination; };
+	Vector3 GetFireDestination() { return fireDestination; };
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
@@ -54,7 +55,7 @@ protected:
 	// The direction of the projectile
 	Vector3 theDirection;
 	// The character which fired this projectile
-	CPlayerInfo* theSource;
+	CEnemy3D* theSource;
 };
 
 namespace Create
@@ -64,6 +65,6 @@ namespace Create
 							const Vector3& _direction, 
 							const float m_fLifetime, 
 							const float m_fSpeed,
-							CPlayerInfo* _source=NULL);
+		                    CEnemy3D* _source=NULL);
 };
 

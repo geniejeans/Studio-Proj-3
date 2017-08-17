@@ -19,6 +19,8 @@ public:
 	void AddEntity(EntityBase* _newEntity);
 	void AddTurretEntity(EntityBase* _newEntity);
 	void AddTroopEntity(EntityBase* _newEntity);
+	void AddTroopProjectileEntity(EntityBase* _newEntity);
+	void AddTurretProjectileEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
 	float m_fBuffer = 0.0f;
 private:
@@ -41,7 +43,8 @@ private:
 	std::list<EntityBase*> entityList;
 	std::list<EntityBase*> turretList;
 	std::list<EntityBase*> troopList;
-
+	std::list<EntityBase*> troopProjectileList;
+	std::list<EntityBase*> turretProjectileList;
 };
 
 #endif // ENTITY_MANAGER_H

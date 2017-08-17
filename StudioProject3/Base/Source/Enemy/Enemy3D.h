@@ -1,6 +1,7 @@
 #pragma once
 #include "../GenericEntity.h"
 #include "../GroundEntity.h"
+#include "../Projectile/Projectile.h"
 
 #include <vector>
 using namespace std;
@@ -25,15 +26,15 @@ protected:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 target, up, rotate;
 	Vector3 maxBoundary, minBoundary;
-	Vector3 destination, finalDestination;
+	Vector3 destination, finalDestination; //Destination: for when troops are avoiding turrets. //Final destination: where troops will eventually end up at
 	GroundEntity* m_pTerrain;
 	CENEMY3D_TYPE type;
 
 	double m_dSpeed;
 	double m_dAcceleration;
 	float m_fElapsedTimeBeforeUpdate;
-	bool m_bChangeDir;
-	bool m_bChangeDestination;
+	bool m_bChangeDir; // Direction changing 
+	bool m_bFireProjectile; // If true, can fire. Else, cannot
 
 public:
 	CEnemy3D(Mesh* _modelMesh);
@@ -52,12 +53,18 @@ public:
 	void SetTarget(const Vector3& target);
 	// Set Up
 	void SetUp(const Vector3& up);
-	// Set the boundary for the player info
+	// Set the boundary 
 	void SetBoundary(Vector3 max, Vector3 min);
-	// Set the terrain for the player info
+	// Set the terrain 
 	void SetTerrain(GroundEntity* m_pTerrain);
+	// Set type
 	void SetType(int type);
+	// Set destination/final destination of troops
 	void SetDestination(Vector3 destination);
+	// Set whether can fire
+	void SetFire(bool fire) { m_bFireProjectile = fire; };
+	bool GetFire() { return m_bFireProjectile; };
+
 
 	// Get position
 	Vector3 GetPos(void) const;
@@ -65,10 +72,12 @@ public:
 	Vector3 GetTarget(void) const;
 	// Get Up
 	Vector3 GetUp(void) const;
-	// Get the terrain for the player info
+	// Get the terrain 
 	GroundEntity* GetTerrain(void);
-	//Get final destination
+	//Get final destination of troops
 	Vector3 GetFinalDestination() { return finalDestination; };
+	// Get type of enemy
+	int GetType() { return type; };
 
 	// Update
 	void Update(double dt = 0.0333f);

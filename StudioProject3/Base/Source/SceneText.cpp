@@ -153,7 +153,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 	MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.0f);
-	MeshBuilder::GetInstance()->GenerateSphere("bullet", Color(0, 0, 1), 18, 36, 0.5f);
+	MeshBuilder::GetInstance()->GenerateSphere("Troopbullet", Color(0, 0, 1), 18, 36, 0.5f);
 	MeshBuilder::GetInstance()->GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
@@ -237,22 +237,22 @@ void SceneText::Init()
 	testTroop[2]->SetDestination(Vector3(0, 10, 0));
 
 
-	for (int i = 0; i < 20; ++i)
-	{
-		newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
-		newTroop[i]->Init();
-		newTroop[i]->SetTerrain(groundEntity);
-		newTroop[i]->SetType(1);
-		newTroop[i]->SetDestination(Vector3(0, 10, 0));
-	}
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+	//	newTroop[i]->Init();
+	//	newTroop[i]->SetTerrain(groundEntity);
+	//	newTroop[i]->SetType(1);
+	//	newTroop[i]->SetDestination(Vector3(0, 10, 0));
+	//}
 
-	for (int i = 0; i < 20; ++i)
-	{
-		turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
-		turret->Init();
-		turret->SetTerrain(groundEntity);
-		turret->SetType(2);
-	}
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
+	//	turret->Init();
+	//	turret->SetTerrain(groundEntity);
+	//	turret->SetType(2);
+	//}
 
 
 	turret = Create::Enemy3D("sphere", Vector3(0, 10, -50), Vector3(4, 4, 4),2);
@@ -308,34 +308,43 @@ void SceneText::Update(double dt)
 
 		for (int i = 0; i < 22; i++)
 		{
-			bool close = false;
+			bool tooClose = false;
 			estimatedDestination[i].Set(testTroop[0]->GetFinalDestination().x + Math::RandFloatMinMax(1.2 * -22, 1.2 * 22), 10, testTroop[0]->GetFinalDestination().z + Math::RandFloatMinMax(1.2 * -22,1.2 * 22));
 			//check for closeness with each troops
 			do
 			{
-				close = false;
+				tooClose = false;
 				for (int x = 0; x < i; x++)
 				{
 					if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
 					{
-						close = true;
+						tooClose = true;
 						estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
 					}
 				}
-			}while(close);
+			}while(tooClose);
 		}
 
-		for (int i = 0; i < 20; i++)
+	/*	for (int i = 0; i < 20; i++)
 		{
 			newTroop[i]->SetDestination(estimatedDestination[i]);
 			newTroop[i]->SetActionDone(false);
-		}
+		}*/
 		for (int i = 1; i < 3; i++)
 		{
 			testTroop[i]->SetDestination(estimatedDestination[i + 19]);
 			testTroop[i]->SetActionDone(false);
 		}
 	}
+	if (KeyboardController::GetInstance()->IsKeyPressed('9'))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			testTroop[i]->SetFire(true);
+			testTroop[i]->SetFireDestination(Vector3(0, 10, 100)); //This is one of the turret's position
+		}
+	}
+
 	//You can see the number of spawned Troops troops here
 //	std::cout << spawnedTroops << std::endl; 
 	// Update our entities

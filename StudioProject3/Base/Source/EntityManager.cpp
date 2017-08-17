@@ -11,7 +11,7 @@ using namespace std;
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	std::list<EntityBase*>::iterator it, it2, end, it3;
+	std::list<EntityBase*>::iterator it, it2, it3, it4, end;
 	end = entityList.end();
 	//Resetting collision for all troops========================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
@@ -23,20 +23,36 @@ void EntityManager::Update(double _dt)
 	{
 		//Checking for TURRETS colliding into TROOPS
 		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+		{
+			if (CheckSphereCollision(*it, *it2))
 			{
-				if (CheckSphereCollision(*it, *it2))
-				{
-					(*it)->SetBuffer(2);
-					(*it)->SetAvoidPos((*it2)->GetPosition());
-					(*it)->SetCollide(true);
-				}
+				(*it)->SetBuffer(2);
+				(*it)->SetAvoidPos((*it2)->GetPosition());
+				(*it)->SetCollide(true);
 			}
+		}
 
 		//If TROOPS are never in any collision after checking through all OBJECTS
 		if (!(*it)->GetCollide())
 			{
 				(*it)->SetBuffer(0);
 			}
+	}
+	//Setting conditions for TURRET collisions====================
+	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+	{
+		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
+		{
+			//This ensures that troops fires at correct turrets. Can take this out once mouse selction is implemented
+			if ((*it4)->GetFireDestination() != (*it2)->GetPosition()) 
+				continue;
+
+			if (CheckSphereCollision(*it2, *it4))
+			{
+				(*it2)->SetIsDone(true);
+				(*it4)->SetIsDone(true);
+			}
+		}
 	}
 
 	//Cleaning up ENTITIES that are done========================
@@ -50,11 +66,25 @@ void EntityManager::Update(double _dt)
 			it = entityList.erase(it);
 		}
 		else
-		{
-			// Move on otherwise
-			++it;
-		}
+		// Move on otherwise
+		++it;
 	}
+
+	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+	{
+		if ((*it2)->IsDone())
+			it2 = turretList.erase(it2);
+	}
+
+	for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); ++it4)
+	{
+		if ((*it4)->IsDone())
+			it4 = troopProjectileList.erase(it4);
+		//Prevents invalid reading of list
+		if (troopProjectileList.size() == 0)
+			break;
+	}
+	
 
 	//Updating ENTITIES============================================
 	for (it = entityList.begin(); it != end; ++it)
@@ -112,6 +142,15 @@ void EntityManager::AddTurretEntity(EntityBase* _newEntity)
 void EntityManager::AddTroopEntity(EntityBase* _newEntity)
 {
 	troopList.push_back(_newEntity);
+}
+void EntityManager::AddTroopProjectileEntity(EntityBase* _newEntity)
+{
+	troopProjectileList.push_back(_newEntity);
+}
+
+void EntityManager::AddTurretProjectileEntity(EntityBase* _newEntity)
+{
+	turretProjectileList.push_back(_newEntity);
 }
 
 // Remove an entity from this EntityManager

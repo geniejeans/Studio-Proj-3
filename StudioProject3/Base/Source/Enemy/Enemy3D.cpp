@@ -15,8 +15,10 @@ CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	, minBoundary(Vector3(0.0f, 0.0f, 0.0f))
 	, m_pTerrain(NULL)
 	, m_fElapsedTimeBeforeUpdate(0.0f)
-	, m_bChangeDir(false)
 	, rotate(0.0)
+	, m_bChangeDir(false)
+	, m_bFireProjectile(false)
+
 {
 	this->modelMesh = _modelMesh;
 }
@@ -143,7 +145,7 @@ GroundEntity* CEnemy3D::GetTerrain(void)
 // Update
 void CEnemy3D::Update(double dt)
 {
-	if (type == CENEMY3D_TYPE::TROOP)
+	if (type == CENEMY3D_TYPE::TROOP && !m_bActionDone)
 	{
 		//This is for collision with turrets
 		if (!m_bCollide)
@@ -189,6 +191,14 @@ void CEnemy3D::Update(double dt)
 			m_bActionDone = true;
 		// Constrain the position
 		Constrain();
+	}
+	else if (type == CENEMY3D_TYPE::TROOP && m_bActionDone && m_bFireProjectile)
+	{
+		rotate = (fireDestination - position).Normalized();
+		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f,100.0f,this);
+		aProjectile->SetCollider(true);
+		aProjectile->SetFireDestination(fireDestination);
+		m_bFireProjectile = false;
 	}
 }
 
