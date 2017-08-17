@@ -49,6 +49,7 @@ private:
 	CMouse* theMouse;
 
 	CEnemy3D* testTroop[3];
+	CEnemy3D* newTroop[20];
 	CEnemy3D* turret;
 	int spawnedTroops = 23;
 };

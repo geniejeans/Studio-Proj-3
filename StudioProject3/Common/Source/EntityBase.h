@@ -62,7 +62,7 @@ protected:
 	bool isDone;
 	bool m_bCollider; //Has CCollider as parent class
 	bool m_bCollide; //Has collided with an object
-	bool m_bActionDone; //Action has been done  
+	bool m_bActionDone; //Action has been done
 	
 	float m_fBuffer;
 

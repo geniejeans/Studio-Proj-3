@@ -237,15 +237,14 @@ void SceneText::Init()
 	testTroop[2]->SetDestination(Vector3(0, 10, 0));
 
 
-	//for (int i = 0; i < 20; ++i)
-	//{
-	//	CEnemy3D* newTroop;
-	//	newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
-	//	newTroop->Init();
-	//	newTroop->SetTerrain(groundEntity);
-	//	newTroop->SetType(1);
-	//	newTroop->SetDestination(Vector3(0, 10, 0));
-	//}
+	for (int i = 0; i < 20; ++i)
+	{
+		newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+		newTroop[i]->Init();
+		newTroop[i]->SetTerrain(groundEntity);
+		newTroop[i]->SetType(1);
+		newTroop[i]->SetDestination(Vector3(0, 10, 0));
+	}
 
 	for (int i = 0; i < 20; ++i)
 	{
@@ -299,6 +298,43 @@ void SceneText::Update(double dt)
 		newTroop->SetType(1);
 		newTroop->SetDestination(Vector3(0, 10, 0));
 		spawnedTroops++;
+	}
+	if (KeyboardController::GetInstance()->IsKeyPressed('8'))
+	{
+		//Setting a designated position for all troops
+		Vector3 estimatedDestination[22];
+		testTroop[0]->SetDestination(Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)));
+		testTroop[0]->SetActionDone(false);
+
+		for (int i = 0; i < 22; i++)
+		{
+			bool close = false;
+			estimatedDestination[i].Set(testTroop[0]->GetFinalDestination().x + Math::RandFloatMinMax(1.2 * -22, 1.2 * 22), 10, testTroop[0]->GetFinalDestination().z + Math::RandFloatMinMax(1.2 * -22,1.2 * 22));
+			//check for closeness with each troops
+			do
+			{
+				close = false;
+				for (int x = 0; x < i; x++)
+				{
+					if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
+					{
+						close = true;
+						estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
+					}
+				}
+			}while(close);
+		}
+
+		for (int i = 0; i < 20; i++)
+		{
+			newTroop[i]->SetDestination(estimatedDestination[i]);
+			newTroop[i]->SetActionDone(false);
+		}
+		for (int i = 1; i < 3; i++)
+		{
+			testTroop[i]->SetDestination(estimatedDestination[i + 19]);
+			testTroop[i]->SetActionDone(false);
+		}
 	}
 	//You can see the number of spawned Troops troops here
 //	std::cout << spawnedTroops << std::endl; 

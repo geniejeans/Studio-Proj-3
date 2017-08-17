@@ -115,6 +115,7 @@ void CEnemy3D::SetType(int type)
 void CEnemy3D::SetDestination(Vector3 destination)
 {
 	this->destination = destination;
+	finalDestination = destination;
 }
 
 // Get position
@@ -144,8 +145,14 @@ void CEnemy3D::Update(double dt)
 {
 	if (type == CENEMY3D_TYPE::TROOP)
 	{
+		//This is for collision with turrets
 		if (!m_bCollide)
+		{
+			destination = finalDestination;
 			target = destination;
+		}
+			
+		//Make sure that this can also collide with turrets
 		//If troop is not at the selected position
 		if ((position - destination).Length() > 1.0f)
 		{
@@ -164,16 +171,12 @@ void CEnemy3D::Update(double dt)
 				Vector3 viewVector = (target - position).Normalized();
 				Vector3 backwardPosition = position;
 				backwardPosition -= viewVector * (float)(m_dSpeed * 2);
-				Vector3 laterPosition = position; Vector3 laterPosition2 = position;
 
 				Vector3 newPosLeft = backwardPosition.Cross(objAvoidPos);
 				Vector3 newPosRight = objAvoidPos.Cross(backwardPosition);
 
-				laterPosition += (newPosLeft - position).Normalized();
-				laterPosition2 += (newPosRight - position).Normalized();
-
 				//check dist between troop and the thing that it is trying to avoid
-				if ((laterPosition - objAvoidPos).LengthSquared() < (laterPosition2 - objAvoidPos).LengthSquared())
+				if ((newPosLeft - position) < (newPosRight - position))
 					target = Vector3(newPosRight.x, destination.y, newPosRight.z);
 				else
 					target = Vector3(newPosLeft.x, destination.y, newPosLeft.z);
@@ -182,12 +185,11 @@ void CEnemy3D::Update(double dt)
 			}
 		}
 
-		else
+		else if ((position - finalDestination).Length() < 1.0f)
 			m_bActionDone = true;
 		// Constrain the position
 		Constrain();
 	}
-	
 }
 
 // Constrain the position within the borders

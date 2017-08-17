@@ -13,31 +13,16 @@ void EntityManager::Update(double _dt)
 {
 	std::list<EntityBase*>::iterator it, it2, end, it3;
 	end = entityList.end();
-	for (it = entityList.begin(); it != end; ++it)
-	{
-		(*it)->Update(_dt);
-		//Resetting all collision to false
-		if ((*it)->GetMeshName() == "testTroop")
-			(*it)->SetCollide(false);
-	}
+	//Resetting collision for all troops========================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		//WIP
-		/*for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
-		{
-			if ((*it != *it3) && (!(*it)->GetActionDone() && (*it3)->GetActionDone()))
-			{
-				if (CheckSphereCollision(*it, *it3))
-				{
-					(*it)->SetBuffer(3);
-					(*it)->SetAvoidPos((*it3)->GetPosition());
-					(*it)->SetCollide(true);
-					break;
-				}
-			}
-		}*/
-			//Checking for TURRETS colliding into TROOPS
-			for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+		(*it)->SetCollide(false);
+	}
+	//Setting conditions for TROOP collisions====================
+	for (it = troopList.begin(); it != troopList.end(); ++it)
+	{
+		//Checking for TURRETS colliding into TROOPS
+		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 			{
 				if (CheckSphereCollision(*it, *it2))
 				{
@@ -46,14 +31,15 @@ void EntityManager::Update(double _dt)
 					(*it)->SetCollide(true);
 				}
 			}
-			//If TROOPS are never in any collision after checking through all objects
-			if (!(*it)->GetCollide())
+
+		//If TROOPS are never in any collision after checking through all OBJECTS
+		if (!(*it)->GetCollide())
 			{
 				(*it)->SetBuffer(0);
 			}
 	}
 
-	// Clean up entities that are done
+	//Cleaning up ENTITIES that are done========================
 	it = entityList.begin();
 	while (it != end)
 	{
@@ -69,6 +55,13 @@ void EntityManager::Update(double _dt)
 			++it;
 		}
 	}
+
+	//Updating ENTITIES============================================
+	for (it = entityList.begin(); it != end; ++it)
+	{
+		(*it)->Update(_dt);
+	}
+
 }
 void EntityManager::ResetGame(CPlayerInfo *Player)
 {

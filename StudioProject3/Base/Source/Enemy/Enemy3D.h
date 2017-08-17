@@ -23,8 +23,9 @@ protected:
 	Mesh* modelMesh;
 
 	Vector3 defaultPosition, defaultTarget, defaultUp;
-	Vector3 destination, target, up, rotate;
+	Vector3 target, up, rotate;
 	Vector3 maxBoundary, minBoundary;
+	Vector3 destination, finalDestination;
 	GroundEntity* m_pTerrain;
 	CENEMY3D_TYPE type;
 
@@ -32,6 +33,7 @@ protected:
 	double m_dAcceleration;
 	float m_fElapsedTimeBeforeUpdate;
 	bool m_bChangeDir;
+	bool m_bChangeDestination;
 
 public:
 	CEnemy3D(Mesh* _modelMesh);
@@ -65,6 +67,8 @@ public:
 	Vector3 GetUp(void) const;
 	// Get the terrain for the player info
 	GroundEntity* GetTerrain(void);
+	//Get final destination
+	Vector3 GetFinalDestination() { return finalDestination; };
 
 	// Update
 	void Update(double dt = 0.0333f);
