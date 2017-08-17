@@ -4,6 +4,10 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 
+GenericEntity::GenericEntity()
+{
+
+}
 
 GenericEntity::GenericEntity(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
