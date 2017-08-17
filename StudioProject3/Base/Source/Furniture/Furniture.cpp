@@ -3,8 +3,9 @@
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 
+CFurniture* CFurniture::Instance = 0;
 
-CFurniture::CFurniture(Mesh* _modelMesh)
+CFurniture::CFurniture()
 	: GenericEntity(NULL)
 	, defaultPosition(Vector3(0.0f, 0.0f, 0.0f))
 	, defaultTarget(Vector3(0.0f, 0.0f, 0.0f))
@@ -15,9 +16,13 @@ CFurniture::CFurniture(Mesh* _modelMesh)
 	, minBoundary(Vector3(0.0f, 0.0f, 0.0f))
 	, m_pTerrain(NULL)
 {
-	this->modelMesh = _modelMesh;
+
 }
 
+CFurniture::CFurniture(Mesh* _modelMesh)
+{
+	this->modelMesh = _modelMesh;
+}
 
 CFurniture::~CFurniture()
 {
