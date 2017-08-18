@@ -49,6 +49,8 @@ public:
 	virtual void SetBuffer(float _value) { m_fBuffer = _value; };
 	virtual float GetBuffer() { return m_fBuffer; };
 
+	virtual void SetFireDestination(Vector3 destination) { fireDestination = destination; };
+	virtual Vector3 GetFireDestination() { return fireDestination; };
 	//Reset 
 	virtual void ResetGame();
 
@@ -57,6 +59,7 @@ protected:
 	Vector3 scale;
 	string meshName;
 	Vector3 objAvoidPos;
+	Vector3 fireDestination;
 	//Vector3 objAvoidScale;
 
 	bool isDone;
