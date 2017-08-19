@@ -145,6 +145,17 @@ GroundEntity* CEnemy3D::GetTerrain(void)
 // Update
 void CEnemy3D::Update(double dt)
 {
+	// If enemy is turret.
+	if (type == CENEMY3D_TYPE::TURRET && m_bFireProjectile)
+	{
+		rotate = (fireDestination - position).Normalized();
+		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, this);
+		aProjectile->SetCollider(true);
+		aProjectile->SetFireDestination(fireDestination);
+		m_bFireProjectile = false;
+		return;
+	}
+
 	if (type == CENEMY3D_TYPE::TROOP && !m_bActionDone)
 	{
 		//This is for collision with turrets
