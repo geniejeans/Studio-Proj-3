@@ -228,4 +228,14 @@ void EntityManager::CollisionResponse(EntityBase *ThisEntity, EntityBase *ThatEn
 
 }
 
+void EntityManager::ClearEntityList()
+{
+	std::list<EntityBase*>::iterator it, it2, it3, end;
+	it = entityList.begin();
+	end = entityList.end();
+	
+	entityList.clear();
+	turretList.clear();
+	troopList.clear();
+}
 

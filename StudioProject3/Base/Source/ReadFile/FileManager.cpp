@@ -245,9 +245,12 @@ void FileManager::CreateObjects()
 		// Enemy
 		else if (stoi(store.Type) == 2)
 		{
-			Create::Enemy3D(store.Name,
+			CEnemy3D *turret = new CEnemy3D;
+			turret = Create::Enemy3D(store.Name,
 				Vector3(stof(store.positionX), stof(store.positionY), stof(store.positionZ)),
-				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)));
+				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)), 2);
+			turret->Init();
+			turret->SetType(2);
 		}
 	}
 }

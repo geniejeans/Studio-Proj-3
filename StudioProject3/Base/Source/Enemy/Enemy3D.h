@@ -37,6 +37,7 @@ protected:
 	bool m_bFireProjectile; // If true, can fire. Else, cannot
 
 public:
+	CEnemy3D() {};
 	CEnemy3D(Mesh* _modelMesh);
 	virtual ~CEnemy3D();
 

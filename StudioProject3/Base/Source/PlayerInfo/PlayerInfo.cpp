@@ -28,13 +28,13 @@ CPlayerInfo::~CPlayerInfo(void)
 void CPlayerInfo::Init(void)
 {
 	// Set the default values
-	defaultPosition.Set(0, 420, 500);
-	defaultTarget.Set(0, 100, -150);
+	defaultPosition.Set(0, 420, 740);
+	defaultTarget.Set(0, 100, 250);
 	defaultUp.Set(0,1,0);
 
 	// Set the current values
-	position.Set(0, 420, 500);
-	target.Set(0, 100, -150);
+	position.Set(0, 420, 740);
+	target.Set(0, 100, 250);
 	up.Set(0, 1, 0);
 
 	// Set Boundary
@@ -75,6 +75,8 @@ void CPlayerInfo::SetTerrain(GroundEntity* m_pTerrain)
 		this->m_pTerrain = m_pTerrain;
 
 		SetBoundary(this->m_pTerrain->GetMaxBoundary(), this->m_pTerrain->GetMinBoundary());
+		maxBoundary.y = 420.f;
+		minBoundary.y = 150.f;
 	}
 }
 
@@ -176,6 +178,7 @@ bool CPlayerInfo::Move_LeftRight(const float deltaTime, const bool direction, co
 		rightUV.y = 0;
 		rightUV.Normalize();
 		position -= rightUV * (float)m_dSpeed * speedMultiplier * deltaTime;
+		Constrain();
 		// Update the target
 		target = position + viewVector;
 		return true;
@@ -186,6 +189,7 @@ bool CPlayerInfo::Move_LeftRight(const float deltaTime, const bool direction, co
 		rightUV.y = 0;
 		rightUV.Normalize();
 		position += rightUV * (float)m_dSpeed * speedMultiplier * deltaTime;
+		Constrain();
 		// Update the target
 		target = position + viewVector;
 		return true;
@@ -293,15 +297,18 @@ void CPlayerInfo::ResetGame()
 void CPlayerInfo::Constrain(void)
 {
 	// Constrain player within the boundry
-	if (position.x > maxBoundary.x - 1.0f)
+	if (position.x > maxBoundary.x - 1.0f) 
 	{
 		position.x = maxBoundary.x - 1.0f;
+	}
+	if (position.y > maxBoundary.y - 1.0f)
+	{
+		position.y = maxBoundary.y - 1.0f;
 	}
 	if (position.z > maxBoundary.z - 1.0f)
 	{
 		position.z = maxBoundary.z - 1.0f;
 	}
-
 	if (position.x < minBoundary.x + 1.0f)
 	{
 		position.x = minBoundary.x + 1.0f;

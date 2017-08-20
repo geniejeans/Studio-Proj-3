@@ -31,29 +31,13 @@ void GroundEntity::Render()
 {
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
+	modelStack.Rotate(90, 0, 1, 0);
 	modelStack.Rotate(-90, 1, 0, 0);
 	// the y- and z- components are swapped because of the way that MVP is calculated inside RenderMesh
 	modelStack.Translate(position.x, position.z, position.y);
 	modelStack.Rotate(-90, 0, 0, 1);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-
-	// Since the ground textures are displayed with the centre as the reference point,
-	// we need to offset the tiles by half of the tile size
-	modelStack.Translate(size.x / 2, size.z / 2, 0.0f);
-	for (int x = 0; x < (int)grids.x; x++)
-	{
-		for (int z = 0; z < (int)grids.z; z++)
-		{
-			modelStack.PushMatrix();
-			// the y- and z- components are swapped because of the way that MVP is calculated inside RenderMesh
-			modelStack.Translate(x - (grids.x * size.x) / 2, z - (grids.z * size.z) / 2, 0.0f);
-			if (((x * (int)(grids.x - 1) + z) % 2) == 0)
-				RenderHelper::RenderMesh(modelMesh[0]);
-			else
-				RenderHelper::RenderMesh(modelMesh[1]);
-			modelStack.PopMatrix();
-		}
-	}
+	modelStack.Scale(scale.x * 10, scale.y * 10, scale.z * 10);
+	RenderHelper::RenderMesh(modelMesh[0]);
 	modelStack.PopMatrix();
 }
 

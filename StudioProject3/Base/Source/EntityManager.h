@@ -22,6 +22,7 @@ public:
 	void AddTroopProjectileEntity(EntityBase* _newEntity);
 	void AddTurretProjectileEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
+	void ClearEntityList();
 	float m_fBuffer = 0.0f;
 private:
 	EntityManager();

@@ -30,12 +30,16 @@ using namespace std;
 SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
 SceneText::SceneText()
-	: theMinimap(NULL)
+	: theMinimap(NULL),
+	theMouse(NULL),
+	theKeyboard(NULL)
 {
 }
 
 SceneText::SceneText(SceneManager* _sceneMgr)
-	: theMinimap(NULL)
+	: theMinimap(NULL),
+	theMouse(NULL),
+	theKeyboard(NULL)
 {
 	_sceneMgr->AddScene("Start", this);
 }
@@ -158,7 +162,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
-//	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
+	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
 
@@ -190,7 +194,7 @@ void SceneText::Init()
 
 	// Customise the ground entity
 	groundEntity->SetPosition(Vector3(0, 0, 0));
-	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+	groundEntity->SetScale(Vector3(100.0f, 150.0f, 150.0f));
 	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 	playerInfo->SetTerrain(groundEntity);
 
@@ -237,22 +241,22 @@ void SceneText::Init()
 	testTroop[2]->SetDestination(Vector3(0, 10, 0));
 
 
-	//for (int i = 0; i < 20; ++i)
-	//{
-	//	newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
-	//	newTroop[i]->Init();
-	//	newTroop[i]->SetTerrain(groundEntity);
-	//	newTroop[i]->SetType(1);
-	//	newTroop[i]->SetDestination(Vector3(0, 10, 0));
-	//}
+	for (int i = 0; i < 20; ++i)
+	{
+		newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+		newTroop[i]->Init();
+		newTroop[i]->SetTerrain(groundEntity);
+		newTroop[i]->SetType(1);
+		newTroop[i]->SetDestination(Vector3(0, 10, 0));
+	}
 
-	//for (int i = 0; i < 20; ++i)
-	//{
-	//	turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
-	//	turret->Init();
-	//	turret->SetTerrain(groundEntity);
-	//	turret->SetType(2);
-	//}
+	for (int i = 0; i < 20; ++i)
+	{
+		turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
+		turret->Init();
+		turret->SetTerrain(groundEntity);
+		turret->SetType(2);
+	}
 
 
 	turret = Create::Enemy3D("sphere", Vector3(0, 10, -50), Vector3(4, 4, 4),2);
@@ -325,11 +329,11 @@ void SceneText::Update(double dt)
 			}while(tooClose);
 		}
 
-	/*	for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			newTroop[i]->SetDestination(estimatedDestination[i]);
 			newTroop[i]->SetActionDone(false);
-		}*/
+		}
 		for (int i = 1; i < 3; i++)
 		{
 			testTroop[i]->SetDestination(estimatedDestination[i + 19]);
@@ -344,7 +348,6 @@ void SceneText::Update(double dt)
 			testTroop[i]->SetFireDestination(Vector3(0, 10, 100)); //This is one of the turret's position
 		}
 	}
-
 	//You can see the number of spawned Troops troops here
 //	std::cout << spawnedTroops << std::endl; 
 	// Update our entities
@@ -405,6 +408,10 @@ void SceneText::Update(double dt)
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
 	textObj[0]->SetText(ss.str());
+	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
+	{
+		SceneManager::GetInstance()->SetActiveScene("Level1");
+	}
 }
 
 void SceneText::Render()
@@ -450,6 +457,12 @@ void SceneText::Exit()
 #endif
 	}
 	// Delete the lights
-	delete lights[0];
-	delete lights[1];
+	//delete lights[0];
+	//delete lights[1];
+	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
+	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
+	EntityManager::GetInstance()->ClearEntityList();
+	theMinimap = NULL;
+	theMouse = NULL;
+	theKeyboard = NULL;
 }
