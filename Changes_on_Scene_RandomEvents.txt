@@ -1,0 +1,102 @@
+// Random Events
+// SceneText.cpp
+
+//Init() : 
+	// Money Rain - Random Events
+	MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 0.08f);
+	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//COIN.tga");
+
+	isActiveMoney = false;
+	Money = 0;
+
+	for (int i = 0; i < 50; i++)
+	{
+		theMoney[i] = Create::Money("MONEY_RAIN");
+		theMoney[i]->SetPosition(Vector3(Math::RandFloatMinMax(200.0f, -200.0f), 510.f, Math::RandFloatMinMax(200.0f, 500.0f)));
+		theMoney[i]->SetScale(Vector3(50.f, 50.f, 1.f));
+		theMoney[i]->SetVel(Vector3(0.f, -39.2f, 0.f));
+	}
+
+	// Thunderstorm - Random Events 
+	MeshBuilder::GetInstance()->GenerateQuad("THUNDER_STORM", Color(1, 1, 1), 0.08f);
+	MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//Lightning.tga");
+
+	isActiveStorm = false;
+
+	for (int i = 0; i < 50; i++)
+	{
+		theStorm[i] = Create::Storm("THUNDER_STORM");
+		theStorm[i]->SetPosition(Vector3(Math::RandFloatMinMax(200.0f, -200.0f), 510.f, Math::RandFloatMinMax(200.0f, 500.0f)));
+		theStorm[i]->SetScale(Vector3(50.f, 50.f, 1.f));
+		theStorm[i]->SetVel(Vector3(0.f, -39.2f, 0.f));
+	}
+
+
+
+
+//Update():
+	// Money
+	if (isActiveMoney)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			float y = theMoney[i]->GetPosition().y + theMoney[i]->GetVel().y *  (float)dt;
+
+			theMoney[i]->SetPosition(Vector3(theMoney[i]->GetPosition().x, y
+				, theMoney[i]->GetPosition().z));
+
+			if (theMoney[i]->GetPosition().y < groundEntity->GetPosition().y)
+			{
+				isActiveMoney = false;
+				theMoney[i]->SetPosition(Vector3(Math::RandFloatMinMax(200.0f, -200.0f), 510.f, Math::RandFloatMinMax(200.0f, 500.0f)));
+			}
+		}
+
+		Money += 2;
+	}
+
+	// Storm
+	if (isActiveStorm)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			float y = theStorm[i]->GetPosition().y + theStorm[i]->GetVel().y *  (float)dt;
+
+			theStorm[i]->SetPosition(Vector3(theStorm[i]->GetPosition().x, y
+				, theStorm[i]->GetPosition().z));
+
+			if (theStorm[i]->GetPosition().y < groundEntity->GetPosition().y)
+			{
+				isActiveStorm = false;
+				theStorm[i]->SetPosition(Vector3(Math::RandFloatMinMax(200.0f, -200.0f), 510.f, Math::RandFloatMinMax(200.0f, 500.0f)));
+			}
+		}
+
+		Money -= 1;
+	}
+
+	// Switching Active Manually
+	if (KeyboardController::GetInstance()->IsKeyPressed('9') && !isActiveStorm)
+	{
+		isActiveMoney = true;
+	}
+	if (KeyboardController::GetInstance()->IsKeyPressed('0') && !isActiveMoney)
+	{
+		isActiveStorm = true;
+	}
+
+
+//
+//SceneText.h
+// Private:
+
+
+	// Money/Coins
+	MoneyRain* theMoney[50];
+	bool isActiveMoney;
+	int Money = 0;
+
+	Thunderstorm* theStorm[50];
+	bool isActiveStorm;
+
+

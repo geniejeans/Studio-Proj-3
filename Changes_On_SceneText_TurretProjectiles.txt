@@ -1,0 +1,57 @@
+//SceneText.cpp, Init()
+// I replaced the original turret code to this
+	// Turrets
+	turret[0] = Create::Enemy3D("sphere", Vector3(0, 10, -50), Vector3(4, 4, 4),2);
+	turret[0]->Init();
+	turret[0]->SetTerrain(groundEntity);
+	turret[0]->SetType(2);
+
+	turret[1] = Create::Enemy3D("sphere", Vector3(7, 10, -30), Vector3(4, 4, 4),2);
+	turret[1]->Init();
+	turret[1]->SetTerrain(groundEntity);
+	turret[1]->SetType(2);
+
+	turret[2] = Create::Enemy3D("sphere", Vector3(0, 10, 100), Vector3(4, 4, 4),2);
+	turret[2]->Init();
+	turret[2]->SetTerrain(groundEntity);
+	turret[2]->SetType(2);
+
+	turret[3] = Create::Enemy3D("sphere", Vector3(-10, 10, 105), Vector3(10, 10, 10),2);
+	turret[3]->Init();
+	turret[3]->SetTerrain(groundEntity);
+	turret[3]->SetType(2);
+
+	turret[4] = Create::Enemy3D("sphere", Vector3(0, 10, 50), Vector3(4, 4, 4),2);
+	turret[4]->Init();
+	turret[4]->SetTerrain(groundEntity);
+	turret[4]->SetType(2);
+
+	turret[5] = Create::Enemy3D("sphere", Vector3(20, 10, 40), Vector3(4, 4, 4),2);
+	turret[5]->Init();
+	turret[5]->SetTerrain(groundEntity);
+	turret[5]->SetType(2);
+
+// Under update(). 
+// Press 0 for turrets to shoot at troops.
+	// Press 0 for turret to shoot at troops.
+	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			Vector3 targetPos;
+			for (int a = 0; a < 3; a++)
+			{
+				if (targetPos.IsZero() || (testTroop[a]->GetPos()- turret[i]->GetPos()).LengthSquared()<targetPos.LengthSquared())
+				{
+					targetPos = testTroop[a]->GetPos();
+				}
+			}
+			turret[i]->SetFire(true);
+			turret[i]->SetFireDestination(targetPos); 
+		}
+	}
+
+
+// Scenetext.h
+// Changed turret to this.
+CEnemy3D* turret[6];
