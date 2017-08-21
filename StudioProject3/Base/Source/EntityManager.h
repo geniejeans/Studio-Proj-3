@@ -5,6 +5,7 @@
 #include <list>
 #include "Vector3.h"
 #include "PlayerInfo\PlayerInfo.h"
+#include "SceneText.h"
 
 class EntityBase;
 

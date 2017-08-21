@@ -50,7 +50,7 @@ private:
 
 	CEnemy3D* testTroop[3];
 	CEnemy3D* newTroop[20];
-	CEnemy3D* turret;
+	CEnemy3D* turret[20];
 	int spawnedTroops = 23;
 };
 
