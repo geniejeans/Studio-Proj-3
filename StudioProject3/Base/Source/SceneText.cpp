@@ -157,7 +157,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 	MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.0f);
-	MeshBuilder::GetInstance()->GenerateSphere("Troopbullet", Color(0, 0, 1), 18, 36, 0.5f);
+	MeshBuilder::GetInstance()->GenerateSphere("Troopbullet", Color(0, 0, 1), 18, 36, 2.f);
 	MeshBuilder::GetInstance()->GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
@@ -262,44 +262,14 @@ void SceneText::Init()
 		newTroop[i]->SetDestination(Vector3(0, 10, 0));
 	}
 
+	// Enemy's Turrets
 	for (int i = 0; i < 20; ++i)
 	{
-		turret = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
-		turret->Init();
-		turret->SetTerrain(groundEntity);
-		turret->SetType(2);
+		turret[i] = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
+		turret[i]->Init();
+		turret[i]->SetTerrain(groundEntity);
+		turret[i]->SetType(2);
 	}
-
-
-	turret = Create::Enemy3D("sphere", Vector3(0, 10, -50), Vector3(4, 4, 4),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-
-	turret = Create::Enemy3D("sphere", Vector3(7, 10, -30), Vector3(4, 4, 4),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-
-	turret = Create::Enemy3D("sphere", Vector3(0, 10, 100), Vector3(4, 4, 4),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-
-	turret = Create::Enemy3D("sphere", Vector3(-10, 10, 105), Vector3(10, 10, 10),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-
-	turret = Create::Enemy3D("sphere", Vector3(0, 10, 50), Vector3(4, 4, 4),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-	turret = Create::Enemy3D("sphere", Vector3(20, 10, 40), Vector3(4, 4, 4),2);
-	turret->Init();
-	turret->SetTerrain(groundEntity);
-	turret->SetType(2);
-
 }
 
 void SceneText::Update(double dt)
@@ -362,8 +332,9 @@ void SceneText::Update(double dt)
 			testTroop[i]->SetFireDestination(Vector3(0, 10, 100)); //This is one of the turret's position
 		}
 	}
+
 	//You can see the number of spawned Troops troops here
-//	std::cout << spawnedTroops << std::endl; 
+	//std::cout << spawnedTroops << std::endl; 
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
