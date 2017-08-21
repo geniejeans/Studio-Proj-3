@@ -162,9 +162,21 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+	MeshBuilder::GetInstance()->GenerateQuad("UI", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("UI")->textureID = LoadTGA("Image//HUD ingame.tga");
 	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("enemyBase", "OBJ//BaseCakeCastle_OBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("enemyBase")->textureID = LoadTGA("Image//EnemyBase_Texture.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("playerBase", "OBJ//BaseCakeCastle_OBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("playerBase")->textureID = LoadTGA("Image//PlayerBase_Texture.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("turretBot", "OBJ//CandyTurret_Bottom.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretBot")->textureID = LoadTGA("Image//TurretTexture.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("turretTop", "OBJ//CandyTurret_Top.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretTop")->textureID = LoadTGA("Image//TurretTexture.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("tree", "OBJ//JellyTree_OBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("tree")->textureID = LoadTGA("Image//JellyTree_Texture.tga");
 
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
@@ -292,7 +304,9 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
-	
+	float mouse_X, mouse_Y;
+	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
+
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE))
 	{
 		CEnemy3D* newTroop;
@@ -303,11 +317,11 @@ void SceneText::Update(double dt)
 		newTroop->SetDestination(Vector3(0, 10, 0));
 		spawnedTroops++;
 	}
-	if (KeyboardController::GetInstance()->IsKeyPressed('8'))
+	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
 	{
 		//Setting a designated position for all troops
 		Vector3 estimatedDestination[22];
-		testTroop[0]->SetDestination(Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)));
+		testTroop[0]->SetDestination(Vector3(playerInfo->GetTarget().x + (mouse_X - 800 /2), 10, playerInfo->GetTarget().z + (mouse_Y - 500 / 2)));
 		testTroop[0]->SetActionDone(false);
 
 		for (int i = 0; i < 22; i++)

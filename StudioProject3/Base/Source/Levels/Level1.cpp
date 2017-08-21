@@ -21,6 +21,7 @@
 #include "../Light.h"
 #include "../SkyBox/SkyBoxEntity.h"
 #include "../ReadFile/FileManager.h"
+#include "../GameUI/GameUI.h"
 
 #include "RenderHelper.h"
 
@@ -203,11 +204,8 @@ void Level1::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 1; ++i)
-	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	}
-
+	//Creating textOBj
+	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -228,6 +226,46 @@ void Level1::Init()
 
 void Level1::Update(double dt)
 {
+	float mouse_X, mouse_Y;
+	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
+
+	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
+	{
+		std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
+		//Setting a designated position for all troops
+		vector<Vector3>estimatedDestination;
+		std::list<EntityBase*>::iterator it;
+
+		for (int i = 0; i < list.size(); i++)
+		{
+			bool tooClose = false;
+			estimatedDestination.push_back(Vector3(playerInfo->GetTarget().x + (mouse_X - 800 / 2) ,
+													10, 
+													playerInfo->GetTarget().x + (mouse_Y - 500 / 2) ));
+			do
+			{
+				tooClose = false;
+				for (int x = 0; x < i; x++)
+				{
+					if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
+					{
+						tooClose = true;
+						estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
+					}
+				}
+			} while (tooClose);
+		}
+		int i = 0;
+		for (it = list.begin(); it != list.end(); ++it)
+		{
+			(*it)->SetDestination(Vector3(estimatedDestination[i].x, 10, estimatedDestination[i].z));
+			(*it)->SetActionDone(false);
+			i++;
+		}
+
+	}
+
+	GameUI::GetInstance()->Update(groundEntity);
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
@@ -288,7 +326,7 @@ void Level1::Update(double dt)
 	textObj[0]->SetText(ss.str());
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{
-		SceneManager::GetInstance()->SetActiveScene("Start");
+		SceneManager::GetInstance()->SetActiveScene("Level2");
 	}
 }
 
@@ -318,6 +356,11 @@ void Level1::Render()
 
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	//Do you rendering on screen here. Centre of screen is (0,0)
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0);
+	modelStack.Scale(800, 600, 1);
+	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+	modelStack.PopMatrix();
 	glDisable(GL_BLEND);
 
 }

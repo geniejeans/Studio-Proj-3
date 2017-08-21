@@ -51,6 +51,8 @@ public:
 
 	virtual void SetFireDestination(Vector3 destination) { fireDestination = destination; };
 	virtual Vector3 GetFireDestination() { return fireDestination; };
+
+	virtual void SetDestination(Vector3 destination) { this->destination = destination; };
 	//Reset 
 	virtual void ResetGame();
 
@@ -60,6 +62,7 @@ protected:
 	string meshName;
 	Vector3 objAvoidPos;
 	Vector3 fireDestination;
+	Vector3 destination;
 	//Vector3 objAvoidScale;
 
 	bool isDone;

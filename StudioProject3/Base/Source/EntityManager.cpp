@@ -11,7 +11,7 @@ using namespace std;
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	std::list<EntityBase*>::iterator it, it2, it3, it4, end;
+	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, end;
 	end = entityList.end();
 	//Resetting collision for all troops========================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
@@ -31,7 +31,15 @@ void EntityManager::Update(double _dt)
 				(*it)->SetCollide(true);
 			}
 		}
-
+		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
+		{
+			if (CheckSphereCollision(*it, *it5))
+			{
+				(*it)->SetBuffer(2);
+				(*it)->SetAvoidPos((*it5)->GetPosition());
+				(*it)->SetCollide(true);
+			}
+		}
 		//If TROOPS are never in any collision after checking through all OBJECTS
 		if (!(*it)->GetCollide())
 			{
@@ -134,6 +142,7 @@ void EntityManager::AddEntity(EntityBase* _newEntity)
 	entityList.push_back(_newEntity);
 }
 
+
 void EntityManager::AddTurretEntity(EntityBase* _newEntity)
 {
 	turretList.push_back(_newEntity);
@@ -153,6 +162,10 @@ void EntityManager::AddTurretProjectileEntity(EntityBase* _newEntity)
 	turretProjectileList.push_back(_newEntity);
 }
 
+void EntityManager::AddOther(EntityBase* _newEntity)
+{
+	otherList.push_back(_newEntity);
+}
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {
@@ -237,5 +250,6 @@ void EntityManager::ClearEntityList()
 	entityList.clear();
 	turretList.clear();
 	troopList.clear();
+	otherList.clear();
 }
 

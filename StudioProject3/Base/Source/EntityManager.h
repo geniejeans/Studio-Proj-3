@@ -17,12 +17,14 @@ public:
 	void RenderUI();
 
 	void AddEntity(EntityBase* _newEntity);
+	void AddOther(EntityBase* _newEntity);
 	void AddTurretEntity(EntityBase* _newEntity);
 	void AddTroopEntity(EntityBase* _newEntity);
 	void AddTroopProjectileEntity(EntityBase* _newEntity);
 	void AddTurretProjectileEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
 	void ClearEntityList();
+	std::list<EntityBase*> GetTroopList() { return troopList; };
 	float m_fBuffer = 0.0f;
 private:
 	EntityManager();
@@ -46,6 +48,7 @@ private:
 	std::list<EntityBase*> troopList;
 	std::list<EntityBase*> troopProjectileList;
 	std::list<EntityBase*> turretProjectileList;
+	std::list<EntityBase*> otherList; //This list contains tree and base
 };
 
 #endif // ENTITY_MANAGER_H

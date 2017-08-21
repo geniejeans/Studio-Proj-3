@@ -253,6 +253,7 @@ void FileManager::CreateObjects()
 			turret->SetType(2);
 		}
 	}
+	objVec.clear();
 }
 
 void FileManager::PrintData()
