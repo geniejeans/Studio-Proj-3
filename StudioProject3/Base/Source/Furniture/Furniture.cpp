@@ -59,7 +59,7 @@ CFurniture* Create::Furniture3D(const std::string& _meshName,
 			_position.y - result->GetScale().y, 
 			_position.z - result->GetScale().z));
 
-	EntityManager::GetInstance()->AddEntity(result);
+//	EntityManager::GetInstance()->AddEntity(result);
 	EntityManager::GetInstance()->AddOther(result);
 	return result;
 }

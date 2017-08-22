@@ -22,6 +22,7 @@
 #include "../SkyBox/SkyBoxEntity.h"
 #include "../ReadFile/FileManager.h"
 #include "../GameUI/GameUI.h"
+#include "../MoneyManager/Money.h"
 
 #include "RenderHelper.h"
 
@@ -206,6 +207,7 @@ void Level1::Init()
 	float halfFontSize = fontSize / 2.0f;
 	//Creating textOBj
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + halfFontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -222,6 +224,8 @@ void Level1::Init()
 
 	FileManager::GetInstance()->ReadFile("ReadFiles//Level1.csv");
 	FileManager::GetInstance()->CreateObjects();
+	Money::GetInstance()->SetMoney(100);
+	Money::GetInstance()->SetMoneyRate(10);
 }
 
 void Level1::Update(double dt)
@@ -265,6 +269,7 @@ void Level1::Update(double dt)
 
 	}
 
+	Money::GetInstance()->UpdateMoney(dt);
 	GameUI::GetInstance()->Update(groundEntity);
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
@@ -324,6 +329,9 @@ void Level1::Update(double dt)
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
 	textObj[0]->SetText(ss.str());
+	ss.str("");
+	ss << "Money: " << Money::GetInstance()->GetMoney();
+	textObj[1]->SetText(ss.str());
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{
 		SceneManager::GetInstance()->SetActiveScene("Level2");

@@ -40,7 +40,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[1];
+	TextEntity* textObj[2];
 	Light* lights[2];
 
 	CMinimap *theMinimap;

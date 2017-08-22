@@ -149,7 +149,11 @@ void CEnemy3D::Update(double dt)
 	if (type == CENEMY3D_TYPE::TURRET && m_bFireProjectile)
 	{
 		rotate = (fireDestination - position).Normalized();
-		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, this);
+		Vector3 newPos = position;
+		newPos.x += rotate.x * 20.f;
+		newPos.z += rotate.z * 20.f;
+		newPos.y += 17.f;
+		CProjectile* aProjectile = Create::Projectile("Troopbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFireProjectile = false;
@@ -240,12 +244,32 @@ void CEnemy3D::Constrain(void)
 void CEnemy3D::Render(void)
 {
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	RenderHelper::RenderMesh(modelMesh);
-	modelStack.PopMatrix();
+	if (type != CENEMY3D_TYPE::TURRET)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
+		modelStack.Scale(scale.x, scale.y, scale.z);
+		RenderHelper::RenderMesh(modelMesh);
+		modelStack.PopMatrix();
+	}
+
+	else
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.Scale(scale.x, scale.y, scale.z);
+		modelStack.PushMatrix();
+		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
+		modelStack.Translate(0, 0, -1);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-20, 0, 0, 1);
+		RenderHelper::RenderMesh(modelMesh);
+		modelStack.PopMatrix();
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("turretBot"));
+		modelStack.PopMatrix();
+	}
+
 }
 
 CEnemy3D* Create::Enemy3D(const std::string& _meshName,
@@ -262,7 +286,7 @@ CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 	result->SetScale(_scale);
 	result->SetCollider(true);
 	result->SetMeshName(_meshName);
-	EntityManager::GetInstance()->AddEntity(result);
+//	EntityManager::GetInstance()->AddEntity(result);
 	if (type == 1)
 		EntityManager::GetInstance()->AddTroopEntity(result);
 	else if (type == 2)

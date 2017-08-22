@@ -1,5 +1,5 @@
 #Type,#Name,#Position.x,#Position.y,#Position.z,#Scale.x,#Scale.y,#Scale.z
-2,turretBot,0,10,0,4,4,4
+2,turretTop,0,10,0,4,4,4
 1,playerBase,0,10,400,13,13,13
 1,enemyBase,0,10,-500,13,13,13
 1,tree,-420,10,-300,4,4,4
