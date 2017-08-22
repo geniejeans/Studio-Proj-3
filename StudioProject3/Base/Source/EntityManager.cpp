@@ -11,7 +11,7 @@ using namespace std;
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	std::list<EntityBase*>::iterator it, it2, it3, it4, end;
+	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, end;
 	end = entityList.end();
 	//Resetting collision for all troops========================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
@@ -31,7 +31,15 @@ void EntityManager::Update(double _dt)
 				(*it)->SetCollide(true);
 			}
 		}
-
+		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
+		{
+			if (CheckSphereCollision(*it, *it5))
+			{
+				(*it)->SetBuffer(2);
+				(*it)->SetAvoidPos((*it5)->GetPosition());
+				(*it)->SetCollide(true);
+			}
+		}
 		//If TROOPS are never in any collision after checking through all OBJECTS
 		if (!(*it)->GetCollide())
 			{
@@ -55,21 +63,53 @@ void EntityManager::Update(double _dt)
 		}
 	}
 
-	//Cleaning up ENTITIES that are done========================
-	it = entityList.begin();
-	while (it != end)
+	// Turret Projectiles, Collision of Projectiles and Troops.
+	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		if ((*it)->IsDone())
+		for (it5 = turretProjectileList.begin(); it5 != turretProjectileList.end(); it5++)
 		{
-			// Delete if done
-			delete *it;
-			it = entityList.erase(it);
+			// Checking Bullet with Troop
+			if (CheckSphereCollision(*it, *it5))
+			{
+				(*it)->SetIsDone(true);
+				(*it5)->SetIsDone(true);
+			}
 		}
-		else
-		// Move on otherwise
-		++it;
 	}
 
+	// 
+	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+	{
+		CEnemy3D* turret = dynamic_cast<CEnemy3D*>(*it2);
+
+		Vector3 targetPos;
+		turret->m_fElapsedTimeBeforeUpdate += _dt;
+
+		for (it4 = troopList.begin(); it4 != troopList.end(); it4++)
+		{
+			CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it4);
+
+			// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+			if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() || 
+				(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+			{
+				targetPos = troop->GetPos();
+			}
+		}
+		
+		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
+		if (turret->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
+		{
+			turret->m_fElapsedTimeBeforeUpdate = 0;
+			turret->SetFire(true);
+			turret->SetFireDestination(targetPos);
+
+			continue;
+		}
+		turret->SetFire(false);
+	}
+
+	//Cleaning up ENTITIES that are done========================	
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
 		if ((*it2)->IsDone())
@@ -84,7 +124,50 @@ void EntityManager::Update(double _dt)
 		if (troopProjectileList.size() == 0)
 			break;
 	}
-	
+
+	// Cleaning up troop
+	it = troopList.begin();
+	while (it != troopList.end())
+	{
+		if ((*it)->IsDone())
+		{
+			// Remove troop when done
+			it = troopList.erase(it);
+		}
+		else
+			// Move on otherwise
+			++it;
+	}
+
+	// Cleaning up turret projectile
+	it5 = turretProjectileList.begin();
+	while (it5 != turretProjectileList.end())
+	{
+		if ((*it5)->IsDone())
+		{
+			// Remove turret projectile when done
+			it5 = turretProjectileList.erase(it5);
+		}
+		else
+			// Move on otherwise
+			++it5;
+	}
+
+
+	// Delete everything after clean up
+	it = entityList.begin();
+	while (it != end)
+	{
+		if ((*it)->IsDone())
+		{
+			// Delete if done
+			delete *it;
+			it = entityList.erase(it);
+		}
+		else
+			// Move on otherwise
+			++it;
+	}
 
 	//Updating ENTITIES============================================
 	for (it = entityList.begin(); it != end; ++it)
@@ -134,6 +217,7 @@ void EntityManager::AddEntity(EntityBase* _newEntity)
 	entityList.push_back(_newEntity);
 }
 
+
 void EntityManager::AddTurretEntity(EntityBase* _newEntity)
 {
 	turretList.push_back(_newEntity);
@@ -153,6 +237,10 @@ void EntityManager::AddTurretProjectileEntity(EntityBase* _newEntity)
 	turretProjectileList.push_back(_newEntity);
 }
 
+void EntityManager::AddOther(EntityBase* _newEntity)
+{
+	otherList.push_back(_newEntity);
+}
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {
@@ -237,5 +325,6 @@ void EntityManager::ClearEntityList()
 	entityList.clear();
 	turretList.clear();
 	troopList.clear();
+	otherList.clear();
 }
 

@@ -32,7 +32,6 @@ protected:
 
 	double m_dSpeed;
 	double m_dAcceleration;
-	float m_fElapsedTimeBeforeUpdate;
 	bool m_bChangeDir; // Direction changing 
 	bool m_bFireProjectile; // If true, can fire. Else, cannot
 	static bool m_bIsRendered;
@@ -92,6 +91,7 @@ public:
 	void Render(void);
 
 	void SetMesh(Mesh* mesh);
+	float m_fElapsedTimeBeforeUpdate;
 };
 
 namespace Create

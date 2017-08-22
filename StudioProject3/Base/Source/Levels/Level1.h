@@ -1,5 +1,5 @@
-#ifndef SCENE_TEXT_H
-#define SCENE_TEXT_H
+#ifndef LEVEL1_H
+#define LEVEL1_H
 
 #include "Scene.h"
 #include "Mtx44.h"

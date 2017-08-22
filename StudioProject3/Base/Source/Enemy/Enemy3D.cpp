@@ -192,12 +192,16 @@ void CEnemy3D::Update(double dt)
 				Vector3 viewVector = (target - position).Normalized();
 				Vector3 backwardPosition = position;
 				backwardPosition -= viewVector * (float)(m_dSpeed * 2);
+				Vector3 laterPosition = position; Vector3 laterPosition2 = position;
 
 				Vector3 newPosLeft = backwardPosition.Cross(objAvoidPos);
 				Vector3 newPosRight = objAvoidPos.Cross(backwardPosition);
 
+				laterPosition += (newPosLeft - position).Normalized();
+				laterPosition2 += (newPosRight - position).Normalized();
+
 				//check dist between troop and the thing that it is trying to avoid
-				if ((newPosLeft - position) < (newPosRight - position))
+				if ((newPosLeft - objAvoidPos).LengthSquared() < (newPosRight - objAvoidPos).LengthSquared())
 					target = Vector3(newPosRight.x, destination.y, newPosRight.z);
 				else
 					target = Vector3(newPosLeft.x, destination.y, newPosLeft.z);
