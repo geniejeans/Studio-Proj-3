@@ -79,6 +79,11 @@ public:
 	//Reset 
 	void ResetGame();
 
+	// Timer
+	bool b_timerDone;
+	double d_TimeCountdown;
+	double elapsedTime_timer;
+	virtual void SetTimeCountdown(const double d_TimeCountdown);
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;

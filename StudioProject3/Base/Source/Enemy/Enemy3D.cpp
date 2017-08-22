@@ -3,6 +3,9 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include "KeyboardController.h"
+
+bool CEnemy3D::m_bIsRendered = true;
 
 CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	: GenericEntity(NULL)
@@ -47,6 +50,8 @@ void CEnemy3D::Init(void)
 
 	// Set speed
 	m_dSpeed = 10.0;
+
+	m_bIsRendered = true;
 }
 
 // Reset this player instance to default
@@ -108,6 +113,9 @@ void CEnemy3D::SetType(int type)
 		break;
 	case 2:
 		this->type = CENEMY3D_TYPE::TURRET;
+		break;
+	case 3:
+		this->type = CENEMY3D_TYPE::NINJA;
 		break;
 	default:
 		break;
@@ -211,6 +219,66 @@ void CEnemy3D::Update(double dt)
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFireProjectile = false;
 	}
+
+	if (type == CENEMY3D_TYPE::NINJA && !m_bActionDone)
+	{
+		//This is for collision with turrets
+		if (!m_bCollide)
+		{
+			destination = finalDestination;
+			target = destination;
+		}
+
+		//Make sure that this can also collide with turrets
+		//If troop is not at the selected position
+		if ((position - destination).Length() > 1.0f)
+		{
+			rotate = (destination - position).Normalized();
+			Vector3 viewVector = (target - position).Normalized();
+			if (m_fBuffer == 0)
+			{
+				m_bChangeDir = false;
+			}
+
+			if (!m_bCollide || m_bChangeDir)
+				position += viewVector * (float)m_dSpeed * (float)dt;
+
+			else
+			{
+				Vector3 viewVector = (target - position).Normalized();
+				Vector3 backwardPosition = position;
+				backwardPosition -= viewVector * (float)(m_dSpeed * 2);
+
+				Vector3 newPosLeft = backwardPosition.Cross(objAvoidPos);
+				Vector3 newPosRight = objAvoidPos.Cross(backwardPosition);
+
+				//check dist between troop and the thing that it is trying to avoid
+				if ((newPosLeft - position) < (newPosRight - position))
+					target = Vector3(newPosRight.x, destination.y, newPosRight.z);
+				else
+					target = Vector3(newPosLeft.x, destination.y, newPosLeft.z);
+
+				m_bChangeDir = true;
+			}
+		}
+
+		else if ((position - finalDestination).Length() < 1.0f)
+			m_bActionDone = true;
+		// Constrain the position
+		Constrain();
+	}
+
+
+}
+
+bool CEnemy3D::GetEnemyRender()
+{
+	return m_bIsRendered;
+}
+
+void CEnemy3D::SetEnemyRender(bool IsRendered)
+{
+	m_bIsRendered = IsRendered;
 }
 
 // Constrain the position within the borders
@@ -236,12 +304,26 @@ void CEnemy3D::Constrain(void)
 void CEnemy3D::Render(void)
 {
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	RenderHelper::RenderMesh(modelMesh);
-	modelStack.PopMatrix();
+
+	if (type != CENEMY3D_TYPE::NINJA)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
+		modelStack.Scale(scale.x, scale.y, scale.z);
+		RenderHelper::RenderMesh(modelMesh);
+		modelStack.PopMatrix();
+	}
+	else if (type == CENEMY3D_TYPE::NINJA && m_bIsRendered)
+	{
+		//MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
+		modelStack.PushMatrix();
+		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
+		modelStack.Scale(scale.x, scale.y, scale.z);
+		RenderHelper::RenderMesh(modelMesh);
+		modelStack.PopMatrix();
+	}
 }
 
 CEnemy3D* Create::Enemy3D(const std::string& _meshName,
@@ -263,5 +345,7 @@ CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 		EntityManager::GetInstance()->AddTroopEntity(result);
 	else if (type == 2)
 		EntityManager::GetInstance()->AddTurretEntity(result);
+	else if (type == 3)
+		EntityManager::GetInstance()->AddNinjaEntity(result);
 	return result;
 }

@@ -16,6 +16,8 @@ CPlayerInfo::CPlayerInfo(void)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
 	, b_collision(false)
+	, elapsedTime_timer(10.0)
+
 {
 }
 
@@ -41,7 +43,17 @@ void CPlayerInfo::Init(void)
 	maxBoundary.Set(1,1,1);
 	minBoundary.Set(-1, -1, -1);
 
+	elapsedTime_timer = 10.0f;
+
 }
+
+// Set the time countdown
+void CPlayerInfo::SetTimeCountdown(const double elapsedTime_timer)
+{
+	this->elapsedTime_timer = elapsedTime_timer;
+}
+
+
 // Set position
 void CPlayerInfo::SetPos(const Vector3& pos)
 {
@@ -136,6 +148,18 @@ void CPlayerInfo::Update(double dt)
 		attachedCamera->SetCameraPos(position);
 		attachedCamera->SetCameraTarget(target);
 		attachedCamera->SetCameraUp(up);
+	}
+
+	// Timer
+	if (b_timerDone)
+	{
+		elapsedTime_timer -= dt;
+	}
+	if (elapsedTime_timer < 0)
+	{
+		std::cout << "Timer countdown = 0" << std::endl;
+		b_timerDone = false;
+		elapsedTime_timer = 0;
 	}
 }
 // Detect and process front / back movement on the controller
