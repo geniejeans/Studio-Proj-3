@@ -1,5 +1,6 @@
 #pragma once
 #include "SingletonTemplate.h"
+#include "../RandomEvents/MoneyRain.h"
 
 // This class is solely for handling the money
 class Money : public Singleton<Money>
@@ -10,15 +11,16 @@ class Money : public Singleton<Money>
 	int m_iMoneyRate;
 	// Boolean to set the Money Rain
 	bool m_bActive;
-	// Duration for Money Rain
+	// Duration for Money Increase
 	double m_dMoneyOverTime;
+	// Duration for Money Rain
+	double m_dMoneyRainDuration;
+
+	MoneyRain* theMoneyRain;
 
 public:
 	Money();
 	~Money();
-
-	//  Initialise this class instance
-	void Init();
 
 	// Set Money
 	void SetMoney(int money);
@@ -35,6 +37,11 @@ public:
 	// Get Money over time
 	double GetMoneyOverTime();
 
+	// Set Money Rain Duration
+	void SetMoneyRainDuration(double time);
+	// Get Money Rain Duration
+	double GetMoneyRainDuration();
+
 	// Set bool
 	void SetActive(bool isTrue);
 	// Get bool
@@ -42,7 +49,4 @@ public:
 
 	// For events that causes money over time (money rain)
 	void UpdateMoney(double dt);
-
-	// For rendering Money on the screen
-	void RenderMoney();
 };
