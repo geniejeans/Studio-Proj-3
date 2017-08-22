@@ -34,6 +34,7 @@ protected:
 	double m_dAcceleration;
 	bool m_bChangeDir; // Direction changing 
 	bool m_bFireProjectile; // If true, can fire. Else, cannot
+	static bool m_bIsRendered;
 
 public:
 	CEnemy3D() {};
@@ -65,6 +66,8 @@ public:
 	void SetFire(bool fire) { m_bFireProjectile = fire; };
 	bool GetFire() { return m_bFireProjectile; };
 
+	bool GetEnemyRender();
+	static void SetEnemyRender(bool IsRendered);
 
 	// Get position
 	Vector3 GetPos(void) const;

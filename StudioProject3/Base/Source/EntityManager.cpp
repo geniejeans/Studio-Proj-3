@@ -11,7 +11,7 @@ using namespace std;
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, end;
+	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, end;
 	end = entityList.end();
 	
 	//Setting conditions for TROOP collisions====================
@@ -251,6 +251,10 @@ void EntityManager::Update(double _dt)
 	{
 		(*it5)->Update(_dt);
 	}
+	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
+	{
+		(*it7)->Update(_dt);
+	}
 }
 void EntityManager::ResetGame(CPlayerInfo *Player)
 {
@@ -267,7 +271,7 @@ void EntityManager::ResetGame(CPlayerInfo *Player)
 void EntityManager::Render()
 {
 	// Render all entities
-	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, end;
+	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, end;
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
@@ -292,6 +296,10 @@ void EntityManager::Render()
 	for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 	{
 		(*it6)->Render();
+	}
+	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
+	{
+		(*it7)->Render();
 	}
 }
 
@@ -323,6 +331,12 @@ void EntityManager::AddTroopEntity(EntityBase* _newEntity)
 {
 	troopList.push_back(_newEntity);
 }
+
+void EntityManager::AddNinjaEntity(EntityBase* _newEntity)
+{
+	ninjaList.push_back(_newEntity);
+}
+
 void EntityManager::AddTroopProjectileEntity(EntityBase* _newEntity)
 {
 	troopProjectileList.push_back(_newEntity);
