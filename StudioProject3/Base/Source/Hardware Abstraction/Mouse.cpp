@@ -13,7 +13,7 @@ CMouse::CMouse()
 	, bSelected(false)
 	, topLeft(0.f, 0.f, 0.f)
 	, botRight(0.f, 0.f, 0.f)
-	, m_dTimer(0.3)
+	, m_dTimer(0.5)
 	, isZoom(false)
 {
 	
@@ -57,7 +57,7 @@ int CMouse::Read(const float deltaTime)
 	
 	if (m_dTimer <= 0.0)
 	{
-		m_dTimer = 0.3;
+		m_dTimer = 0.5;
 		SetMouseScrollStatus(MouseController::SCROLL_TYPE::SCROLL_TYPE_YOFFSET);
 	}
 
