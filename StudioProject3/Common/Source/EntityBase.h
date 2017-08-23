@@ -52,6 +52,9 @@ public:
 	virtual void SetFireDestination(Vector3 destination) { fireDestination = destination; };
 	virtual Vector3 GetFireDestination() { return fireDestination; };
 
+	virtual void SetSelected(const bool _value) { m_bSelected = _value; };
+	virtual bool GetSelected() { return m_bSelected; };
+
 	virtual void SetDestination(Vector3 destination) { this->destination = destination; };
 	//Reset 
 	virtual void ResetGame();
@@ -69,6 +72,7 @@ protected:
 	bool m_bCollider; //Has CCollider as parent class
 	bool m_bCollide; //Has collided with an object
 	bool m_bActionDone; //Action has been done
+	bool m_bSelected;
 	
 	float m_fBuffer;
 
