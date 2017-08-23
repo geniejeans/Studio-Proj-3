@@ -49,12 +49,15 @@ private:
 	bool bMstate = false;
 	bool bSelection = false;
 	bool bSelected = false;
+
 	CMinimap *theMinimap;
 	EntityBase* testTrack;
 
 	static Level1* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
 	CMouse* theMouse;
+
+	float elapsed_time;
 };
 
 #endif

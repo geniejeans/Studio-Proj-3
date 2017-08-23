@@ -194,10 +194,12 @@ void Level4::Init()
 
 	FileManager::GetInstance()->ReadFile("ReadFiles//Level4.csv");
 	FileManager::GetInstance()->CreateObjects();
+	elapsed_time = 0.0f;
 }
 
 void Level4::Update(double dt)
 {
+	elapsed_time += dt;
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
 
@@ -283,11 +285,29 @@ void Level4::Render()
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
 
-	//Render Minimap
-	theMinimap->RenderUI();
-
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	//Do you rendering on screen here. Centre of screen is (0,0)
+	if (elapsed_time <= 3.f)
+	{
+		//Do you rendering on screen here. Centre of screen is (0,0)
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 2);
+		modelStack.Scale(800, 600, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("Loading"));
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		//Render Minimap
+		theMinimap->RenderUI();
+
+
+		//Do you rendering on screen here. Centre of screen is (0,0)
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 0);
+		modelStack.Scale(800, 600, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+		modelStack.PopMatrix();
+	}
 	glDisable(GL_BLEND);
 
 }

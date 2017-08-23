@@ -21,6 +21,7 @@ CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	, rotate(0.0)
 	, m_bChangeDir(false)
 	, m_bFireProjectile(false)
+	, isRpressed(false)
 
 {
 	this->modelMesh = _modelMesh;
@@ -51,7 +52,7 @@ void CEnemy3D::Init(void)
 	// Set speed
 	m_dSpeed = 10.0;
 
-	m_bIsRendered = true;
+	//m_bIsRendered = true;
 }
 
 // Reset this player instance to default
@@ -274,9 +275,79 @@ void CEnemy3D::Update(double dt)
 			m_bActionDone = true;
 		// Constrain the position
 		Constrain();
+		//std::cout << "Enemy updating" << std::endl;
+	}
+
+	//RadarDelay += (float)dt;
+
+	//if (RadarDelay >= RadarcoolDown)
+	//{
+	//	isRpressed = true;
+	//	RadarDelay = 0.f;
+	//}
+
+	//if (RadarDelay >= RadarcoolDown)
+	//{
+	//	std::cout << "Radar available" << std::endl;
+	//	std::cout << RadarDelay << std::endl;
+	//}
+
+	//if (type == CENEMY3D_TYPE::NINJA)
+	//{
+	//	if (position.z > -390.f || position.z > 390.f)
+	//	{
+	//		//radar
+	//		if (KeyboardController::GetInstance()->IsKeyPressed('R') && isRpressed) // Replace with Radar here!
+	//		{
+	//			isRpressed = false;
+	//			SetEnemyRender(true);
+	//		}
+	//		else if (!isRpressed)
+	//		{
+	//			SetEnemyRender(false);
+	//		}
+	//	}
+	//}
+
+	if (type == CENEMY3D_TYPE::NINJA)
+	{
+		if (position.z > -390.f || position.z > 390.f)
+		{
+			//radar
+			if (KeyboardController::GetInstance()->IsKeyPressed('R') && !isRpressed) // Replace with Radar here!
+			{
+				isRpressed = true;
+				SetEnemyRender(true);
+			}
+			else if (KeyboardController::GetInstance()->IsKeyPressed('R') && isRpressed)
+			{
+				isRpressed = false;
+				SetEnemyRender(false);
+			}
+		}
 	}
 
 
+	//if (type == CENEMY3D_TYPE::NINJA) If anything else doesn't work, uncomment this 
+	//{
+	//	if (position.z > -390.f || position.z > 390.f)
+	//	{
+
+	//		if (KeyboardController::GetInstance()->IsKeyPressed(VK_F2)) // Replace with Radar here!
+	//		{
+	//			SetEnemyRender(true);
+	//		}
+	//		else
+	//			SetEnemyRender(false);
+	//	}
+	//}
+	//std::cout << m_bIsRendered << std::endl;
+	//RenderDelay += (float)dt;
+	//if (RenderDelay >= RendercoolDown)
+	//{
+	//	RenderDelay = 0.f;
+	//	m_bIsRendered = false;
+	//}
 }
 
 bool CEnemy3D::GetEnemyRender()
