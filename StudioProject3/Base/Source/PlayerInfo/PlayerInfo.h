@@ -60,7 +60,7 @@ public:
 	// Handling Camera
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera();
-
+	FPSCamera *GetCamera() { return attachedCamera; };
 	//Setting m_speed
 	void SetSpeed(double num);
 	double GetSpeed();

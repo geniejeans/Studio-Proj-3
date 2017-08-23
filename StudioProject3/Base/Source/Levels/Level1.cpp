@@ -184,7 +184,7 @@ void Level1::Init()
 	// Create entities into the scene
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
-
+	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
@@ -226,49 +226,113 @@ void Level1::Init()
 	FileManager::GetInstance()->CreateObjects();
 	Money::GetInstance()->SetMoney(100);
 	Money::GetInstance()->SetMoneyRate(10);
+	bMstate = false;
+	numberOfSelected = 0;
+	topLeft.SetZero();
+	botRight.SetZero();
 }
 
 void Level1::Update(double dt)
 {
 	float mouse_X, mouse_Y;
 	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
+	float x = (2.0f * mouse_X) / 800.f - 1.0f;
+	float y = 1.0f - (2.0f * mouse_Y) / 600.f;
+	float z = 1.0f;
+	Vector3 ray_nds = Vector3(x, y, z);
+	Vector3 ray_clip = Vector3(ray_nds.x, ray_nds.y, -1.0f);
+	Mtx44 perspective;
+	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	Vector3 ray_eye = perspective.GetInverse() * ray_clip;
+	ray_eye = Vector3(ray_eye.x, ray_eye.y, -1.0f);
+	Vector3 ray_wor = playerInfo->GetCamera()->GetViewMatrix().GetInverse() * ray_eye;
+	ray_wor = ray_wor.Normalize();
+	float distanceFromRay = -(playerInfo->GetPos().Dot(Vector3(0, 1, 0) + 0) / ray_wor.Dot(Vector3(0, 1, 0))) -20.f;
+	test = Vector3(playerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, playerInfo->GetPos().z + ray_wor.z * distanceFromRay);
+	testTrack->SetPosition(test);
 
-	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
+	//troop selection
+
+	if (mouse_Y < 500)
 	{
-		std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
-		//Setting a designated position for all troops
-		vector<Vector3>estimatedDestination;
-		std::list<EntityBase*>::iterator it;
-
-		for (int i = 0; i < list.size(); i++)
+		if (!bMstate && MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 		{
-			bool tooClose = false;
-			estimatedDestination.push_back(Vector3(playerInfo->GetTarget().x + (mouse_X - 800 / 2) ,
-													10, 
-													playerInfo->GetTarget().x + (mouse_Y - 500 / 2) ));
-			do
+			bMstate = true;
+			topLeft = test;
+		}
+		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
+		{
+			botRight = test;
+			bMstate = false;
+			bSelection = true;
+		}
+
+		if (bSelection && (topLeft != botRight))
+		{
+			if (topLeft != botRight)
 			{
-				tooClose = false;
-				for (int x = 0; x < i; x++)
+				numberOfSelected = 0;
+				bSelected = false;
+			}
+
+			//storedMiddle.x = topLeft.x + (abs(topLeft.x) - abs(botRight.x));
+			//storedMiddle.y = 10.f;
+			//storedMiddle.z = topLeft.z + (abs(topLeft.z) - abs(botRight.z));
+			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
+			std::list<EntityBase*>::iterator it;
+			for (it = list.begin(); it != list.end(); ++it)
+			{
+				(*it)->SetSelected(false);
+				if (((*it)->GetPosition().x > topLeft.x && (*it)->GetPosition().x < botRight.x)
+					&& ((*it)->GetPosition().z > topLeft.z && (*it)->GetPosition().z < botRight.z))
 				{
-					if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
-					{
-						tooClose = true;
-						estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
-					}
+					(*it)->SetSelected(true);
+					bSelected = true;
+					numberOfSelected++;
 				}
-			} while (tooClose);
+			}
+			bSelection = false;
 		}
-		int i = 0;
-		for (it = list.begin(); it != list.end(); ++it)
+		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
 		{
-			(*it)->SetDestination(Vector3(estimatedDestination[i].x, 10, estimatedDestination[i].z));
-			(*it)->SetActionDone(false);
-			i++;
+			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
+			vector<Vector3>estimatedDestination;
+			std::list<EntityBase*>::iterator it;
+
+			for (int i = 0; i < numberOfSelected; i++)
+			{
+				bool tooClose = false;
+				estimatedDestination.push_back(Vector3(topLeft.x, 10, topLeft.z));
+				do
+				{
+					tooClose = false;
+					for (int x = 0; x < i; x++)
+					{
+						if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
+						{
+							tooClose = true;
+							estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
+						}
+					}
+				} while (tooClose);
+			}
+			int i = 0;
+			for (it = list.begin(); it != list.end(); ++it)
+			{
+				if ((*it)->GetSelected())
+				{
+					(*it)->SetDestination(Vector3(estimatedDestination[i].x, 10, estimatedDestination[i].z));
+					(*it)->SetActionDone(false);
+					(*it)->SetSelected(false);
+					i++;
+				}
+			}
+			numberOfSelected = 0;
+			bSelected = false;
 		}
-
 	}
-
+	
+	
 	Money::GetInstance()->UpdateMoney(dt);
 	GameUI::GetInstance()->Update(groundEntity);
 	// Update our entities

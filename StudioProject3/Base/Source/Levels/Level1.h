@@ -42,8 +42,15 @@ private:
 	FPSCamera camera;
 	TextEntity* textObj[2];
 	Light* lights[2];
-
+	Vector3 test;
+	Vector3 storedMiddle;
+	Vector3 topLeft, botRight;
+	int numberOfSelected;
+	bool bMstate = false;
+	bool bSelection = false;
+	bool bSelected = false;
 	CMinimap *theMinimap;
+	EntityBase* testTrack;
 
 	static Level1* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
