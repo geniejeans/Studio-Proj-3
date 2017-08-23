@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="PlayerInfo">
       <UniqueIdentifier>{ee63a848-364d-4119-9628-05cc3d6a4b17}</UniqueIdentifier>
     </Filter>
@@ -28,15 +24,33 @@
     <Filter Include="Furniture">
       <UniqueIdentifier>{356d1e35-89a8-4597-9363-369cbdc7bbba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameUI">
+      <UniqueIdentifier>{dfc91314-c8ec-44ac-9f7d-6cf4921d1e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReadFile">
+      <UniqueIdentifier>{1987412c-8923-4018-b1b3-de24658efd66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RandomEvents">
+      <UniqueIdentifier>{b3fe3846-a25c-4178-8ff2-1d5256ae4a55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Money">
+      <UniqueIdentifier>{16a41215-0c87-44ea-b0f8-615b6ff6e64e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{726554a3-521c-42b6-9c93-69a8964fe914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{49a40463-2c67-4dc3-981b-8d55226a5f20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{06353ba0-343e-4956-94ee-299b4d074211}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\FPSCamera.cpp">
@@ -69,19 +83,7 @@
     <ClCompile Include="Source\GenericEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy\Enemy3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Projectile\Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Hardware Abstraction\Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Hardware Abstraction\Keyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Hardware Abstraction\Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\MiniMap\Minimap.cpp">
@@ -93,12 +95,54 @@
     <ClCompile Include="Source\Furniture\Furniture.cpp">
       <Filter>Furniture</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameUI\GameUI.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MoneyManager\Money.cpp">
+      <Filter>Money</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hardware Abstraction\Controller.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hardware Abstraction\Keyboard.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hardware Abstraction\Mouse.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Enemy3D.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneText.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Levels\Level1.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Levels\Level2.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Levels\Level3.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Levels\Level4.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Screen.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomEvents\MoneyRain.cpp">
+      <Filter>RandomEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomEvents\Thunderstorm.cpp">
+      <Filter>RandomEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ReadFile\FileManager.cpp">
+      <Filter>ReadFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\FPSCamera.h">
@@ -134,22 +178,7 @@
     <ClInclude Include="Source\Scene2D\Key.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\Enemy3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Projectile\Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Hardware Abstraction\Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Hardware Abstraction\Keyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Hardware Abstraction\Mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CameraEffects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\MiniMap\Minimap.h">
@@ -160,6 +189,54 @@
     </ClInclude>
     <ClInclude Include="Source\Furniture\Furniture.h">
       <Filter>Furniture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameUI\GameUI.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MoneyManager\Money.h">
+      <Filter>Money</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hardware Abstraction\Controller.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hardware Abstraction\Keyboard.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Hardware Abstraction\Mouse.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Enemy3D.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneText.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Levels\Level1.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Levels\Level2.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Levels\Level3.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Levels\Level4.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Screen.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\MoneyRain.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\RandomEvents.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\Thunderstorm.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ReadFile\FileManager.h">
+      <Filter>ReadFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
