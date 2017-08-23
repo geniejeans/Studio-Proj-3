@@ -28,6 +28,9 @@ public:
 	void ClearEntityList();
 	std::list<EntityBase*> GetTroopList() { return troopList; };
 	float m_fBuffer = 0.0f;
+
+	void GenerateNinja(GroundEntity *groundEntity, double dt);
+
 private:
 	EntityManager();
 	virtual ~EntityManager();
@@ -42,6 +45,7 @@ private:
 	bool CheckForCollision(void);
 
 	void CollisionResponse(EntityBase *ThisEntity, EntityBase *ThatEntity);
+
 
 	void ResetGame(CPlayerInfo *Player);
 

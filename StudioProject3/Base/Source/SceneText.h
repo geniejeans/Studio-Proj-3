@@ -50,8 +50,14 @@ private:
 
 	CEnemy3D* testTroop[3];
 	CEnemy3D* newTroop[20];
+	CEnemy3D* ninjaTroop[7];
+
 	CEnemy3D* turret[20];
 	int spawnedTroops = 23;
+
+	float spawnDelay = 0.f;
+	const float coolDown = 5.f;
+
 };
 
 #endif

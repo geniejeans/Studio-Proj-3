@@ -150,7 +150,7 @@ void EntityManager::Update(double _dt)
 		}
 		turret->SetFire(false);
 	}
-
+	
 	//Cleaning up ENTITIES that are done========================	
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
@@ -301,6 +301,24 @@ void EntityManager::Render()
 	{
 		(*it7)->Render();
 	}
+}
+
+//Make this whole thing into a entityManager function. GenerateNinja(GroundEntity *groundEntity , dt)
+//after certain time
+void EntityManager::GenerateNinja(GroundEntity *groundEntity, double dt)
+{
+	//if (CPlayerInfo::elapsedTime_timer)
+	//{
+	/*	for (int i = 0; i < 1; ++i)
+		{*/
+			CEnemy3D *ninjaTroop = new CEnemy3D;
+			ninjaTroop = Create::Enemy3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-450.f, 450.f), 10, Math::RandFloatMinMax(-300.f, -490.f)), Vector3(1, 1, 1), 3);
+			ninjaTroop->Init();
+			ninjaTroop->SetTerrain(groundEntity);
+			ninjaTroop->SetType(3);
+			ninjaTroop->SetDestination(Vector3(0, 10, 480));
+		//}
+	//}
 }
 
 // Render the UI entities
