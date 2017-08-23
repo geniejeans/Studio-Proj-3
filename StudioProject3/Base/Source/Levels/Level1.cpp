@@ -334,11 +334,14 @@ void Level1::Update(double dt)
 		}
 	}
 	
-	
-	Money::GetInstance()->UpdateMoney(dt);
-	GameUI::GetInstance()->Update(groundEntity);
-	// Update our entities
-	EntityManager::GetInstance()->Update(dt);
+	if (elapsed_time >= 3.f)
+	{
+		Money::GetInstance()->UpdateMoney(dt);
+		GameUI::GetInstance()->Update(groundEntity);
+		// Update our entities
+		EntityManager::GetInstance()->Update(dt);
+	}
+
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if (KeyboardController::GetInstance()->IsKeyDown('1'))

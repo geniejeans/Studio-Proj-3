@@ -454,5 +454,6 @@ void EntityManager::ClearEntityList()
 	turretList.clear();
 	troopList.clear();
 	otherList.clear();
+	ninjaList.clear();
 }
 
