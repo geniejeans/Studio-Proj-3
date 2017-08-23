@@ -169,6 +169,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ninjaTroop", "OBJ//Enemy_trooper.obj");
+	MeshBuilder::GetInstance()->GetMesh("ninjaTroop")->textureID = LoadTGA("Image//Enemy_TextureTGA.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("enemyBase", "OBJ//BaseCakeCastle_OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("enemyBase")->textureID = LoadTGA("Image//EnemyBase_Texture.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("playerBase", "OBJ//BaseCakeCastle_OBJ.obj");
@@ -264,6 +266,7 @@ void SceneText::Init()
 		newTroop[i]->SetDestination(Vector3(0, 10, 0));
 	}
 
+
 	// Enemy's Turrets
 	for (int i = 0; i < 20; ++i)
 	{
@@ -272,6 +275,8 @@ void SceneText::Init()
 		turret[i]->SetTerrain(groundEntity);
 		turret[i]->SetType(2);
 	}
+
+	playerInfo->SetTimeCountdown(40.f);
 }
 
 void SceneText::Update(double dt)
@@ -335,6 +340,9 @@ void SceneText::Update(double dt)
 		}
 	}
 
+
+	
+
 	//You can see the number of spawned Troops troops here
 	//std::cout << spawnedTroops << std::endl; 
 	// Update our entities
@@ -393,12 +401,26 @@ void SceneText::Update(double dt)
 	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
-	ss << "FPS: " << fps;
-	textObj[0]->SetText(ss.str());
+	//ss << "Timer: " << playerInfo->elapsedTime_timer;
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{
 		SceneManager::GetInstance()->SetActiveScene("Level1");
 	}
+	//if (playerInfo->elapsedTime_timer < 55.f)
+	//{
+
+	//	EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
+	//}
+
+	spawnDelay += (float)dt;
+
+	if (spawnDelay >= coolDown)
+	{
+		EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
+		spawnDelay = 0.f;
+	}
+	ss << "spawnDelay: " << spawnDelay;
+	textObj[0]->SetText(ss.str());
 }
 
 void SceneText::Render()
