@@ -230,10 +230,12 @@ void Level1::Init()
 	numberOfSelected = 0;
 	topLeft.SetZero();
 	botRight.SetZero();
+	elapsed_time = 0.0f;
 }
 
 void Level1::Update(double dt)
 {
+	elapsed_time += dt;
 	float mouse_X, mouse_Y;
 	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
 	float x = (2.0f * mouse_X) / 800.f - 1.0f;
@@ -422,17 +424,29 @@ void Level1::Render()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
-
-	//Render Minimap
-	theMinimap->RenderUI();
-
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	//Do you rendering on screen here. Centre of screen is (0,0)
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, 0);
-	modelStack.Scale(800, 600, 1);
-	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
-	modelStack.PopMatrix();
+	if (elapsed_time <= 3.f)
+	{
+		//Do you rendering on screen here. Centre of screen is (0,0)
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 2);
+		modelStack.Scale(800, 600, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("Loading"));
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		//Render Minimap
+		theMinimap->RenderUI();
+
+
+		//Do you rendering on screen here. Centre of screen is (0,0)
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 0);
+		modelStack.Scale(800, 600, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+		modelStack.PopMatrix();
+	}
 	glDisable(GL_BLEND);
 
 }

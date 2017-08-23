@@ -48,6 +48,8 @@ private:
 	static Level3* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
 	CMouse* theMouse;
+
+	float elapsed_time;
 };
 
 #endif

@@ -164,6 +164,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
 	MeshBuilder::GetInstance()->GenerateQuad("UI", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("UI")->textureID = LoadTGA("Image//HUD ingame.tga");
+	MeshBuilder::GetInstance()->GenerateQuad("Loading", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("Loading")->textureID = LoadTGA("Image//LoadingScreen.tga");
 	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
