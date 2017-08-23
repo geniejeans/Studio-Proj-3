@@ -18,36 +18,7 @@ Screen* Screen::sInstance = new Screen(SceneManager::GetInstance());
 extern GLFWwindow* m_window;
 
 
-Screen::Screen() :
-	theScreenState(MAIN_MENU),
-	//ScreenCounter(0),
-	MainMenu_Background(NULL),
-	Instructions_Background(NULL),
-	Credits_Background(NULL),
-	StartButton(NULL),
-	InstructionsButton(NULL),
-	CreditButton(NULL),
-	QuitButton(NULL),
-	StartButtonPos(0.f, 0.f, 0.f),
-	InstructionsButtonPos(0.f, 0.f, 0.f),
-	CreditsButtonPos(0.f, 0.f, 0.f),
-	QuitButtonPos(0.f, 0.f, 0.f),
-	StartButtonScale(1.f, 1.f, 1.f),
-	InstructionsButtonScale(1.f, 1.f, 1.f),
-	CreditsButtonScale(1.f, 1.f, 1.f),
-	QuitButtonScale(1.f, 1.f, 1.f),
-	isWithin(false),
-	StartButtonScaleOffset(0.f, 0.f, 0.f),
-	InstructionsButtonScaleOffset(0.f, 0.f, 0.f),
-	CreditsButtonScaleOffset(0.f, 0.f, 0.f),
-	QuitButtonScaleOffset(0.f, 0.f, 0.f),
-	StartGameButtonCondition(0.f),
-	InstructionsButtonCondition(0.f),
-	CreditsButtonCondition(0.f),
-	QuitButtonCondition(0.f),
-	mousePos(0.f, 0.f, 0.f),
-	x_pos(0.f),
-	y_pos(0.f)
+Screen::Screen()
 {
 }
 
