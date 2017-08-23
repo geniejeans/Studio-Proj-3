@@ -42,6 +42,7 @@ public:
 
 	inline bool GetKeepMouseCentered(){ return keepMouseCentered; };
 	inline void SetKeepMouseCentered(bool _value){ keepMouseCentered = _value; };
+	double xoffset, yoffset;
 
 private:
 	MouseController();
@@ -49,7 +50,6 @@ private:
 
 	double curr_posX, curr_posY, prev_posX, prev_posY;
 	unsigned char currBtnStatus, prevBtnStatus;
-	double xoffset, yoffset;
 	bool keepMouseCentered;
 };
 

@@ -19,6 +19,8 @@
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
+int m_width;
+int m_height;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -36,6 +38,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
+	m_width = w;
+	m_height = h;
 	glViewport(0, 0, w, h);
 }
 
@@ -56,7 +60,7 @@ void Application::Init()
 {
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
-
+	
 	//Initialize GLFW
 	if (!glfwInit())
 	{
@@ -71,7 +75,9 @@ void Application::Init()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
 	//Create a window and create its OpenGL context
-	m_window = glfwCreateWindow(m_window_width, m_window_height, "NYP Framework", NULL, NULL);
+	m_width = 800;
+	m_height = 600;
+	m_window = glfwCreateWindow(m_width, m_height, "Candy World", NULL, NULL);
 
 	//If the window couldn't be created
 	if (!m_window)
@@ -185,10 +191,10 @@ void Application::MouseScrollCallbacks(GLFWwindow* window, double xoffset, doubl
 
 int Application::GetWindowHeight()
 {
-	return m_window_height;
+	return m_height;
 }
 
 int Application::GetWindowWidth()
 {
-	return m_window_width;
+	return m_width;
 }

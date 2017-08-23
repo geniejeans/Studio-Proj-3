@@ -40,10 +40,10 @@ int CKeyboard::Read(const float deltaTime)
 		Move_LeftRight(deltaTime, true, 5.f);
 	if (KeyboardController::GetInstance()->IsKeyDown('D')) //D
 		Move_LeftRight(deltaTime, false, 5.f);
-	if (KeyboardController::GetInstance()->IsKeyDown('N')) //D
-		Zoom_InOut(deltaTime, true, 5.f);
-	if (KeyboardController::GetInstance()->IsKeyDown('M')) //D
-		Zoom_InOut(deltaTime, false, 5.f);
+	//if (KeyboardController::GetInstance()->IsKeyDown('N')) //D
+	//	Zoom_InOut(deltaTime, true, 5.f);
+	//if (KeyboardController::GetInstance()->IsKeyDown('M')) //D
+	//	Zoom_InOut(deltaTime, false, 5.f);
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT))
 		Look_LeftRight(deltaTime, true, 1);
 	if (KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT))

@@ -23,19 +23,14 @@ public:
 	static void MouseButtonCallbacks(GLFWwindow* window, int button, int action, int mods);
 	static void MouseScrollCallbacks(GLFWwindow* window, double xoffset, double yoffset);
 
-	int GetWindowHeight();
-	int GetWindowWidth();
-	
+	static int GetWindowHeight();
+	static int GetWindowWidth();
 private:
 	Application();
 	~Application();
 
 	static bool IsKeyPressed(unsigned short key);
-
-	// Should make these not hard-coded :P
-	const static int m_window_width = 800;
-	const static int m_window_height = 600;
-
+	
 	//Declare a window object
 	StopWatch m_timer;
 };
