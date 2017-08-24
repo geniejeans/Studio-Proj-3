@@ -1,47 +1,52 @@
 #ifndef THUNDER_STORM_H	
 #define THUNDER_STORM_H
 
-#include <string>
-#include "Vector3.h"
-#include "MeshBuilder.h"
-#include "GraphicsManager.h"
-#include "RenderHelper.h"
-#include "../EntityManager.h"
-#include "EntityBase.h"
+#include "RandomEvents.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 class Mesh;
 
-class Thunderstorm : public EntityBase
+class Thunderstorm : public RandomEvents, public EntityBase
 {
-	Vector3 position;
-	Vector3 scale;
-	Vector3 vel;
-
+	Vector3 _pos, _scale, _vel, _Gravity;
 	Mesh* modelmesh;
 
-public:
-	Thunderstorm(Mesh* _modelMesh);
-	virtual ~Thunderstorm();
+	bool m_bFall;
 
-	virtual void Update(double dt) { }
-	virtual void Render();
+	float m_fSpeed;
+
+public:
+	Thunderstorm();
+	Thunderstorm(Mesh* _modelMesh);
+	~Thunderstorm();
+
+	void Init(void);
+	void Update(double dt);
+	void Render();
 
 	// Position
-	void SetPosition(Vector3& _value) { position = _value; }
-	Vector3 GetPosition() { return position; }
+	void SetPos(Vector3& _value);
+	Vector3 GetPos();
 
 	// Scale
-	void SetScale(Vector3& _value) { scale = _value; }
-	Vector3 GetScale() { return scale; }
+	void setScale(Vector3& _value);
+	Vector3 GetScale();
 
 	// Vel
-	void SetVel(Vector3& _value) { vel = _value; }
-	Vector3 GetVel() { return vel; }
+	void SetVel(Vector3& _value);
+	Vector3 GetVel();
+
+	// Fall
+	void SetFall(bool _isTrue);
+	bool GetFall();
 };
 
 namespace Create
 {
-	Thunderstorm* Storm(const std::string& _meshName);
+	Thunderstorm* Storm(const std::string& _meshName
+		, const Vector3& position
+		, const Vector3& scale
+		, Vector3& velocity = Vector3(0.0f, 0.f, 0.f));
 };
 
 #endif

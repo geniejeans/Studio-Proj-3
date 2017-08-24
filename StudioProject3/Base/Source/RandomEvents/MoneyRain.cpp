@@ -30,12 +30,12 @@ MoneyRain::~MoneyRain()
 
 void MoneyRain::Init(void)
 {
-	_pos.Set(Math::RandFloatMinMax(500.0f, -500.0f), 200.f, Math::RandFloatMinMax(500.0f, -500.0f));
+	_pos.Set(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f));
 	_scale.Set(200.f, 200.f, 1.f);
 	_vel.Set(0.f, 0.f, 0.f);
 
 	//Physics
-	m_fSpeed = 1.f;
+	m_fSpeed = 4.f;
 	_Gravity.Set(0.f, -9.8f, 0.f);
 }
 
@@ -84,7 +84,7 @@ void MoneyRain::Update(double dt)
 	
 	if (m_bFall == true)
 	{
-		Money::GetInstance()->SetActive(true);
+		Money::GetInstance()->SetActiveRain(true);
 
 		_vel += _Gravity * m_fSpeed * dt;
 		_pos.y += _vel.y * m_fSpeed * dt;
@@ -93,9 +93,9 @@ void MoneyRain::Update(double dt)
 	}
 	else if(m_bFall == false)
 	{
-		Money::GetInstance()->SetActive(false);
+		Money::GetInstance()->SetActiveRain(false);
 
-		SetPos(Vector3(_pos.x, 200.f, _pos.z));
+		SetPos(Vector3(_pos.x, 510.f, _pos.z));
 		SetPosition(GetPos());
 	}
 

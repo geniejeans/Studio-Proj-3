@@ -278,21 +278,32 @@ void SceneText::Init()
 
 	playerInfo->SetTimeCountdown(40.f);
 
-	// Money Rain---------------------------------------------------------
 	Money::GetInstance()->SetMoney(100);
 	Money::GetInstance()->SetMoneyRate(10);
 
+	// Money Rain---------------------------------------------------------
 	MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 0.08f);
-	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//COIN.tga");
+	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//Coin.tga");
 
 	for (int i = 0; i < 50; i++)
 	{
-		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 200.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
 			Vector3(200.f, 200.f, 1.f),
 			Vector3(0.f, 0.f, 0.f));
 	}
 	// -------------------------------------------------------------------
 
+	// Thunder Storm------------------------------------------------------
+	MeshBuilder::GetInstance()->GenerateQuad("THUNDER_STORM", Color(1, 1, 1), 0.08f);
+	MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//RandomEvents//Lightning.tga");
+
+	for (int i = 0; i < 50; i++)
+	{
+		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+			Vector3(200.f, 200.f, 1.f),
+			Vector3(0.f, 0.f, 0.f));
+	}
+	// -------------------------------------------------------------------
 }
 
 void SceneText::Update(double dt)
@@ -444,6 +455,26 @@ void SceneText::Update(double dt)
 			if (theMoney[i]->GetPos().y < groundEntity->GetPosition().y)
 			{
 				theMoney[i]->SetFall(false);
+			}
+		}
+	}
+
+	// Thunder Storm----------------------------------------------------------
+	if (KeyboardController::GetInstance()->IsKeyPressed('7'))
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			theStorm[i]->SetFall(true);
+		}
+	}
+
+	for (int i = 0; i < 50; i++)
+	{
+		if (theStorm[i]->GetFall() == true)
+		{
+			if (theStorm[i]->GetPos().y < groundEntity->GetPosition().y)
+			{
+				theStorm[i]->SetFall(false);
 			}
 		}
 	}

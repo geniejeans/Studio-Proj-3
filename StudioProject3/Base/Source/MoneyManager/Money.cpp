@@ -5,10 +5,11 @@ using namespace std;
 Money::Money()
 	: m_iMoney(0)
 	, m_iMoneyRate(10)
-	, m_bActive(false)
+	, m_bActiveRain(false)
+	, m_bActiveStorm(false)
 	, m_dMoneyOverTime(0.0)
-	, m_dMoneyRainDuration(0.0)
 	, theMoneyRain(NULL)
+	, theThunderStorm(NULL)
 {
 }
 
@@ -47,24 +48,24 @@ double Money::GetMoneyOverTime()
 	return m_dMoneyOverTime;
 }
 
-void Money::SetMoneyRainDuration(double time)
+void Money::SetActiveRain(bool isTrue)
 {
-	this->m_dMoneyRainDuration = time;
+	this->m_bActiveRain = isTrue;
 }
 
-double Money::GetMoneyRainDuration()
+void Money::SetActiveStorm(bool isTrue)
 {
-	return m_dMoneyRainDuration;
+	this->m_bActiveStorm = isTrue;
 }
 
-void Money::SetActive(bool isTrue)
+bool Money::GetActiveRain()
 {
-	this->m_bActive = isTrue;
+	return m_bActiveRain;
 }
 
-bool Money::GetActive()
+bool Money::GetActiveStorm()
 {
-	return m_bActive;
+	return m_bActiveStorm;
 }
 
 void Money::UpdateMoney(double dt)
@@ -78,7 +79,7 @@ void Money::UpdateMoney(double dt)
 	}
 
 	// ============ Generate Money at a faster rate when Money Rain is active ============= //
-	if (m_bActive)
+	if (m_bActiveRain)
 	{
 		m_dMoneyOverTime += 5 * dt;
 
@@ -86,6 +87,18 @@ void Money::UpdateMoney(double dt)
 		{
 				m_iMoney += m_iMoneyRate;
 				m_dMoneyOverTime = 0;
+		}
+	}
+
+	// ============ Money Decreases when Thunder Storm is active ========================= //
+	if (m_bActiveStorm)
+	{
+		m_dMoneyOverTime += 5 * dt;
+
+		if (m_dMoneyOverTime > 1.5)
+		{
+			m_iMoney -= (m_iMoneyRate * 0.5f);
+			m_dMoneyOverTime = 0;
 		}
 	}
 }

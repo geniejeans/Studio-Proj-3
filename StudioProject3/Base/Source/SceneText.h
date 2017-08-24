@@ -60,6 +60,7 @@ private:
 	const float coolDown = 5.f;
 
 	MoneyRain* theMoney[50];
+	Thunderstorm* theStorm[50];
 };
 
 #endif
