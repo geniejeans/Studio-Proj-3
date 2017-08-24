@@ -219,7 +219,7 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
@@ -277,6 +277,22 @@ void SceneText::Init()
 	}
 
 	playerInfo->SetTimeCountdown(40.f);
+
+	// Money Rain---------------------------------------------------------
+	Money::GetInstance()->SetMoney(100);
+	Money::GetInstance()->SetMoneyRate(10);
+
+	MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 0.08f);
+	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//COIN.tga");
+
+	for (int i = 0; i < 50; i++)
+	{
+		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 200.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+			Vector3(200.f, 200.f, 1.f),
+			Vector3(0.f, 0.f, 0.f));
+	}
+	// -------------------------------------------------------------------
+
 }
 
 void SceneText::Update(double dt)
@@ -366,10 +382,10 @@ void SceneText::Update(double dt)
 	{
 		lights[0]->type = Light::LIGHT_DIRECTIONAL;
 	}
-	else if(KeyboardController::GetInstance()->IsKeyDown('7'))
-	{
-		lights[0]->type = Light::LIGHT_SPOT;
-	}
+	//else if(KeyboardController::GetInstance()->IsKeyDown('7'))
+	//{
+	//	lights[0]->type = Light::LIGHT_SPOT;
+	//}
 
 	if(KeyboardController::GetInstance()->IsKeyDown('I'))
 		lights[0]->position.z -= (float)(10.f * dt);
@@ -411,6 +427,30 @@ void SceneText::Update(double dt)
 
 	//	EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
 	//}
+	
+	// Money Rain-------------------------------------------------------------
+	if (KeyboardController::GetInstance()->IsKeyPressed('8'))
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			theMoney[i]->SetFall(true);
+		}
+	}
+
+	for (int i = 0; i < 50; i++)
+	{
+		if (theMoney[i]->GetFall() == true)
+		{
+			if (theMoney[i]->GetPos().y < groundEntity->GetPosition().y)
+			{
+				theMoney[i]->SetFall(false);
+			}
+		}
+	}
+
+
+	Money::GetInstance()->UpdateMoney(dt);
+	// -----------------------------------------------------------------------
 
 	spawnDelay += (float)dt;
 
@@ -421,6 +461,11 @@ void SceneText::Update(double dt)
 	}
 	ss << "spawnDelay: " << spawnDelay;
 	textObj[0]->SetText(ss.str());
+
+	ss.str("");
+	ss << "Money: " << Money::GetInstance()->GetMoney();
+	textObj[1]->SetText(ss.str());
+
 }
 
 void SceneText::Render()

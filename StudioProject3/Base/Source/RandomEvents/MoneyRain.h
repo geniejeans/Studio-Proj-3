@@ -45,7 +45,7 @@ namespace Create
 	MoneyRain* Money(const std::string& _meshName
 		, const Vector3& position
 		, const Vector3& scale
-	, Vector3& velocity = Vector3(0.0f, 10.f, 0.f));
+	, Vector3& velocity = Vector3(0.0f, 0.f, 0.f));
 };
 
 #endif

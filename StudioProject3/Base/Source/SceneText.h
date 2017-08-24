@@ -16,6 +16,7 @@
 #include "CameraEffects\CameraEffects.h"
 #include "SpriteEntity.h"
 #include "Furniture\Furniture.h"
+#include "MoneyManager\Money.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -39,7 +40,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[1];
+	TextEntity* textObj[2];
 	Light* lights[2];
 
 	CMinimap *theMinimap;
@@ -58,6 +59,7 @@ private:
 	float spawnDelay = 0.f;
 	const float coolDown = 5.f;
 
+	MoneyRain* theMoney[50];
 };
 
 #endif

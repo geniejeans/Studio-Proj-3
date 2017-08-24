@@ -80,21 +80,12 @@ void Money::UpdateMoney(double dt)
 	// ============ Generate Money at a faster rate when Money Rain is active ============= //
 	if (m_bActive)
 	{
-		//theMoneyRain = new MoneyRain();
-		//theMoneyRain->Init();
-		//theMoneyRain->SetFall(true);
-		m_dMoneyRainDuration += dt;
 		m_dMoneyOverTime += 5 * dt;
-		if (m_dMoneyRainDuration > 10.0)
+
+		if (m_dMoneyOverTime > 1.5)
 		{
-			if (m_dMoneyOverTime > 1.5)
-			{
 				m_iMoney += m_iMoneyRate;
 				m_dMoneyOverTime = 0;
-			}
-			
-			m_dMoneyRainDuration = 0;
-			m_bActive = false;
 		}
 	}
 }

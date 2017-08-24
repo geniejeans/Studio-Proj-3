@@ -21,6 +21,7 @@ MoneyRain::MoneyRain()
 MoneyRain::MoneyRain(Mesh * _modelMesh)
 {
 	modelmesh = _modelMesh;
+	Init();
 }
 
 MoneyRain::~MoneyRain()
@@ -29,18 +30,18 @@ MoneyRain::~MoneyRain()
 
 void MoneyRain::Init(void)
 {
-	_pos.Set(0.f, 490.f,0.f);
-	_scale.Set(10.f, 10.f, 1.f);
+	_pos.Set(Math::RandFloatMinMax(500.0f, -500.0f), 200.f, Math::RandFloatMinMax(500.0f, -500.0f));
+	_scale.Set(200.f, 200.f, 1.f);
 	_vel.Set(0.f, 0.f, 0.f);
 
 	//Physics
-	m_fSpeed = 10.f;
+	m_fSpeed = 1.f;
 	_Gravity.Set(0.f, -9.8f, 0.f);
 }
 
 void MoneyRain::SetPos(Vector3 & _value)
 {
-	_pos = _value;
+	this->_pos = _value;
 }
 
 Vector3 MoneyRain::GetPos()
@@ -50,7 +51,7 @@ Vector3 MoneyRain::GetPos()
 
 void MoneyRain::setScale(Vector3 & _value)
 {
-	_scale = _value;
+	this->_scale = _value;
 }
 
 Vector3 MoneyRain::GetScale()
@@ -60,7 +61,7 @@ Vector3 MoneyRain::GetScale()
 
 void MoneyRain::SetVel(Vector3 & _value)
 {
-	_vel = _value;
+	this->_vel = _value;
 }
 
 Vector3 MoneyRain::GetVel()
@@ -80,18 +81,24 @@ bool MoneyRain::GetFall()
 
 void MoneyRain::Update(double dt)
 {
-	//if (m_bFall)
-	//{
-	//	//for (int i = 0; i < 50; ++i)
-	//	//{
-	//		// update velocity
-	//		Init();
-	//		_vel += _Gravity * m_fSpeed * dt;
-	//		_pos.y += _vel.y * m_fSpeed * dt;
-	//		std::cout << _pos << std::endl;
-	//		//SetPos(Vector3(_pos.x, _pos.y, _pos.z));
-	//	//}
-	//}
+	
+	if (m_bFall == true)
+	{
+		Money::GetInstance()->SetActive(true);
+
+		_vel += _Gravity * m_fSpeed * dt;
+		_pos.y += _vel.y * m_fSpeed * dt;
+
+		SetPosition(_pos);
+	}
+	else if(m_bFall == false)
+	{
+		Money::GetInstance()->SetActive(false);
+
+		SetPos(Vector3(_pos.x, 200.f, _pos.z));
+		SetPosition(GetPos());
+	}
+
 }
 
 void MoneyRain::Render()
