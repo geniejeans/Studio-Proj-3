@@ -4,8 +4,10 @@
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 #include "KeyboardController.h"
+#include "RadarScan.h"
 
 bool CEnemy3D::m_bIsRendered = true;
+bool CEnemy3D::isRpressed = false;
 
 CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	: GenericEntity(NULL)
@@ -21,7 +23,8 @@ CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	, rotate(0.0)
 	, m_bChangeDir(false)
 	, m_bFireProjectile(false)
-	, isRpressed(false)
+	, m_bRealRendered(true)
+	, m_bRadarActive(false)
 
 {
 	this->modelMesh = _modelMesh;
@@ -272,82 +275,49 @@ void CEnemy3D::Update(double dt)
 		}
 
 		else if ((position - finalDestination).Length() < 1.0f)
+		{
+			rotate = (Vector3(0, 10, 400) - position).Normalized();
 			m_bActionDone = true;
+		}
+			
 		// Constrain the position
 		Constrain();
-		//std::cout << "Enemy updating" << std::endl;
 	}
-
-	//RadarDelay += (float)dt;
-
-	//if (RadarDelay >= RadarcoolDown)
-	//{
-	//	isRpressed = true;
-	//	RadarDelay = 0.f;
-	//}
-
-	//if (RadarDelay >= RadarcoolDown)
-	//{
-	//	std::cout << "Radar available" << std::endl;
-	//	std::cout << RadarDelay << std::endl;
-	//}
-
-	//if (type == CENEMY3D_TYPE::NINJA)
-	//{
-	//	if (position.z > -390.f || position.z > 390.f)
-	//	{
-	//		//radar
-	//		if (KeyboardController::GetInstance()->IsKeyPressed('R') && isRpressed) // Replace with Radar here!
-	//		{
-	//			isRpressed = false;
-	//			SetEnemyRender(true);
-	//		}
-	//		else if (!isRpressed)
-	//		{
-	//			SetEnemyRender(false);
-	//		}
-	//	}
-	//}
-
 	if (type == CENEMY3D_TYPE::NINJA)
 	{
-		if (position.z > -390.f || position.z > 390.f)
+		if ((position.z > -390.f  && position.z < 330.f))
 		{
-			//radar
-			if (KeyboardController::GetInstance()->IsKeyPressed('R') && !isRpressed) // Replace with Radar here!
+			//If radar is active
+			if (RadarScan::GetInstance()->GetRPressed())
 			{
-				isRpressed = true;
-				SetEnemyRender(true);
+				RenderDelay += dt;
+				if (RenderDelay >= 0.3f)
+				{
+					if (m_bRadarActive)
+						m_bRadarActive = false;
+					else
+						m_bRadarActive = true;
+					RenderDelay = 0.0f;
+				}
+				//radar
+				if (!m_bRadarActive) // Replace with Radar here!
+				{
+					SetEnemyRender(true);
+				}
+				else if (m_bRadarActive)
+				{
+					SetEnemyRender(false);
+				}
+				m_bRealRendered = m_bIsRendered;
 			}
-			else if (KeyboardController::GetInstance()->IsKeyPressed('R') && isRpressed)
-			{
-				isRpressed = false;
-				SetEnemyRender(false);
-			}
+			//If radar is not active
+			else
+				m_bRealRendered = false;
 		}
+		//Only show ninjas if near bases
+		else
+			m_bRealRendered = true;
 	}
-
-
-	//if (type == CENEMY3D_TYPE::NINJA) If anything else doesn't work, uncomment this 
-	//{
-	//	if (position.z > -390.f || position.z > 390.f)
-	//	{
-
-	//		if (KeyboardController::GetInstance()->IsKeyPressed(VK_F2)) // Replace with Radar here!
-	//		{
-	//			SetEnemyRender(true);
-	//		}
-	//		else
-	//			SetEnemyRender(false);
-	//	}
-	//}
-	//std::cout << m_bIsRendered << std::endl;
-	//RenderDelay += (float)dt;
-	//if (RenderDelay >= RendercoolDown)
-	//{
-	//	RenderDelay = 0.f;
-	//	m_bIsRendered = false;
-	//}
 }
 
 bool CEnemy3D::GetEnemyRender()
@@ -394,7 +364,7 @@ void CEnemy3D::Render(void)
 		modelStack.PopMatrix();
 	}
 
-	else if (type == CENEMY3D_TYPE::NINJA && m_bIsRendered)
+	else if (type == CENEMY3D_TYPE::NINJA && m_bRealRendered)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y, position.z);
@@ -408,14 +378,14 @@ void CEnemy3D::Render(void)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y, position.z);
-		modelStack.Scale(scale.x, scale.y, scale.z);
 		modelStack.PushMatrix();
 		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 		modelStack.Translate(0, 0, -1);
 		modelStack.Rotate(-90, 0, 1, 0);
-		modelStack.Rotate(-20, 0, 0, 1);
+		modelStack.Scale(scale.x, scale.y, scale.z);
 		RenderHelper::RenderMesh(modelMesh);
 		modelStack.PopMatrix();
+		modelStack.Scale(scale.x, scale.y, scale.z);
 		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("turretBot"));
 		modelStack.PopMatrix();
 	}
@@ -437,9 +407,17 @@ CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 	result->SetMeshName(_meshName);
 //	EntityManager::GetInstance()->AddEntity(result);
 	if (type == 1)
+	{
+		result->SetHealth(50);
 		EntityManager::GetInstance()->AddTroopEntity(result);
+	}
+	
 	else if (type == 2)
+	{
+		result->SetHealth(100);
 		EntityManager::GetInstance()->AddTurretEntity(result);
+	}
+
 	else if (type == 3)
 		EntityManager::GetInstance()->AddNinjaEntity(result);
 	return result;

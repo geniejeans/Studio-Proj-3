@@ -55,6 +55,9 @@ public:
 	virtual void SetSelected(const bool _value) { m_bSelected = _value; };
 	virtual bool GetSelected() { return m_bSelected; };
 
+	virtual void SetHealth(const int _value) { m_iHealth = _value; };
+	virtual int GetHealth() { return m_iHealth; };
+
 	virtual void SetDestination(Vector3 destination) { this->destination = destination; };
 	//Reset 
 	virtual void ResetGame();
@@ -73,6 +76,7 @@ protected:
 	bool m_bCollide; //Has collided with an object
 	bool m_bActionDone; //Action has been done
 	bool m_bSelected;
+	int m_iHealth;
 	
 	float m_fBuffer;
 

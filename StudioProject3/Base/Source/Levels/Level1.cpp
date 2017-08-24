@@ -23,6 +23,7 @@
 #include "../ReadFile/FileManager.h"
 #include "../GameUI/GameUI.h"
 #include "../MoneyManager/Money.h"
+#include "../Enemy/RadarScan.h"
 
 #include "RenderHelper.h"
 
@@ -336,6 +337,21 @@ void Level1::Update(double dt)
 	
 	if (elapsed_time >= 3.f)
 	{
+		spawnDelay += (float)dt;
+
+		if (spawnDelay >= coolDown)
+		{
+			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
+			spawnDelay = 0.f;
+		}
+		if (KeyboardController::GetInstance()->IsKeyPressed('R'))
+		{
+			//do enemy radar here
+			if (RadarScan::GetInstance()->GetRPressed())
+				RadarScan::GetInstance()->SetRPressed(false);
+			else
+				RadarScan::GetInstance()->SetRPressed(true);
+		}
 		Money::GetInstance()->UpdateMoney(dt);
 		GameUI::GetInstance()->Update(groundEntity);
 		// Update our entities

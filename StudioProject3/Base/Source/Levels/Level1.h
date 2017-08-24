@@ -58,6 +58,8 @@ private:
 	CMouse* theMouse;
 
 	float elapsed_time;
+	float spawnDelay = 0.f;
+	const float coolDown = 5.f;
 };
 
 #endif

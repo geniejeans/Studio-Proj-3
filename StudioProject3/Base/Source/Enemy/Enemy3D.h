@@ -35,7 +35,8 @@ protected:
 	bool m_bChangeDir; // Direction changing 
 	bool m_bFireProjectile; // If true, can fire. Else, cannot
 	static bool m_bIsRendered;
-	bool isRpressed;
+	bool m_bRealRendered;
+	bool m_bRadarActive;
 
 
 public:
@@ -102,6 +103,7 @@ public:
 	const float RendercoolDown = 5.f;
 	bool m_bRenderTime = false;
 	bool m_bRadarOn = false;
+	static bool isRpressed;
 };
 
 namespace Create

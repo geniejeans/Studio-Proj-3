@@ -26,6 +26,8 @@ public:
 	void AddTurretProjectileEntity(EntityBase* _newEntity);
 	bool RemoveEntity(EntityBase* _existingEntity);
 	void ClearEntityList();
+	void UpdateAllList(double _dt); //All updates of lists are inside this function for neater codes
+	void CleanAllList();//All cleaning of lists are inside this function for neater codes
 	std::list<EntityBase*> GetTroopList() { return troopList; };
 	float m_fBuffer = 0.0f;
 

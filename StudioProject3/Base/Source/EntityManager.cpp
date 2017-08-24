@@ -7,13 +7,11 @@
 
 #include <iostream>
 using namespace std;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7;
 
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, end;
-	end = entityList.end();
-	
 	//Setting conditions for TROOP collisions====================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
@@ -23,11 +21,12 @@ void EntityManager::Update(double _dt)
 		{
 			if (CheckSphereCollision(*it, *it2))
 			{
-				(*it)->SetBuffer(2);
+				(*it)->SetBuffer(4);
 				(*it)->SetAvoidPos((*it2)->GetPosition());
 				(*it)->SetCollide(true);
 			}
 		}
+		//Checking for OTHERS colliding into TROOPS
 		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
 		{
 			if (CheckSphereCollision(*it, *it5))
@@ -39,54 +38,71 @@ void EntityManager::Update(double _dt)
 		}
 		//If TROOPS are never in any collision after checking through all OBJECTS
 		if (!(*it)->GetCollide())
-			{
-				(*it)->SetBuffer(0);
-			}
-	}
-	//Setting conditions for TURRET collisions====================
-	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
-	{
-		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
-			//This ensures that troops fires at correct turrets. Can take this out once mouse selction is implemented
-			if ((*it4)->GetFireDestination() != (*it2)->GetPosition()) 
-				continue;
-
-			if (CheckSphereCollision(*it2, *it4))
+			(*it)->SetBuffer(0);
+		}
+	}
+	//Setting conditions for NINJA collisions====================
+	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); ++it7)
+	{
+		(*it7)->SetCollide(false); //Resetting collision for all troops
+								  //Checking for TURRETS colliding into TROOPS
+		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+		{
+			if (CheckSphereCollision(*it7, *it2))
 			{
-				(*it2)->SetIsDone(true);
-				(*it4)->SetIsDone(true);
+				(*it7)->SetBuffer(4);
+				(*it7)->SetAvoidPos((*it2)->GetPosition());
+				(*it7)->SetCollide(true);
 			}
+		}
+		//Checking for OTHERS colliding into TROOPS
+		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
+		{
+			if (CheckSphereCollision(*it7, *it5))
+			{
+				(*it7)->SetBuffer(2);
+				(*it7)->SetAvoidPos((*it5)->GetPosition());
+				(*it7)->SetCollide(true);
+			}
+		}
+		//If TROOPS are never in any collision after checking through all OBJECTS
+		if (!(*it7)->GetCollide())
+		{
+			(*it7)->SetBuffer(0);
 		}
 	}
 
+	//Setting conditions for OTHER getting hit====================
 	for (it6 = otherList.begin(); it6 != otherList.end(); ++it6)
 	{
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
-			//This ensures that troops fires at correct turrets. Can take this out once mouse selction is implemented
-			if ((*it4)->GetFireDestination() != (*it6)->GetPosition())
-				continue;
+			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
+				continue;*/
 
 			if (CheckSphereCollision(*it6, *it4))
 			{
-				(*it6)->SetIsDone(true);
+				(*it6)->SetHealth((*it6)->GetHealth() - 1);
 				(*it4)->SetIsDone(true);
+				if ((*it6)->GetHealth() <= 0)
+				{
+					(*it6)->SetIsDone(true);
+				}
 			}
 		}
 	}
 
-
-
-	// Turret Projectiles, Collision of Projectiles and Troops.
+	//Setting conditions for TROOP actions/hit====================
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
 		CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
-
+	
 		Vector3 targetPos;
 		troop->m_fElapsedTimeBeforeUpdate += _dt;
 		if ((*it)->GetActionDone())
 		{
+			//TROOPS shooting at otherList
 			for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 			{
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
@@ -96,17 +112,32 @@ void EntityManager::Update(double _dt)
 					targetPos = (*it6)->GetPosition();
 				}
 			}
+			//TROOPS shooting at turrets
+			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
+			{
+				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+				{
+					targetPos = (*it2)->GetPosition();
+				}
+			}
 		}
-	
+		//TROOPS getting hit by TURRET projectiles
 		for (it5 = turretProjectileList.begin(); it5 != turretProjectileList.end(); it5++)
 		{
 			// Checking Bullet with Troop
 			if (CheckSphereCollision(*it, *it5))
 			{
-				(*it)->SetIsDone(true);
+				(*it)->SetHealth((*it)->GetHealth() - 1);
 				(*it5)->SetIsDone(true);
+				if ((*it)->GetHealth() <= 0)
+				{
+					(*it)->SetIsDone(true);
+				}
 			}
 		}
+		//Troop shooting's actions
 		if (troop->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
 		{
 			troop->m_fElapsedTimeBeforeUpdate = 0;
@@ -118,17 +149,17 @@ void EntityManager::Update(double _dt)
 		troop->SetFire(false);
 	}
 
-	// 
+	//Setting conditions for TURRET actions/hit===================
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
 		CEnemy3D* turret = dynamic_cast<CEnemy3D*>(*it2);
 
 		Vector3 targetPos;
 		turret->m_fElapsedTimeBeforeUpdate += _dt;
-
-		for (it4 = troopList.begin(); it4 != troopList.end(); it4++)
+		//TURRET shooting at TROOP
+		for (it = troopList.begin(); it != troopList.end(); it++)
 		{
-			CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it4);
+			CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
 
 			// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
 			if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() || 
@@ -138,7 +169,23 @@ void EntityManager::Update(double _dt)
 				break;
 			}
 		}
-		
+		//TURRET getting hit by TROOP projectiles
+		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
+		{
+			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition()) //Leave it in if FPS drops
+			continue;*/
+
+			if (CheckSphereCollision(*it2, *it4))
+			{
+				(*it2)->SetHealth((*it2)->GetHealth() - 1);
+				(*it4)->SetIsDone(true);
+				if ((*it2)->GetHealth() <= 0)
+				{
+					(*it2)->SetIsDone(true);
+				}
+			}
+		}
+
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
 		if (turret->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
 		{
@@ -151,87 +198,15 @@ void EntityManager::Update(double _dt)
 		turret->SetFire(false);
 	}
 	
-	//Cleaning up ENTITIES that are done========================	
-	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
-	{
-		if ((*it2)->IsDone())
-		{
-			delete *it2;
-			it2 = turretList.erase(it2);
-		}
+	//Cleaning up ENTITIES that are done==========================
+	CleanAllList();
+	//Updating ENTITIES===========================================
+	UpdateAllList(_dt);
+}
 
-	}
-	// Cleaning up troop
-	it3 = troopList.begin();
-	while (it3 != troopList.end())
-	{
-		if ((*it3)->IsDone())
-		{
-			delete *it3;
-			// Remove troop when done
-			it3 = troopList.erase(it3);
-		}
-		else
-			// Move on otherwise
-			++it3;
-	}
-	for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); ++it4)
-	{
-		if ((*it4)->IsDone())
-		{
-			delete *it4;
-			it4 = troopProjectileList.erase(it4);
-		}
-		//Prevents invalid reading of list
-		if (troopProjectileList.size() == 0)
-			break;
-	}
-
-	// Cleaning up turret projectile
-	it5 = turretProjectileList.begin();
-	while (it5 != turretProjectileList.end())
-	{
-		if ((*it5)->IsDone())
-		{
-			delete *it5;
-			// Remove turret projectile when done
-			it5 = turretProjectileList.erase(it5);
-		}
-		else
-			// Move on otherwise
-			++it5;
-	}
-	it6 = otherList.begin();
-	while (it6 != otherList.end())
-	{
-		if ((*it6)->IsDone())
-		{
-			delete *it6;
-			// Remove turret projectile when done
-			it6 = otherList.erase(it6);
-		}
-		else
-			// Move on otherwise
-			++it6;
-	}
-
-	// Delete everything after clean up
-	it = entityList.begin();
-	while (it != end)
-	{
-		if ((*it)->IsDone())
-		{
-			// Delete if done
-			delete *it;
-			it = entityList.erase(it);
-		}
-		else
-			// Move on otherwise
-			++it;
-	}
-
-	//Updating ENTITIES============================================
-	for (it = entityList.begin(); it != end; ++it)
+void EntityManager::UpdateAllList(double _dt)
+{
+	for (it = entityList.begin(); it != entityList.end(); ++it)
 	{
 		(*it)->Update(_dt);
 	}
@@ -256,6 +231,95 @@ void EntityManager::Update(double _dt)
 		(*it7)->Update(_dt);
 	}
 }
+
+void EntityManager::CleanAllList()
+{
+	// Delete everything after clean up
+	it = entityList.begin();
+	it2 = turretList.begin();
+	it3 = troopList.begin();
+	it4 = troopProjectileList.begin();
+	it5 = turretProjectileList.begin();
+	it6 = otherList.begin();
+
+	while (it != entityList.end())
+	{
+		if ((*it)->IsDone())
+		{
+			// Delete if done
+			delete *it;
+			it = entityList.erase(it);
+		}
+		else
+			// Move on otherwise
+			++it;
+	}
+
+	while (it2 != turretList.end())
+	{
+		if ((*it2)->IsDone())
+		{
+			delete *it2;
+			// Remove troop when done
+			it2 = turretList.erase(it2);
+		}
+		else
+			// Move on otherwise
+			++it2;
+	}
+	
+	while (it3 != troopList.end())
+	{
+		if ((*it3)->IsDone())
+		{
+			delete *it3;
+			// Remove troop when done
+			it3 = troopList.erase(it3);
+		}
+		else
+			// Move on otherwise
+			++it3;
+	}
+
+	while (it4 != troopProjectileList.end())
+	{
+		if ((*it4)->IsDone())
+		{
+			delete *it4;
+			it4 = troopProjectileList.erase(it4);
+		}
+		else
+			// Move on otherwise
+			++it4;
+	}
+
+	while (it5 != turretProjectileList.end())
+	{
+		if ((*it5)->IsDone())
+		{
+			delete *it5;
+			// Remove turret projectile when done
+			it5 = turretProjectileList.erase(it5);
+		}
+		else
+			// Move on otherwise
+			++it5;
+	}
+
+	while (it6 != otherList.end())
+	{
+		if ((*it6)->IsDone())
+		{
+			delete *it6;
+			// Remove turret projectile when done
+			it6 = otherList.erase(it6);
+		}
+		else
+			// Move on otherwise
+			++it6;
+	}
+}
+
 void EntityManager::ResetGame(CPlayerInfo *Player)
 {
 	std::list<EntityBase*>::iterator it, end;
@@ -307,18 +371,16 @@ void EntityManager::Render()
 //after certain time
 void EntityManager::GenerateNinja(GroundEntity *groundEntity, double dt)
 {
-	//if (CPlayerInfo::elapsedTime_timer)
-	//{
-	/*	for (int i = 0; i < 1; ++i)
-		{*/
-			CEnemy3D *ninjaTroop = new CEnemy3D;
-			ninjaTroop = Create::Enemy3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-450.f, 450.f), 10, Math::RandFloatMinMax(-300.f, -490.f)), Vector3(1, 1, 1), 3);
-			ninjaTroop->Init();
-			ninjaTroop->SetTerrain(groundEntity);
-			ninjaTroop->SetType(3);
-			ninjaTroop->SetDestination(Vector3(0, 10, 480));
-		//}
-	//}
+	CEnemy3D *ninjaTroop = new CEnemy3D;
+	ninjaTroop = Create::Enemy3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-50.f, 50.f), 10, Math::RandFloatMinMax(-490.f, -480.f)), Vector3(1, 1, 1), 3);
+	ninjaTroop->Init();
+	ninjaTroop->SetTerrain(groundEntity);
+	ninjaTroop->SetType(3);
+	ninjaTroop->SetDestination(Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(330.f, 350.f)));
+	do
+	{
+		ninjaTroop->SetDestination(Vector3(ninjaTroop->GetFinalDestination().x + Math::RandFloatMinMax(-10.f, 10.f), 10, ninjaTroop->GetFinalDestination().z) + Math::RandFloatMinMax(-10.f, 10.f));
+	} while ((ninjaTroop->GetFinalDestination() - Vector3(0, 10, 400)).Length() < 15);
 }
 
 // Render the UI entities
@@ -409,9 +471,9 @@ bool EntityManager::CheckSphereCollision(EntityBase *ThisEntity, EntityBase *Tha
 	float distance = sqrt(((ThatEntity->GetPosition().x - ThisEntity->GetPosition().x) * (ThatEntity->GetPosition().x - ThisEntity->GetPosition().x))
 		+ ((ThatEntity->GetPosition().z - ThisEntity->GetPosition().z) * (ThatEntity->GetPosition().z - ThisEntity->GetPosition().z)));
 
-	float ObjOneRadius = ThisEntity->GetScale().x + 1 + ThisEntity->GetBuffer();
+	float ObjOneRadius = ThisEntity->GetScale().x + 2 + ThisEntity->GetBuffer();
 
-	float ObjTwoRadius = ThatEntity->GetScale().x + 1 + ThisEntity->GetBuffer();
+	float ObjTwoRadius = ThatEntity->GetScale().x + 2 + ThisEntity->GetBuffer();
 
 	float sumOfRadius = ObjOneRadius + ObjTwoRadius;
 
@@ -455,5 +517,7 @@ void EntityManager::ClearEntityList()
 	troopList.clear();
 	otherList.clear();
 	ninjaList.clear();
+	troopProjectileList.clear();
+	turretProjectileList.clear();
 }
 
