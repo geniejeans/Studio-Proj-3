@@ -97,6 +97,7 @@ void MoneyRain::Update(double dt)
 
 		SetPos(Vector3(_pos.x, 510.f, _pos.z));
 		SetPosition(GetPos());
+		_vel.SetZero();
 	}
 
 }

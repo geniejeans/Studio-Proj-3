@@ -26,7 +26,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
 			CEnemy3D* newTroop;
-			newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(400.f, 410.f)), Vector3(1, 1, 1));
+			newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1));
 			newTroop->Init();
 			newTroop->SetTerrain(groundEntity);
 			newTroop->SetType(1);

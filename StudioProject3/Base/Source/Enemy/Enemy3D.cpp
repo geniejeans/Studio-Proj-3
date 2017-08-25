@@ -382,6 +382,7 @@ void CEnemy3D::Render(void)
 		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 		modelStack.Translate(0, 0, -1);
 		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-20, 0, 0, 1);
 		modelStack.Scale(scale.x, scale.y, scale.z);
 		RenderHelper::RenderMesh(modelMesh);
 		modelStack.PopMatrix();

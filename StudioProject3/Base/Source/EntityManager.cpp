@@ -105,12 +105,16 @@ void EntityManager::Update(double _dt)
 			//TROOPS shooting at otherList
 			for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 			{
-				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-				if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
-					((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+				if (!(*it6)->IsDone())
 				{
-					targetPos = (*it6)->GetPosition();
+					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+					{
+						targetPos = (*it6)->GetPosition();
+					}
 				}
+				
 			}
 			//TROOPS shooting at turrets
 			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
@@ -159,31 +163,38 @@ void EntityManager::Update(double _dt)
 		//TURRET shooting at TROOP
 		for (it = troopList.begin(); it != troopList.end(); it++)
 		{
-			CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
-
-			// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-			if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() || 
-				(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+			if (!(*it)->IsDone())
 			{
-				targetPos = troop->GetPos();
-				break;
+				CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
+
+				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+				if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||
+					(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+				{
+					targetPos = troop->GetPos();
+					break;
+				}
 			}
+		
 		}
 		//TURRET getting hit by TROOP projectiles
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition()) //Leave it in if FPS drops
 			continue;*/
-
-			if (CheckSphereCollision(*it2, *it4))
+			if (!(*it4)->IsDone())
 			{
-				(*it2)->SetHealth((*it2)->GetHealth() - 1);
-				(*it4)->SetIsDone(true);
-				if ((*it2)->GetHealth() <= 0)
+				if (CheckSphereCollision(*it2, *it4))
 				{
-					(*it2)->SetIsDone(true);
+					(*it2)->SetHealth((*it2)->GetHealth() - 1);
+					(*it4)->SetIsDone(true);
+					if ((*it2)->GetHealth() <= 0)
+					{
+						(*it2)->SetIsDone(true);
+					}
 				}
 			}
+		
 		}
 
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
