@@ -16,6 +16,10 @@ class Money : public Singleton<Money>
 	bool m_bActiveStorm;
 	// Duration for Money Increase
 	double m_dMoneyOverTime;
+	// Bool to increase when environment destroyed
+	bool m_bActiveDestroyed;
+	// Amount to increase by 
+	int m_iIncreaseMoney;
 
 	MoneyRain* theMoneyRain;
 	Thunderstorm* theThunderStorm;
@@ -42,9 +46,18 @@ public:
 	// Set bool
 	void SetActiveRain(bool isTrue);
 	void SetActiveStorm(bool isTrue);
+
 	// Get bool
 	bool GetActiveRain();
 	bool GetActiveStorm();
+
+	// Set Amount to increase by
+	void SetIncreaseMoney(int increase);
+	// Get Amount increased by
+	int GetIncreasedMoney();
+
+	void SetActiveDestroyed(bool isTrue);
+	bool GetActiveDestroyed();
 
 	// For events that causes money over time (money rain)
 	void UpdateMoney(double dt);

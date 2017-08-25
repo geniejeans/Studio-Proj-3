@@ -2,21 +2,24 @@
 #include "EntityBase.h"
 #include "Collider/Collider.h"
 #include "GenericEntity.h"
-#include "CameraEffects\CameraEffects.h"
 #include "MeshBuilder.h"
+#include "MoneyManager\Money.h"
+#include "Trees\Trees.h"
 
 #include <iostream>
 using namespace std;
-std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2;
 
 // Update all entities
 void EntityManager::Update(double _dt)
 {
-	//Setting conditions for TROOP collisions====================
+	// ====================== Conditions for Troops Collision ====================== //
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		(*it)->SetCollide(false); //Resetting collision for all troops
-		//Checking for TURRETS colliding into TROOPS
+		//Resetting collision for all troops
+		(*it)->SetCollide(false); 
+
+		// Turrets - Troops Collision
 		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 		{
 			if (CheckSphereCollision(*it, *it2))
@@ -26,7 +29,8 @@ void EntityManager::Update(double _dt)
 				(*it)->SetCollide(true);
 			}
 		}
-		//Checking for OTHERS colliding into TROOPS
+
+		// Others - Troops Collision
 		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
 		{
 			if (CheckSphereCollision(*it, *it5))
@@ -36,17 +40,32 @@ void EntityManager::Update(double _dt)
 				(*it)->SetCollide(true);
 			}
 		}
-		//If TROOPS are never in any collision after checking through all OBJECTS
+
+		// Trees - Troops Collision
+		for (it_T = TreesList.begin(); it_T != TreesList.end(); ++it_T)
+		{
+			if (CheckSphereCollision(*it, *it_T))
+			{
+				(*it)->SetBuffer(2);
+				(*it)->SetAvoidPos((*it_T)->GetPosition());
+				(*it)->SetCollide(true);
+			}
+		}
+
+		// No Collision after checking ALL available objects
 		if (!(*it)->GetCollide())
 		{
 			(*it)->SetBuffer(0);
 		}
 	}
-	//Setting conditions for NINJA collisions====================
+
+	// ====================== Conditions for Ninja Collision ====================== //
 	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); ++it7)
 	{
-		(*it7)->SetCollide(false); //Resetting collision for all troops
-								  //Checking for TURRETS colliding into TROOPS
+		//Resetting collision for all troops
+		(*it7)->SetCollide(false); 
+								  
+		// Turrets - Ninja
 		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 		{
 			if (CheckSphereCollision(*it7, *it2))
@@ -56,7 +75,8 @@ void EntityManager::Update(double _dt)
 				(*it7)->SetCollide(true);
 			}
 		}
-		//Checking for OTHERS colliding into TROOPS
+
+		// Others - Ninja
 		for (it5 = otherList.begin(); it5 != otherList.end(); ++it5)
 		{
 			if (CheckSphereCollision(*it7, *it5))
@@ -66,16 +86,29 @@ void EntityManager::Update(double _dt)
 				(*it7)->SetCollide(true);
 			}
 		}
-		//If TROOPS are never in any collision after checking through all OBJECTS
+
+		// Trees - Ninja
+		for (it_T = TreesList.begin(); it_T != TreesList.end(); ++it_T)
+		{
+			if (CheckSphereCollision(*it7, *it_T))
+			{
+				(*it7)->SetBuffer(2);
+				(*it7)->SetAvoidPos((*it_T)->GetPosition());
+				(*it7)->SetCollide(true);
+			}
+		}
+
+		// No Collision after checking ALL available objects
 		if (!(*it7)->GetCollide())
 		{
 			(*it7)->SetBuffer(0);
 		}
 	}
 
-	//Setting conditions for OTHER getting hit====================
+	// ====================== Conditions for Others Collision ====================== //
 	for (it6 = otherList.begin(); it6 != otherList.end(); ++it6)
 	{
+		// Troops Projectile - Others
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
@@ -93,16 +126,62 @@ void EntityManager::Update(double _dt)
 		}
 	}
 
-	//Setting conditions for TROOP actions/hit====================
+	// ====================== Conditions for Trees Collision ====================== //
+	for (it_T = TreesList.begin(); it_T != TreesList.end(); ++it_T)
+	{
+		// Trees - Troops Projectile
+		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
+		{
+			if (CheckSphereCollision(*it_T, *it4))
+			{
+				// Health of trees
+				(*it_T)->SetHealth((*it_T)->GetHealth() - 1);
+				(*it4)->SetIsDone(true);
+				if ((*it_T)->GetHealth() <= 0)
+				{
+					srand(time(NULL));
+					Money::GetInstance()->SetActiveDestroyed(true);
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(5, 20));
+					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
+					(*it_T)->SetIsDone(true);
+				}
+
+				cout << (*it_T)->GetHealth() << endl;
+			}
+		}
+
+		// Trees - Others
+		for (it6 = otherList.begin(); it6 != otherList.end(); ++it6)
+		{
+			if (CheckSphereCollision(*it_T, *it6))
+			{
+				Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
+				(*it_T)->SetIsDone(true);
+			}
+		}
+
+		// Trees - Turrets
+		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
+		{
+			if (CheckSphereCollision(*it_T, *it2))
+			{
+				Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
+				(*it_T)->SetIsDone(true);
+			}
+		}
+	}
+
+	// ====================== Setting Troops' actions / hit ====================== //
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
 		CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
 	
 		Vector3 targetPos;
 		troop->m_fElapsedTimeBeforeUpdate += _dt;
+
 		if ((*it)->GetActionDone())
 		{
-			//TROOPS shooting at otherList
+			// Others - Troops
 			for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 			{
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
@@ -112,7 +191,20 @@ void EntityManager::Update(double _dt)
 					targetPos = (*it6)->GetPosition();
 				}
 			}
-			//TROOPS shooting at turrets
+
+			// Trees - Troops
+			for (it_T = TreesList.begin(); it_T != TreesList.end(); it_T++)
+			{
+				// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
+				if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+				{
+					// Set to shoot at object
+					targetPos = (*it_T)->GetPosition();
+				}
+			}
+
+			// Turret - Troops
 			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
 			{
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
@@ -123,6 +215,7 @@ void EntityManager::Update(double _dt)
 				}
 			}
 		}
+
 		//TROOPS getting hit by TURRET projectiles
 		for (it5 = turretProjectileList.begin(); it5 != turretProjectileList.end(); it5++)
 		{
@@ -137,6 +230,7 @@ void EntityManager::Update(double _dt)
 				}
 			}
 		}
+
 		//Troop shooting's actions
 		if (troop->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
 		{
@@ -149,13 +243,14 @@ void EntityManager::Update(double _dt)
 		troop->SetFire(false);
 	}
 
-	//Setting conditions for TURRET actions/hit===================
+	// ====================== Setting Turret' actions / hit ====================== //
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
 		CEnemy3D* turret = dynamic_cast<CEnemy3D*>(*it2);
 
 		Vector3 targetPos;
 		turret->m_fElapsedTimeBeforeUpdate += _dt;
+
 		//TURRET shooting at TROOP
 		for (it = troopList.begin(); it != troopList.end(); it++)
 		{
@@ -230,6 +325,11 @@ void EntityManager::UpdateAllList(double _dt)
 	{
 		(*it7)->Update(_dt);
 	}
+	// Call Tree class Update function
+	for (it_T = TreesList.begin(); it_T != TreesList.end(); it_T++)
+	{
+		(*it_T)->Update(_dt);
+	}
 }
 
 void EntityManager::CleanAllList()
@@ -241,6 +341,7 @@ void EntityManager::CleanAllList()
 	it4 = troopProjectileList.begin();
 	it5 = turretProjectileList.begin();
 	it6 = otherList.begin();
+	it_T = TreesList.begin();
 
 	while (it != entityList.end())
 	{
@@ -318,6 +419,20 @@ void EntityManager::CleanAllList()
 			// Move on otherwise
 			++it6;
 	}
+
+	// Trees
+	it_T = TreesList.begin();
+	while (it_T != TreesList.end())
+	{
+		if ((*it_T)->IsDone())
+		{
+			delete *it_T;
+			it_T = TreesList.erase(it_T);
+		}
+		else
+			// Move on otherwise
+			++it_T;
+	}
 }
 
 void EntityManager::ResetGame(CPlayerInfo *Player)
@@ -364,6 +479,11 @@ void EntityManager::Render()
 	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
 	{
 		(*it7)->Render();
+	}
+	// Call Tree class Render function
+	for (it_T = TreesList.begin(); it_T != TreesList.end(); it_T++)
+	{
+		(*it_T)->Render();
 	}
 }
 
@@ -431,6 +551,12 @@ void EntityManager::AddOther(EntityBase* _newEntity)
 {
 	otherList.push_back(_newEntity);
 }
+
+void EntityManager::AddTreesEntity(EntityBase * _newEntity)
+{
+	TreesList.push_back(_newEntity);
+}
+
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {
@@ -517,6 +643,7 @@ void EntityManager::ClearEntityList()
 	troopList.clear();
 	otherList.clear();
 	ninjaList.clear();
+	TreesList.clear();
 	troopProjectileList.clear();
 	turretProjectileList.clear();
 }

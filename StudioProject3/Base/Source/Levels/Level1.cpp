@@ -26,7 +26,7 @@
 #include "../Enemy/RadarScan.h"
 
 #include "RenderHelper.h"
-
+#include "..//Trees/Trees.h"
 
 #include <iostream>
 using namespace std;
@@ -222,7 +222,7 @@ void Level1::Init()
 	theKeyboard->Create(playerInfo);
 	theMouse = new CMouse();
 	theMouse->Create(playerInfo);
-
+	//Trees::GetInstance()->init();
 	FileManager::GetInstance()->ReadFile("ReadFiles//Level1.csv");
 	FileManager::GetInstance()->CreateObjects();
 	Money::GetInstance()->SetMoney(100);
@@ -232,6 +232,9 @@ void Level1::Init()
 	topLeft.SetZero();
 	botRight.SetZero();
 	elapsed_time = 0.0f;
+
+	Trees::GetInstance()->SetMaxCount(20);
+	Trees::GetInstance()->SetSpawnRate(60);
 }
 
 void Level1::Update(double dt)
@@ -357,7 +360,6 @@ void Level1::Update(double dt)
 		// Update our entities
 		EntityManager::GetInstance()->Update(dt);
 	}
-
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if (KeyboardController::GetInstance()->IsKeyDown('1'))
