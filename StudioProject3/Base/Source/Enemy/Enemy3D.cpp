@@ -5,6 +5,7 @@
 #include "MeshBuilder.h"
 #include "KeyboardController.h"
 #include "RadarScan.h"
+#include "../MoneyManager/Money.h"
 
 bool CEnemy3D::m_bIsRendered = true;
 bool CEnemy3D::isRpressed = false;
@@ -20,7 +21,8 @@ CEnemy3D::CEnemy3D(Mesh* _modelMesh)
 	, minBoundary(Vector3(0.0f, 0.0f, 0.0f))
 	, m_pTerrain(NULL)
 	, m_fElapsedTimeBeforeUpdate(0.0f)
-	, rotate(0.0)
+	, rotate(0.0f)
+	, stealDelay(0.0f)
 	, m_bChangeDir(false)
 	, m_bFireProjectile(false)
 	, m_bRealRendered(true)
@@ -285,7 +287,7 @@ void CEnemy3D::Update(double dt)
 	}
 	if (type == CENEMY3D_TYPE::NINJA)
 	{
-		if ((position.z > -390.f  && position.z < 330.f))
+		if (m_iHealth == 30 && (position.z > -390.f && position.z < 330.f))
 		{
 			//If radar is active
 			if (RadarScan::GetInstance()->GetRPressed())
@@ -317,6 +319,15 @@ void CEnemy3D::Update(double dt)
 		//Only show ninjas if near bases
 		else
 			m_bRealRendered = true;
+		if (m_bActionDone)
+		{
+			stealDelay += dt;
+			if (stealDelay >= 3.0f)
+			{
+				Money::GetInstance()->DeductMoney(Math::RandIntMinMax(5,10));
+				stealDelay = 0.0f;
+			}
+		}
 	}
 }
 
@@ -420,6 +431,10 @@ CEnemy3D* Create::Enemy3D(const std::string& _meshName,
 	}
 
 	else if (type == 3)
+	{
+		result->SetHealth(30);
 		EntityManager::GetInstance()->AddNinjaEntity(result);
+	}
+	
 	return result;
 }

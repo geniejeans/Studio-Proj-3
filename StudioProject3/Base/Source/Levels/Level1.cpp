@@ -23,10 +23,11 @@
 #include "../ReadFile/FileManager.h"
 #include "../GameUI/GameUI.h"
 #include "../MoneyManager/Money.h"
+#include "..//Trees/Trees.h"
 #include "../Enemy/RadarScan.h"
 
 #include "RenderHelper.h"
-#include "..//Trees/Trees.h"
+
 
 #include <iostream>
 using namespace std;
@@ -236,7 +237,7 @@ void Level1::Init()
 	elapsed_time = 0.0f;
 
 	Trees::GetInstance()->SetMaxCount(20);
-	Trees::GetInstance()->SetSpawnRate(60);
+	Trees::GetInstance()->SetSpawnRate(5);
 }
 
 void Level1::Update(double dt)
@@ -358,18 +359,14 @@ void Level1::Update(double dt)
 			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
 			spawnDelay = 0.f;
 		}
-		if (KeyboardController::GetInstance()->IsKeyPressed('R'))
-		{
-			//do enemy radar here
-			if (RadarScan::GetInstance()->GetRPressed())
-				RadarScan::GetInstance()->SetRPressed(false);
-			else
-				RadarScan::GetInstance()->SetRPressed(true);
-		}
+		
+		RadarScan::GetInstance()->Update(dt);
 		Money::GetInstance()->UpdateMoney(dt);
 		GameUI::GetInstance()->Update(groundEntity);
 		// Update our entities
 		EntityManager::GetInstance()->Update(dt);
+		// Update the player position and other details based on keyboard and mouse inputs
+		playerInfo->Update(dt);
 	}
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
@@ -415,8 +412,7 @@ void Level1::Update(double dt)
 
 	if (theMouse)
 		theMouse->Read(dt);
-	// Update the player position and other details based on keyboard and mouse inputs
-	playerInfo->Update(dt);
+
 
 	GraphicsManager::GetInstance()->UpdateLights(dt);
 

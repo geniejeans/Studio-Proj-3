@@ -32,6 +32,8 @@ public:
 	void SetMoney(int money);
 	// Get Money
 	int GetMoney();
+	//Decrease the money
+	void DeductMoney(int value);
 
 	// Set Money Rate
 	void SetMoneyRate(int rate);

@@ -35,9 +35,10 @@ protected:
 	bool m_bChangeDir; // Direction changing 
 	bool m_bFireProjectile; // If true, can fire. Else, cannot
 	static bool m_bIsRendered;
-	bool m_bRealRendered;
+
 	bool m_bRadarActive;
 
+	float stealDelay;
 
 public:
 	CEnemy3D() {};
@@ -104,6 +105,7 @@ public:
 	bool m_bRenderTime = false;
 	bool m_bRadarOn = false;
 	static bool isRpressed;
+	bool m_bRealRendered;
 };
 
 namespace Create

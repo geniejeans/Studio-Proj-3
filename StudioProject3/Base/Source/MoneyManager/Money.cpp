@@ -28,6 +28,11 @@ int Money::GetMoney()
 	return m_iMoney;
 }
 
+void Money::DeductMoney(int value)
+{
+	this->m_iMoney -= value;
+}
+
 void Money::SetMoneyRate(int rate)
 {
 	this->m_iMoneyRate = rate;
@@ -129,6 +134,6 @@ void Money::UpdateMoney(double dt)
 		m_iIncreaseMoney = 0; // prevent continuous adding
 	}
 
-	cout << m_bActiveDestroyed << " | " << m_iMoney << " | "
-		<< m_iIncreaseMoney << endl;
+	/*cout << m_bActiveDestroyed << " | " << m_iMoney << " | "
+		<< m_iIncreaseMoney << endl;*/
 }

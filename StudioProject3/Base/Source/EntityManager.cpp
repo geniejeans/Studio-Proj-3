@@ -5,6 +5,7 @@
 #include "MeshBuilder.h"
 #include "MoneyManager\Money.h"
 #include "Trees\Trees.h"
+#include "Enemy\RadarScan.h"
 
 #include <iostream>
 using namespace std;
@@ -112,6 +113,23 @@ void EntityManager::Update(double _dt)
 		{
 			(*it7)->SetBuffer(0);
 		}
+
+		// Troops Projectile - Others
+		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
+		{
+			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
+			continue;*/
+
+			if (CheckSphereCollision(*it7, *it4))
+			{
+				(*it7)->SetHealth((*it7)->GetHealth() - 1);
+				(*it4)->SetIsDone(true);
+				if ((*it7)->GetHealth() <= 0)
+				{
+					(*it7)->SetIsDone(true);
+				}
+			}
+		}
 	}
 
 	// ====================== Conditions for Others Collision ====================== //
@@ -155,7 +173,7 @@ void EntityManager::Update(double _dt)
 					(*it_T)->SetIsDone(true);
 				}
 
-				cout << (*it_T)->GetHealth() << endl;
+			//	cout << (*it_T)->GetHealth() << endl;
 			}
 		}
 
@@ -208,13 +226,17 @@ void EntityManager::Update(double _dt)
 			// Trees - Troops
 			for (it_T = TreesList.begin(); it_T != TreesList.end(); it_T++)
 			{
-				// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
-				if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
-					((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+				if (!(*it_T)->IsDone())
 				{
-					// Set to shoot at object
-					targetPos = (*it_T)->GetPosition();
+					// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
+					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+						((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+					{
+						// Set to shoot at object
+						targetPos = (*it_T)->GetPosition();
+					}
 				}
+				
 			}
 
 			// Turret - Troops
@@ -226,6 +248,21 @@ void EntityManager::Update(double _dt)
 				{
 					targetPos = (*it2)->GetPosition();
 				}
+			}
+
+		
+			for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
+			{
+				CEnemy3D* ninja = dynamic_cast<CEnemy3D*>(*it7);
+				if (!ninja->IsDone() && (RadarScan::GetInstance()->GetRPressed() || ninja->m_bRealRendered))
+				{
+					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && ((ninja)->GetPosition() != troop->GetPos()) &&
+						(targetPos.IsZero() || ((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
+					{
+						// Set to shoot at object
+						targetPos = (ninja)->GetPosition();
+					}
+				}	
 			}
 		}
 

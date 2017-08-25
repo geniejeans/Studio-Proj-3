@@ -1,6 +1,8 @@
 #include "GameUI.h"
 #include "MouseController.h"
 #include "../Enemy/Enemy3D.h"
+#include "../Enemy/RadarScan.h"
+#include "../MoneyManager/Money.h"
 #include <iostream>
 bool GameUI::m_bIsRendered = false;
 
@@ -12,12 +14,20 @@ void GameUI::Update(GroundEntity *groundEntity)
 //	std::cout << mouse_X - 800 / 2 << " and " << mouse_Y - 500 / 2 << std::endl;
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
-		if (mouse_X > 180.f && mouse_X < 280.f
+		if (mouse_X > 5.f && mouse_X < 170.f
+			&& mouse_Y > 504.f && mouse_Y < 545.f)
+		{
+			if (!RadarScan::GetInstance()->GetCooldown())
+				RadarScan::GetInstance()->SetRPressed(true);
+		}
+		else if (mouse_X > 180.f && mouse_X < 280.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
 			//do bomb
-			SetBombRender(true);
-
+			if (GetBombRender())
+				SetBombRender(false);
+			else
+				SetBombRender(true);
 		}
 
 		else if (mouse_X > 295.f && mouse_X < 395.f
@@ -38,6 +48,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 			newTroop->SetTerrain(groundEntity);
 			newTroop->SetType(1);
 			newTroop->SetDestination(Vector3(0, 10, 0));
+			Money::GetInstance()->DeductMoney(10);
 		}
 	}
 }
