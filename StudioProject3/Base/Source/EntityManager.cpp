@@ -8,7 +8,7 @@
 
 #include <iostream>
 using namespace std;
-std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8;
 
 // Update all entities
 void EntityManager::Update(double _dt)
@@ -97,7 +97,16 @@ void EntityManager::Update(double _dt)
 				(*it7)->SetCollide(true);
 			}
 		}
-
+		// Checking for BOMB colliding into NINJA Esdurr
+		for (it8 = entityList.begin(); it8 != entityList.end(); ++it8)
+		{
+			if (CheckSphereCollision(*it7, *it8) && MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
+			{
+				(*it7)->SetBuffer(2);
+				(*it7)->SetIsDone(true);
+				//cout << "HALP" << endl;
+			}
+		}
 		// No Collision after checking ALL available objects
 		if (!(*it7)->GetCollide())
 		{
@@ -341,6 +350,10 @@ void EntityManager::UpdateAllList(double _dt)
 	{
 		(*it_T)->Update(_dt);
 	}
+	for (it8 = bombList.begin(); it8 != bombList.end(); it7++)
+	{
+		(*it8)->Update(_dt);
+	}
 }
 
 void EntityManager::CleanAllList()
@@ -353,6 +366,8 @@ void EntityManager::CleanAllList()
 	it5 = turretProjectileList.begin();
 	it6 = otherList.begin();
 	it_T = TreesList.begin();
+	it7 = ninjaList.begin();
+	it8 = bombList.begin();
 
 	while (it != entityList.end())
 	{
@@ -444,6 +459,32 @@ void EntityManager::CleanAllList()
 			// Move on otherwise
 			++it_T;
 	}
+	//==================== Esdurr touched 25/8/016
+	while (it7 != ninjaList.end())
+	{
+		if ((*it7)->IsDone())
+		{
+			delete *it7;
+			// Remove ninja when done
+			it7 = ninjaList.erase(it7);
+		}
+		else
+			// Move on otherwise
+			++it7;
+	}
+
+	while (it8 != bombList.end())
+	{
+		if ((*it8)->IsDone())
+		{
+			delete *it8;
+			// Remove turret projectile when done
+			it8 = bombList.erase(it8);
+		}
+		else
+			// Move on otherwise
+			++it8;
+	}
 }
 
 void EntityManager::ResetGame(CPlayerInfo *Player)
@@ -496,6 +537,10 @@ void EntityManager::Render()
 	{
 		(*it_T)->Render();
 	}
+	for (it8 = bombList.begin(); it8 != bombList.end(); it7++)
+	{
+		(*it8)->Render();
+	}
 }
 
 //Make this whole thing into a entityManager function. GenerateNinja(GroundEntity *groundEntity , dt)
@@ -546,6 +591,11 @@ void EntityManager::AddTroopEntity(EntityBase* _newEntity)
 void EntityManager::AddNinjaEntity(EntityBase* _newEntity)
 {
 	ninjaList.push_back(_newEntity);
+}
+
+void EntityManager::AddBombEntity(EntityBase* _newEntity)
+{
+	bombList.push_back(_newEntity);
 }
 
 void EntityManager::AddTroopProjectileEntity(EntityBase* _newEntity)

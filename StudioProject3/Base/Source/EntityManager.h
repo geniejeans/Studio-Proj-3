@@ -26,6 +26,7 @@ public:
 	void AddTurretProjectileEntity(EntityBase* _newEntity);
 	// Add Trees
 	void AddTreesEntity(EntityBase* _newEntity);
+	void AddBombEntity(EntityBase* _newEntity);
 
 	bool RemoveEntity(EntityBase* _existingEntity);
 	void ClearEntityList();
@@ -62,6 +63,7 @@ private:
 	std::list<EntityBase*> ninjaList;
 	std::list<EntityBase*> troopProjectileList;
 	std::list<EntityBase*> turretProjectileList;
+	std::list<EntityBase*> bombList;
 	std::list<EntityBase*> otherList; //This list contains base
 	std::list<EntityBase*> TreesList; //This list contains tree
 };

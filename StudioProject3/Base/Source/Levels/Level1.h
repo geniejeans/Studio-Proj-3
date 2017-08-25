@@ -52,6 +52,8 @@ private:
 
 	CMinimap *theMinimap;
 	EntityBase* testTrack;
+	EntityBase* BombTarget;
+	EntityBase* IndicatorTarget;
 
 	static Level1* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;

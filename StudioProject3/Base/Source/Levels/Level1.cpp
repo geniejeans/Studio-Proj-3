@@ -187,6 +187,8 @@ void Level1::Init()
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
+	BombTarget = Create::Entity("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
+	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, 10, 0), Vector3(10, 10, 10));
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
@@ -255,8 +257,17 @@ void Level1::Update(double dt)
 	ray_wor = ray_wor.Normalize();
 	float distanceFromRay = -(playerInfo->GetPos().Dot(Vector3(0, 1, 0) + 0) / ray_wor.Dot(Vector3(0, 1, 0))) -20.f;
 	test = Vector3(playerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, playerInfo->GetPos().z + ray_wor.z * distanceFromRay);
-	testTrack->SetPosition(test);
-
+	// Indicator RayCasting
+	if (!GameUI::GetInstance()->GetBombRender())
+	{
+		IndicatorTarget->SetPosition(test);
+		BombTarget->SetPosition(Vector3(1000, 0, 0));
+	}
+	else
+	{
+		BombTarget->SetPosition(test);
+		IndicatorTarget->SetPosition(Vector3(1000, 0, 0));
+	}
 	//troop selection
 
 	if (mouse_Y < 500)

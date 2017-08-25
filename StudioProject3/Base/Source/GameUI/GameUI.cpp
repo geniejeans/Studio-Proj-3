@@ -2,6 +2,7 @@
 #include "MouseController.h"
 #include "../Enemy/Enemy3D.h"
 #include <iostream>
+bool GameUI::m_bIsRendered = false;
 
 void GameUI::Update(GroundEntity *groundEntity)
 {
@@ -15,16 +16,22 @@ void GameUI::Update(GroundEntity *groundEntity)
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
 			//do bomb
+			SetBombRender(true);
+
 		}
 
 		else if (mouse_X > 295.f && mouse_X < 395.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
 			//do shield
+			SetBombRender(false);
+
 		}
 		else if (mouse_X > 410.f && mouse_X < 510.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
+			SetBombRender(false);
+
 			CEnemy3D* newTroop;
 			newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1));
 			newTroop->Init();
@@ -33,4 +40,14 @@ void GameUI::Update(GroundEntity *groundEntity)
 			newTroop->SetDestination(Vector3(0, 10, 0));
 		}
 	}
+}
+
+bool GameUI::GetBombRender()
+{
+	return m_bIsRendered;
+}
+
+void GameUI::SetBombRender(bool IsRendered)
+{
+	m_bIsRendered = IsRendered;
 }

@@ -181,6 +181,12 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("turretTop")->textureID = LoadTGA("Image//TurretTexture.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("tree", "OBJ//JellyTree_OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("tree")->textureID = LoadTGA("Image//JellyTree_Texture.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("BombTarget", "OBJ//quad.obj");
+	MeshBuilder::GetInstance()->GetMesh("BombTarget")->textureID = LoadTGA("Image//BombTarget.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("IndicatorTarget", "OBJ//quad.obj");
+	MeshBuilder::GetInstance()->GetMesh("IndicatorTarget")->textureID = LoadTGA("Image//Target.tga");
+
 
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
