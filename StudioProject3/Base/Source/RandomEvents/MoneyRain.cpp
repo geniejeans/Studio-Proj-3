@@ -7,6 +7,7 @@
 #include "RenderHelper.h"
 #include "../EntityManager.h"
 #include "../GroundEntity.h"
+#include "../MoneyManager/Money.h"
 
 MoneyRain::MoneyRain()
 	: _pos(0.f, 0.f, 0.f)
