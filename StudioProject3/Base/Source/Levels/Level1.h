@@ -16,6 +16,7 @@
 #include "../CameraEffects\CameraEffects.h"
 #include "../SpriteEntity.h"
 #include "../Furniture\Furniture.h"
+#include "../Bomb.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -52,7 +53,7 @@ private:
 
 	CMinimap *theMinimap;
 	EntityBase* testTrack;
-	EntityBase* BombTarget;
+	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;
 
 	static Level1* sInstance; // The pointer to the object that gets registered
