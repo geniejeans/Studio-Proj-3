@@ -187,7 +187,7 @@ void Level1::Init()
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
-	BombTarget = Create::Entity("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
+	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
 	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, 10, 0), Vector3(10, 10, 10));
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");

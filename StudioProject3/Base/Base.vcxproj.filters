@@ -48,6 +48,9 @@
     <Filter Include="Trees">
       <UniqueIdentifier>{eb891d37-b347-4bbe-8fe2-32ea970eaabc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bomb">
+      <UniqueIdentifier>{be2dea01-2741-4d20-aaae-42d07b2661de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Source\Trees\Trees.cpp">
       <Filter>Trees</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Bomb.cpp">
+      <Filter>Bomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +258,9 @@
     </ClInclude>
     <ClInclude Include="Source\Trees\Trees.h">
       <Filter>Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Bomb.h">
+      <Filter>Bomb</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

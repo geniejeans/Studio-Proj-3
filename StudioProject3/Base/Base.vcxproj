@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Bomb.cpp" />
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
     <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
     <ClCompile Include="Source\Enemy\RadarScan.cpp" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Source\Trees\Trees.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Bomb.h" />
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
     <ClInclude Include="Source\Enemy\Enemy3D.h" />
     <ClInclude Include="Source\Enemy\RadarScan.h" />

@@ -5,6 +5,7 @@
 #include "MeshBuilder.h"
 #include "MoneyManager\Money.h"
 #include "Trees\Trees.h"
+#include "Bomb.h"
 
 #include <iostream>
 using namespace std;
@@ -97,16 +98,20 @@ void EntityManager::Update(double _dt)
 				(*it7)->SetCollide(true);
 			}
 		}
+
 		// Checking for BOMB colliding into NINJA Esdurr
-		for (it8 = entityList.begin(); it8 != entityList.end(); ++it8)
+		for (it8 = bombList.begin(); it8 != bombList.end(); ++it8)
 		{
-			if (CheckSphereCollision(*it7, *it8) && MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
+			if (CheckSphereCollision(*it7, *it8))
 			{
-				(*it7)->SetBuffer(2);
-				(*it7)->SetIsDone(true);
-				//cout << "HALP" << endl;
+				if (Bomb::GetInstance()->GetBombActive())
+				{
+					(*it7)->SetBuffer(2);
+					(*it7)->SetIsDone(true);
+				}
 			}
 		}
+
 		// No Collision after checking ALL available objects
 		if (!(*it7)->GetCollide())
 		{
@@ -176,6 +181,19 @@ void EntityManager::Update(double _dt)
 			{
 				Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 				(*it_T)->SetIsDone(true);
+			}
+		}
+
+		// Trees - Bombs
+		for (it8 = bombList.begin(); it8 != bombList.end(); ++it8)
+		{
+			if (CheckSphereCollision(*it_T, *it8))
+			{
+				if (Bomb::GetInstance()->GetBombActive())
+				{
+					(*it_T)->SetBuffer(2);
+					(*it_T)->SetIsDone(true);
+				}
 			}
 		}
 	}
@@ -301,6 +319,19 @@ void EntityManager::Update(double _dt)
 		
 		}
 
+		// Turrets - Bombs
+		for (it8 = bombList.begin(); it8 != bombList.end(); ++it8)
+		{
+			if (CheckSphereCollision(*it2, *it8))
+			{
+				if (Bomb::GetInstance()->GetBombActive())
+				{
+					(*it2)->SetBuffer(2);
+					(*it2)->SetIsDone(true);
+				}
+			}
+		}
+
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
 		if (turret->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
 		{
@@ -350,7 +381,7 @@ void EntityManager::UpdateAllList(double _dt)
 	{
 		(*it_T)->Update(_dt);
 	}
-	for (it8 = bombList.begin(); it8 != bombList.end(); it7++)
+	for (it8 = bombList.begin(); it8 != bombList.end(); it8++)
 	{
 		(*it8)->Update(_dt);
 	}
@@ -537,7 +568,7 @@ void EntityManager::Render()
 	{
 		(*it_T)->Render();
 	}
-	for (it8 = bombList.begin(); it8 != bombList.end(); it7++)
+	for (it8 = bombList.begin(); it8 != bombList.end(); it8++)
 	{
 		(*it8)->Render();
 	}
