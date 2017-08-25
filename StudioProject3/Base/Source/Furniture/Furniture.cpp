@@ -58,11 +58,8 @@ CFurniture* Create::Furniture3D(const std::string& _meshName,
 		Vector3(-_position.x - result->GetScale().x, 
 			_position.y - result->GetScale().y, 
 			_position.z - result->GetScale().z));
-	if (_meshName == "tree")
-	{
-		result->SetHealth(30);
-	}
-	else if (_meshName == "enemyBase" || _meshName == "playerBase")
+
+	if (_meshName == "enemyBase" || _meshName == "playerBase")
 	{
 		result->SetHealth(300);
 	}

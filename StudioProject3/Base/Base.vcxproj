@@ -13,11 +13,18 @@
   <ItemGroup>
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
     <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
+    <ClCompile Include="Source\Enemy\RadarScan.cpp" />
     <ClCompile Include="Source\Furniture\Furniture.cpp" />
+    <ClCompile Include="Source\GameUI\GameUI.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Controller.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Keyboard.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Mouse.cpp" />
+    <ClCompile Include="Source\Levels\Level1.cpp" />
+    <ClCompile Include="Source\Levels\Level2.cpp" />
+    <ClCompile Include="Source\Levels\Level3.cpp" />
+    <ClCompile Include="Source\Levels\Level4.cpp" />
     <ClCompile Include="Source\MiniMap\Minimap.cpp" />
+    <ClCompile Include="Source\MoneyManager\Money.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
@@ -28,21 +35,36 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\OBJMesh.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
+    <ClCompile Include="Source\RandomEvents\MoneyRain.cpp" />
+    <ClCompile Include="Source\RandomEvents\Thunderstorm.cpp" />
+    <ClCompile Include="Source\ReadFile\FileManager.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
+    <ClCompile Include="Source\Screen.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
+    <ClCompile Include="Source\Trees\Trees.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\CameraEffects.h" />
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
     <ClInclude Include="Source\Enemy\Enemy3D.h" />
+    <ClInclude Include="Source\Enemy\RadarScan.h" />
     <ClInclude Include="Source\Furniture\Furniture.h" />
+    <ClInclude Include="Source\GameUI\GameUI.h" />
     <ClInclude Include="Source\Hardware Abstraction\Controller.h" />
     <ClInclude Include="Source\Hardware Abstraction\Keyboard.h" />
     <ClInclude Include="Source\Hardware Abstraction\Mouse.h" />
+    <ClInclude Include="Source\Levels\Level1.h" />
+    <ClInclude Include="Source\Levels\Level2.h" />
+    <ClInclude Include="Source\Levels\Level3.h" />
+    <ClInclude Include="Source\Levels\Level4.h" />
     <ClInclude Include="Source\MiniMap\Minimap.h" />
+    <ClInclude Include="Source\MoneyManager\Money.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
+    <ClInclude Include="Source\RandomEvents\MoneyRain.h" />
+    <ClInclude Include="Source\RandomEvents\RandomEvents.h" />
+    <ClInclude Include="Source\RandomEvents\Thunderstorm.h" />
+    <ClInclude Include="Source\ReadFile\FileManager.h" />
     <ClInclude Include="Source\Scene2D\Key.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\EntityManager.h" />
@@ -53,9 +75,11 @@
     <ClInclude Include="Source\OBJMesh.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\SceneText.h" />
+    <ClInclude Include="Source\Screen.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\TextEntity.h" />
+    <ClInclude Include="Source\Trees\Trees.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>

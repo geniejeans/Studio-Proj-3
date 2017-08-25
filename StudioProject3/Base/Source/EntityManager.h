@@ -24,10 +24,15 @@ public:
 	void AddNinjaEntity(EntityBase* _newEntity);
 	void AddTroopProjectileEntity(EntityBase* _newEntity);
 	void AddTurretProjectileEntity(EntityBase* _newEntity);
+	// Add Trees
+	void AddTreesEntity(EntityBase* _newEntity);
+
 	bool RemoveEntity(EntityBase* _existingEntity);
 	void ClearEntityList();
+
 	void UpdateAllList(double _dt); //All updates of lists are inside this function for neater codes
 	void CleanAllList();//All cleaning of lists are inside this function for neater codes
+
 	std::list<EntityBase*> GetTroopList() { return troopList; };
 	float m_fBuffer = 0.0f;
 
@@ -57,7 +62,8 @@ private:
 	std::list<EntityBase*> ninjaList;
 	std::list<EntityBase*> troopProjectileList;
 	std::list<EntityBase*> turretProjectileList;
-	std::list<EntityBase*> otherList; //This list contains tree and base
+	std::list<EntityBase*> otherList; //This list contains base
+	std::list<EntityBase*> TreesList; //This list contains tree
 };
 
 #endif // ENTITY_MANAGER_H

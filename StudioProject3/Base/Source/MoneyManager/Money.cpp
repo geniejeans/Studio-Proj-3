@@ -68,6 +68,26 @@ bool Money::GetActiveStorm()
 	return m_bActiveStorm;
 }
 
+void Money::SetIncreaseMoney(int increase)
+{
+	m_iIncreaseMoney = increase;
+}
+
+int Money::GetIncreasedMoney()
+{
+	return m_iIncreaseMoney;
+}
+
+void Money::SetActiveDestroyed(bool isTrue)
+{
+	m_bActiveDestroyed = isTrue;
+}
+
+bool Money::GetActiveDestroyed()
+{
+	return m_bActiveDestroyed;
+}
+
 void Money::UpdateMoney(double dt)
 {
 	// ============ Generate money over time ============= //
@@ -101,4 +121,14 @@ void Money::UpdateMoney(double dt)
 			m_dMoneyOverTime = 0;
 		}
 	}
+
+	// =========== Money Gain from destroying objects ============ //
+	if (m_bActiveDestroyed)
+	{
+		m_iMoney += m_iIncreaseMoney;
+		m_iIncreaseMoney = 0; // prevent continuous adding
+	}
+
+	cout << m_bActiveDestroyed << " | " << m_iMoney << " | "
+		<< m_iIncreaseMoney << endl;
 }

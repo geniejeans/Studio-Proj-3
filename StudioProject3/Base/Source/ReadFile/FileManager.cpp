@@ -1,6 +1,8 @@
 #include "FileManager.h"
 #include "../Enemy/Enemy3D.h"
 #include "../Furniture/Furniture.h"
+#include "../Trees/Trees.h"
+#include "../EntityManager.h"
 
 #include <fstream>
 #include <iostream>
@@ -251,6 +253,17 @@ void FileManager::CreateObjects()
 				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)), 2);
 			turret->Init();
 			turret->SetType(2);
+		}
+
+		// Trees (Random Spawn)
+		else if (stoi(store.Type) == 3)
+		{
+			srand(time(NULL));
+			Create::Trees3D(store.Name,
+				Vector3(Math::RandFloatMinMax(-stof(store.positionX), stof(store.positionX))
+					, stof(store.positionY),
+					Math::RandFloatMinMax(-stof(store.positionZ), stof(store.positionZ))),
+				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)));
 		}
 	}
 	objVec.clear();

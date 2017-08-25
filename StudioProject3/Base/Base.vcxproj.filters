@@ -45,6 +45,9 @@
     <Filter Include="Levels">
       <UniqueIdentifier>{06353ba0-343e-4956-94ee-299b4d074211}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Trees">
+      <UniqueIdentifier>{eb891d37-b347-4bbe-8fe2-32ea970eaabc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -95,12 +98,6 @@
     <ClCompile Include="Source\Furniture\Furniture.cpp">
       <Filter>Furniture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameUI\GameUI.cpp">
-      <Filter>GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MoneyManager\Money.cpp">
-      <Filter>Money</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Hardware Abstraction\Controller.cpp">
       <Filter>Hardware</Filter>
     </ClCompile>
@@ -116,6 +113,18 @@
     <ClCompile Include="Source\SceneText.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ReadFile\FileManager.cpp">
+      <Filter>ReadFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomEvents\MoneyRain.cpp">
+      <Filter>RandomEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomEvents\Thunderstorm.cpp">
+      <Filter>RandomEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MoneyManager\Money.cpp">
+      <Filter>Money</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Levels\Level1.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
@@ -128,17 +137,17 @@
     <ClCompile Include="Source\Levels\Level4.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameUI\GameUI.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\RadarScan.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Screen.cpp">
-      <Filter>Levels</Filter>
+      <Filter>GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RandomEvents\MoneyRain.cpp">
-      <Filter>RandomEvents</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\RandomEvents\Thunderstorm.cpp">
-      <Filter>RandomEvents</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ReadFile\FileManager.cpp">
-      <Filter>ReadFile</Filter>
+    <ClCompile Include="Source\Trees\Trees.cpp">
+      <Filter>Trees</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,12 +199,6 @@
     <ClInclude Include="Source\Furniture\Furniture.h">
       <Filter>Furniture</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameUI\GameUI.h">
-      <Filter>GameUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MoneyManager\Money.h">
-      <Filter>Money</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Hardware Abstraction\Controller.h">
       <Filter>Hardware</Filter>
     </ClInclude>
@@ -211,6 +214,21 @@
     <ClInclude Include="Source\SceneText.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ReadFile\FileManager.h">
+      <Filter>ReadFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\MoneyRain.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\RandomEvents.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomEvents\Thunderstorm.h">
+      <Filter>RandomEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MoneyManager\Money.h">
+      <Filter>Money</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Levels\Level1.h">
       <Filter>Levels</Filter>
     </ClInclude>
@@ -223,20 +241,17 @@
     <ClInclude Include="Source\Levels\Level4.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameUI\GameUI.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\RadarScan.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Screen.h">
-      <Filter>Levels</Filter>
+      <Filter>GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RandomEvents\MoneyRain.h">
-      <Filter>RandomEvents</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\RandomEvents\RandomEvents.h">
-      <Filter>RandomEvents</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\RandomEvents\Thunderstorm.h">
-      <Filter>RandomEvents</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ReadFile\FileManager.h">
-      <Filter>ReadFile</Filter>
+    <ClInclude Include="Source\Trees\Trees.h">
+      <Filter>Trees</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
