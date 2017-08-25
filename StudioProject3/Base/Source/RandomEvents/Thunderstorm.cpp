@@ -1,4 +1,4 @@
-#include "MoneyRain.h"
+#include "ThunderStorm.h"
 #include "GLFW\glfw3.h"
 #include <iostream>
 
@@ -7,7 +7,7 @@
 #include "RenderHelper.h"
 #include "../EntityManager.h"
 #include "../GroundEntity.h"
-#include "Thunderstorm.h"
+#include "../MoneyManager/Money.h"
 
 Thunderstorm::Thunderstorm()
 	: _pos(0.f, 0.f, 0.f)
