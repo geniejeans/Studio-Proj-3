@@ -158,13 +158,11 @@
     <ClCompile Include="Source\Bomb.cpp">
       <Filter>Bomb</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Source\Enemy\Troop3D.cpp">
       <Filter>Enemy</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp">
       <Filter>Enemy\Turret</Filter>
->>>>>>> a85e9756077ac3048c6077e61e7033afb059d12e
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,13 +271,11 @@
     <ClInclude Include="Source\Bomb.h">
       <Filter>Bomb</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Source\Enemy\Troop3D.h">
       <Filter>Enemy</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="Source\Enemy\Turrets\Turrets.h">
       <Filter>Enemy\Turret</Filter>
->>>>>>> a85e9756077ac3048c6077e61e7033afb059d12e
     </ClInclude>
   </ItemGroup>
 </Project>
