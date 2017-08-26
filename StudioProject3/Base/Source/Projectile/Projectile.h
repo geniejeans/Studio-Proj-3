@@ -42,6 +42,11 @@ public:
 	GenericEntity* GetSource(void) const;
 	void SetFireDestination(Vector3 destination) { fireDestination = destination; };
 	Vector3 GetFireDestination() { return fireDestination; };
+	//Set the damage of the projectile
+	void SetDamage(int m_iDamage);
+	//Get the damage of the projectile
+	int GetDamage();
+
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
@@ -65,6 +70,8 @@ protected:
 	float m_fLifetime;
 	// Speed of this projectile in unit / sec
 	float m_fSpeed;
+	//Damage of the projectile
+	int m_iDamage;
 	// The direction of the projectile
 	Vector3 theDirection;
 	// The character which fired this projectile
@@ -81,6 +88,7 @@ namespace Create
 							const float m_fLifetime, 
 							const float m_fSpeed,
 							const int m_iType,
+							const int m_iDamage,
 		                    GenericEntity* _source=NULL);
 };
 

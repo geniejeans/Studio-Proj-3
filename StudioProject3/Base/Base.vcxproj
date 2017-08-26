@@ -15,6 +15,7 @@
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
     <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
     <ClCompile Include="Source\Enemy\RadarScan.cpp" />
+    <ClCompile Include="Source\Enemy\Shield.cpp" />
     <ClCompile Include="Source\Enemy\Troop3D.cpp" />
     <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp" />
     <ClCompile Include="Source\Furniture\Furniture.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
     <ClInclude Include="Source\Enemy\Enemy3D.h" />
     <ClInclude Include="Source\Enemy\RadarScan.h" />
+    <ClInclude Include="Source\Enemy\Shield.h" />
     <ClInclude Include="Source\Enemy\Troop3D.h" />
     <ClInclude Include="Source\Enemy\Turrets\Turrets.h" />
     <ClInclude Include="Source\Furniture\Furniture.h" />

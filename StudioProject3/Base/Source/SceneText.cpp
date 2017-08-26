@@ -177,6 +177,12 @@ void SceneText::Init()
 
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop3", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop3")->textureID = LoadTGA("Image//TroopTank_TextureTGA.tga");
+	
+	//SHIELDED TROOPS
+	MeshBuilder::GetInstance()->GenerateOBJ("ShieldedTroop", "OBJ//PlayerTrooperOBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("ShieldedTroop")->textureID = LoadTGA("Image//TroopShielded_TextureTGA.tga");
+	
+	
 	//BASES
 	MeshBuilder::GetInstance()->GenerateOBJ("ninjaTroop", "OBJ//Enemy_trooper.obj");
 	MeshBuilder::GetInstance()->GetMesh("ninjaTroop")->textureID = LoadTGA("Image//Enemy_TextureTGA.tga");

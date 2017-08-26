@@ -10,6 +10,8 @@
 #include "Enemy\Troop3D.h"
 #include "Enemy\Turrets\Turrets.h"
 #include "Enemy\Enemy3D.h"
+#include "Projectile\Projectile.h"
+#include "Enemy\Shield.h"
 
 #include <iostream>
 using namespace std;
@@ -127,10 +129,10 @@ void EntityManager::Update(double _dt)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 			continue;*/
-
+			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it7, *it4))
 			{
-				(*it7)->SetHealth((*it7)->GetHealth() - 1);
+				(*it7)->SetHealth((*it7)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it7)->GetHealth() <= 0)
 				{
@@ -148,10 +150,10 @@ void EntityManager::Update(double _dt)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 				continue;*/
-
+			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it6, *it4))
 			{
-				(*it6)->SetHealth((*it6)->GetHealth() - 1);
+				(*it6)->SetHealth((*it6)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it6)->GetHealth() <= 0)
 				{
@@ -169,8 +171,9 @@ void EntityManager::Update(double _dt)
 		{
 			if (CheckSphereCollision(*it_T, *it4))
 			{
+				CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 				// Health of trees
-				(*it_T)->SetHealth((*it_T)->GetHealth() - 1);
+				(*it_T)->SetHealth((*it_T)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it_T)->GetHealth() <= 0)
 				{
@@ -294,7 +297,11 @@ void EntityManager::Update(double _dt)
 			// Checking Bullet with Troop
 			if (CheckSphereCollision(*it, *it5))
 			{
-				(*it)->SetHealth((*it)->GetHealth() - 1);
+				CProjectile* projectile = dynamic_cast<CProjectile*>(*it5);
+				if (!Shield::GetInstance()->GetShieldActive())
+				{
+					(*it)->SetHealth((*it)->GetHealth() - projectile->GetDamage());
+				}
 				(*it5)->SetIsDone(true);
 				if ((*it)->GetHealth() <= 0)
 				{
@@ -362,7 +369,8 @@ void EntityManager::Update(double _dt)
 			{
 				if (CheckSphereCollision(*it2, *it4))
 				{
-					(*it2)->SetHealth((*it2)->GetHealth() - 1);
+					CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
+					(*it2)->SetHealth((*it2)->GetHealth() - projectile->GetDamage());
 					(*it4)->SetIsDone(true);
 					if ((*it2)->GetHealth() <= 0)
 					{
@@ -608,6 +616,11 @@ void EntityManager::Render()
 	}
 	for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
 	{
+		// Troop's Textures
+		if (Shield::GetInstance()->GetShieldActive())
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedTroop"));
+		else
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop"));
 		(*it3)->Render();
 	}
 	for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)

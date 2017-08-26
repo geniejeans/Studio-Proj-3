@@ -144,7 +144,7 @@ void Turret::Update(double dt)
 		newPos.x += rotate.x * 20.f;
 		newPos.z += rotate.z * 20.f;
 		newPos.y += 17.f;
-		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, 2, this);
+		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, 2, 1, this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFire = false;
@@ -158,7 +158,7 @@ void Turret::Update(double dt)
 		newPos.x += rotate.x * 20.f;
 		newPos.z += rotate.z * 20.f;
 		newPos.y += 17.f;
-		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 200.0f, 2, this);
+		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, 2, 1, this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFire = false;
@@ -172,7 +172,7 @@ void Turret::Update(double dt)
 		newPos.x += rotate.x * 20.f;
 		newPos.z += rotate.z * 20.f;
 		newPos.y += 17.f;
-		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, 2, this);
+		CProjectile* aProjectile = Create::Projectile("Turretbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 200.0f, 2, 3, this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFire = false;

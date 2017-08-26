@@ -5,6 +5,7 @@ using namespace std;
 Money::Money()
 	: m_iMoney(0)
 	, m_iMoneyRate(10)
+	, m_iShieldPriceRate(50)
 	, m_bActiveRain(false)
 	, m_bActiveStorm(false)
 	, m_dMoneyOverTime(0.0)
@@ -71,6 +72,16 @@ bool Money::GetActiveRain()
 bool Money::GetActiveStorm()
 {
 	return m_bActiveStorm;
+}
+
+void Money::SetShieldPriceRate(int rate)
+{
+	this->m_iShieldPriceRate = rate;
+}
+
+int Money::GetShieldPriceRate()
+{
+	return m_iShieldPriceRate;
 }
 
 void Money::SetIncreaseMoney(int increase)

@@ -4,8 +4,10 @@
 #include "../Enemy/Troop3D.h"
 #include "../Enemy/RadarScan.h"
 #include "../MoneyManager/Money.h"
+#include "../Enemy/Shield.h"
 #include <iostream>
 bool GameUI::m_bIsRendered = false;
+bool GameUI::m_bShieldIsPressed = false;
 
 void GameUI::Update(GroundEntity *groundEntity)
 {
@@ -36,6 +38,32 @@ void GameUI::Update(GroundEntity *groundEntity)
 		{
 			//do shield
 			SetBombRender(false);
+			if (Money::GetInstance()->GetMoney() >= Money::GetInstance()->GetShieldPriceRate())
+			{
+				cout << "The current price is now " << Money::GetInstance()->GetShieldPriceRate() << " coins." << endl;
+
+				//set shield to true
+				Shield::GetInstance()->SetShieldActive();
+
+				// Money Decreases every use of shield.
+				Money::GetInstance()->SetMoney(Money::GetInstance()->GetMoney() - Money::GetInstance()->GetShieldPriceRate());
+
+				// Setting a limit for the price of Shield
+				if (Money::GetInstance()->GetShieldPriceRate() < 150)//increase shield rate
+				{
+					// Increase the Rate every use of shield.
+					Money::GetInstance()->SetShieldPriceRate(Money::GetInstance()->GetShieldPriceRate() + 10);
+				}
+				else // If the price of Shield is 100, then the price will always be at 100.
+				{
+					Money::GetInstance()->SetShieldPriceRate(150);
+				}
+
+			}
+			else
+			{
+				cout << "You do not have enough to pay " << Money::GetInstance()->GetShieldPriceRate() << " coins." << endl;
+			}
 
 		}
 		else if (mouse_X > 410.f && mouse_X < 510.f
@@ -87,4 +115,15 @@ bool GameUI::GetBombRender()
 void GameUI::SetBombRender(bool IsRendered)
 {
 	m_bIsRendered = IsRendered;
+}
+
+// Set the Boolean for Shield.
+void GameUI::SetShieldIsPressed(bool is_True)
+{
+	m_bShieldIsPressed = is_True;
+}
+// Get the Boolean for Shield.
+bool GameUI::GetShieldIsPressed()
+{
+	return m_bShieldIsPressed;
 }

@@ -205,10 +205,28 @@ void CTroop3D::Update(double dt)
 	else if (m_bActionDone && m_bFireProjectile)
 	{
 		rotate = (fireDestination - position).Normalized();
-		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, 1, this);
-		aProjectile->SetCollider(true);
-		aProjectile->SetFireDestination(fireDestination);
-		m_bFireProjectile = false;
+		if (type == CTROOP3D_TYPE::TROOPER)
+		{
+			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, 1, 1, this);
+			aProjectile->SetCollider(true);
+			aProjectile->SetFireDestination(fireDestination);
+			m_bFireProjectile = false;
+		}
+		else if (type == CTROOP3D_TYPE::ARCHER)
+		{
+			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, 1, 5, this);
+			aProjectile->SetCollider(true);
+			aProjectile->SetFireDestination(fireDestination);
+			m_bFireProjectile = false;
+		}
+		else
+		{
+			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, 1, 3, this);
+			aProjectile->SetCollider(true);
+			aProjectile->SetFireDestination(fireDestination);
+			m_bFireProjectile = false;
+		}
+
 	}
 }
 

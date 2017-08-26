@@ -160,7 +160,7 @@ GroundEntity* CEnemy3D::GetTerrain(void)
 void CEnemy3D::Update(double dt)
 {
 	// If enemy is turret.
-	if (type == CENEMY3D_TYPE::TURRET && m_bFireProjectile)
+	/*if (type == CENEMY3D_TYPE::TURRET && m_bFireProjectile)
 	{
 		rotate = (fireDestination - position).Normalized();
 		Vector3 newPos = position;
@@ -172,7 +172,7 @@ void CEnemy3D::Update(double dt)
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFireProjectile = false;
 		return;
-	}
+	}*/
 	//if (type == CENEMY3D_TYPE::TURRET && m_bFireProjectile)
 	//{
 	//	rotate = (fireDestination - position).Normalized();
@@ -238,14 +238,14 @@ void CEnemy3D::Update(double dt)
 		// Constrain the position
 		Constrain();
 	}
-	else if (type == CENEMY3D_TYPE::TROOP && m_bActionDone && m_bFireProjectile)
-	{
-		rotate = (fireDestination - position).Normalized();
-		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f,100.0f, 1,this);
-		aProjectile->SetCollider(true);
-		aProjectile->SetFireDestination(fireDestination);
-		m_bFireProjectile = false;
-	}
+	//else if (type == CENEMY3D_TYPE::TROOP && m_bActionDone && m_bFireProjectile)
+	//{
+	//	rotate = (fireDestination - position).Normalized();
+	//	CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f,100.0f, 1,this);
+	//	aProjectile->SetCollider(true);
+	//	aProjectile->SetFireDestination(fireDestination);
+	//	m_bFireProjectile = false;
+	//}
 
 	if (type == CENEMY3D_TYPE::NINJA && !m_bActionDone)
 	{

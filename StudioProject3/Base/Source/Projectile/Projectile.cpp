@@ -97,7 +97,16 @@ void CProjectile::SetSource(GenericEntity* _source)
 {
 	theSource = _source;
 }
-
+//Set the damage of the projectile
+void CProjectile::SetDamage(int m_iDamage)
+{
+	this->m_iDamage = m_iDamage;
+}
+//Get the damage of the projectile
+int CProjectile::GetDamage()
+{
+	return m_iDamage;
+}
 // Get the source of the projectile
 GenericEntity* CProjectile::GetSource(void) const
 {
@@ -162,6 +171,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const float m_fLifetime, 
 								const float m_fSpeed,
 								const int m_iType,
+								const int m_iDamage,
 								GenericEntity* _source)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
@@ -173,6 +183,7 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetStatus(true);
 	result->SetCollider(true);
 	result->SetSource(_source);
+	result->SetDamage(m_iDamage);
 	switch (m_iType)
 	{
 	case 1:

@@ -25,6 +25,7 @@
 #include "../MoneyManager/Money.h"
 #include "..//Trees/Trees.h"
 #include "../Enemy/RadarScan.h"
+#include "../Enemy/Shield.h"
 
 #include "RenderHelper.h"
 #include "..//Enemy/Turrets/Turrets.h"
@@ -366,7 +367,12 @@ void Level1::Update(double dt)
 			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
 			spawnDelay = 0.f;
 		}
-		
+
+		Shield::GetInstance()->Update(dt);
+		if (GameUI::GetInstance()->GetShieldIsPressed())
+		{
+			Shield::GetInstance()->Update(dt);
+		}
 		RadarScan::GetInstance()->Update(dt);
 		Money::GetInstance()->UpdateMoney(dt);
 		GameUI::GetInstance()->Update(groundEntity);
