@@ -167,7 +167,7 @@ void CEnemy3D::Update(double dt)
 		newPos.x += rotate.x * 20.f;
 		newPos.z += rotate.z * 20.f;
 		newPos.y += 17.f;
-		CProjectile* aProjectile = Create::Projectile("Troopbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, this);
+		CProjectile* aProjectile = Create::Projectile("Troopbullet", newPos, (fireDestination - newPos).Normalized(), 4.0f, 100.0f, 2, this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFireProjectile = false;
@@ -228,7 +228,7 @@ void CEnemy3D::Update(double dt)
 	else if (type == CENEMY3D_TYPE::TROOP && m_bActionDone && m_bFireProjectile)
 	{
 		rotate = (fireDestination - position).Normalized();
-		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f,100.0f,this);
+		CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f,100.0f, 1,this);
 		aProjectile->SetCollider(true);
 		aProjectile->SetFireDestination(fireDestination);
 		m_bFireProjectile = false;

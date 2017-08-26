@@ -7,6 +7,7 @@
 #include "Trees\Trees.h"
 #include "Enemy\RadarScan.h"
 #include "Bomb.h"
+#include "Enemy\Troop3D.h"
 
 #include <iostream>
 using namespace std;
@@ -219,7 +220,7 @@ void EntityManager::Update(double _dt)
 	// ====================== Setting Troops' actions / hit ====================== //
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
+		CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
 	
 		Vector3 targetPos;
 		troop->m_fElapsedTimeBeforeUpdate += _dt;
@@ -324,7 +325,7 @@ void EntityManager::Update(double _dt)
 		{
 			if (!(*it)->IsDone())
 			{
-				CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
+				CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
 
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
 				if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||

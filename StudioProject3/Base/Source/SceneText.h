@@ -49,8 +49,8 @@ private:
 	CKeyboard* theKeyboard;
 	CMouse* theMouse;
 
-	CEnemy3D* testTroop[3];
-	CEnemy3D* newTroop[20];
+	//CEnemy3D* testTroop[3];
+	//CEnemy3D* newTroop[20];
 	CEnemy3D* ninjaTroop[7];
 
 	CEnemy3D* turret[20];

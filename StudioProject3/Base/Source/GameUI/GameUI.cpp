@@ -1,6 +1,7 @@
 #include "GameUI.h"
 #include "MouseController.h"
 #include "../Enemy/Enemy3D.h"
+#include "../Enemy/Troop3D.h"
 #include "../Enemy/RadarScan.h"
 #include "../MoneyManager/Money.h"
 #include <iostream>
@@ -42,13 +43,38 @@ void GameUI::Update(GroundEntity *groundEntity)
 		{
 			SetBombRender(false);
 
-			CEnemy3D* newTroop;
-			newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1));
+			CTroop3D* newTroop;
+			newTroop = Create::Troop3D("testTroop", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1), 1);
 			newTroop->Init();
 			newTroop->SetTerrain(groundEntity);
-			newTroop->SetType(1);
 			newTroop->SetDestination(Vector3(0, 10, 0));
 			Money::GetInstance()->DeductMoney(10);
+		}
+
+		else if (mouse_X > 525.f && mouse_X < 625.f
+			&& mouse_Y > 500.f && mouse_Y < 590.f)
+		{
+			SetBombRender(false);
+
+			CTroop3D* newTroop;
+			newTroop = Create::Troop3D("testTroop2", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1), 2);
+			newTroop->Init();
+			newTroop->SetTerrain(groundEntity);
+			newTroop->SetDestination(Vector3(0, 10, 0));
+			Money::GetInstance()->DeductMoney(20);
+		}
+
+		else if (mouse_X > 640.f && mouse_X < 740.f
+			&& mouse_Y > 500.f && mouse_Y < 590.f)
+		{
+			SetBombRender(false);
+
+			CTroop3D* newTroop;
+			newTroop = Create::Troop3D("testTroop3", Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(360.f, 380.f)), Vector3(1, 1, 1), 3);
+			newTroop->Init();
+			newTroop->SetTerrain(groundEntity);
+			newTroop->SetDestination(Vector3(0, 10, 0));
+			Money::GetInstance()->DeductMoney(30);
 		}
 	}
 }

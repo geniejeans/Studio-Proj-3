@@ -189,7 +189,7 @@ void Level1::Init()
 	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
 	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
-	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, 10, 0), Vector3(10, 10, 10));
+	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, -10, 0), Vector3(10, 10, 10));
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
@@ -261,7 +261,7 @@ void Level1::Update(double dt)
 	// Indicator RayCasting
 	if (!GameUI::GetInstance()->GetBombRender())
 	{
-		IndicatorTarget->SetPosition(test);
+//		IndicatorTarget->SetPosition(test);
 		BombTarget->SetPosition(Vector3(1000, 0, 0));
 	}
 	else
@@ -277,6 +277,11 @@ void Level1::Update(double dt)
 		{
 			bMstate = true;
 			topLeft = test;
+		}
+		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget->GetPosition().y != 10.f))
+		{
+			IndicatorTarget->SetPosition(Vector3(topLeft.x + (test.x - topLeft.x) / 2, 10, topLeft.z + (test.z - topLeft.z) / 2));
+			IndicatorTarget->SetScale(Vector3(abs(test.x - topLeft.x) / 2, 10, abs(test.z - topLeft.z) / 2));
 		}
 		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 		{
@@ -313,6 +318,8 @@ void Level1::Update(double dt)
 		}
 		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
 		{
+			IndicatorTarget->SetPosition(test);
+			IndicatorTarget->SetScale(Vector3(10, 10, 10));
 			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
 			vector<Vector3>estimatedDestination;
 			std::list<EntityBase*>::iterator it;

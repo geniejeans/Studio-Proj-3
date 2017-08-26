@@ -166,19 +166,42 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("UI")->textureID = LoadTGA("Image//HUD ingame.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("Loading", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("Loading")->textureID = LoadTGA("Image//LoadingScreen.tga");
-	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
+//	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
+
+	//TROOPS
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("testTroop2", "OBJ//PlayerTrooperOBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("testTroop2")->textureID = LoadTGA("Image//TroopArcher_TextureTGA.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("testTroop3", "OBJ//PlayerTrooperOBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("testTroop3")->textureID = LoadTGA("Image//TroopTank_TextureTGA.tga");
+	//BASES
 	MeshBuilder::GetInstance()->GenerateOBJ("ninjaTroop", "OBJ//Enemy_trooper.obj");
 	MeshBuilder::GetInstance()->GetMesh("ninjaTroop")->textureID = LoadTGA("Image//Enemy_TextureTGA.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("enemyBase", "OBJ//BaseCakeCastle_OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("enemyBase")->textureID = LoadTGA("Image//EnemyBase_Texture.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("playerBase", "OBJ//BaseCakeCastle_OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("playerBase")->textureID = LoadTGA("Image//PlayerBase_Texture.tga");
+
+	//TURRETS
 	MeshBuilder::GetInstance()->GenerateOBJ("turretBot", "OBJ//CandyTurret_Bottom.obj");
 	MeshBuilder::GetInstance()->GetMesh("turretBot")->textureID = LoadTGA("Image//TurretTexture.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("turretTop", "OBJ//CandyTurret_Top.obj");
 	MeshBuilder::GetInstance()->GetMesh("turretTop")->textureID = LoadTGA("Image//TurretTexture.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("turretBot2", "OBJ//CandyTurret_Bottom.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretBot2")->textureID = LoadTGA("Image//TurretTextureMedium.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("turretTop2", "OBJ//CandyTurret_Top.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretTop2")->textureID = LoadTGA("Image//TurretTextureMedium.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("turretBot3", "OBJ//CandyTurret_Bottom.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretBot3")->textureID = LoadTGA("Image//TurretTextureHard.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("turretTop3", "OBJ//CandyTurret_Top.obj");
+	MeshBuilder::GetInstance()->GetMesh("turretTop3")->textureID = LoadTGA("Image//TurretTextureHard.tga");
+
+	//TREES AND TARGET
 	MeshBuilder::GetInstance()->GenerateOBJ("tree", "OBJ//JellyTree_OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("tree")->textureID = LoadTGA("Image//JellyTree_Texture.tga");
 	MeshBuilder::GetInstance()->GenerateOBJ("BombTarget", "OBJ//quad.obj");
@@ -244,33 +267,33 @@ void SceneText::Init()
 	theMouse = new CMouse();
 	theMouse->Create(playerInfo);
 
-	testTroop[0] = Create::Enemy3D("testTroop", Vector3(0, 10, 200), Vector3(1, 1, 1));
-	testTroop[0]->Init();
-	testTroop[0]->SetTerrain(groundEntity);
-	testTroop[0]->SetType(1);
-	testTroop[0]->SetDestination(Vector3(0, 10, 0));
+	//testTroop[0] = Create::Enemy3D("testTroop", Vector3(0, 10, 200), Vector3(1, 1, 1));
+	//testTroop[0]->Init();
+	//testTroop[0]->SetTerrain(groundEntity);
+	//testTroop[0]->SetType(1);
+	//testTroop[0]->SetDestination(Vector3(0, 10, 0));
 
-	testTroop[1] = Create::Enemy3D("testTroop", Vector3(40, 10, 200), Vector3(1, 1, 1));
-	testTroop[1]->Init();
-	testTroop[1]->SetTerrain(groundEntity);
-	testTroop[1]->SetType(1);
-	testTroop[1]->SetDestination(Vector3(0, 10, 0));
+	//testTroop[1] = Create::Enemy3D("testTroop", Vector3(40, 10, 200), Vector3(1, 1, 1));
+	//testTroop[1]->Init();
+	//testTroop[1]->SetTerrain(groundEntity);
+	//testTroop[1]->SetType(1);
+	//testTroop[1]->SetDestination(Vector3(0, 10, 0));
 
-	testTroop[2] = Create::Enemy3D("testTroop", Vector3(0, 10, -100), Vector3(1, 1, 1));
-	testTroop[2]->Init();
-	testTroop[2]->SetTerrain(groundEntity);
-	testTroop[2]->SetType(1);
-	testTroop[2]->SetDestination(Vector3(0, 10, 0));
+	//testTroop[2] = Create::Enemy3D("testTroop", Vector3(0, 10, -100), Vector3(1, 1, 1));
+	//testTroop[2]->Init();
+	//testTroop[2]->SetTerrain(groundEntity);
+	//testTroop[2]->SetType(1);
+	//testTroop[2]->SetDestination(Vector3(0, 10, 0));
 
 
-	for (int i = 0; i < 20; ++i)
-	{
-		newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
-		newTroop[i]->Init();
-		newTroop[i]->SetTerrain(groundEntity);
-		newTroop[i]->SetType(1);
-		newTroop[i]->SetDestination(Vector3(0, 10, 0));
-	}
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	newTroop[i] = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+	//	newTroop[i]->Init();
+	//	newTroop[i]->SetTerrain(groundEntity);
+	//	newTroop[i]->SetType(1);
+	//	newTroop[i]->SetDestination(Vector3(0, 10, 0));
+	//}
 
 
 	// Enemy's Turrets
@@ -327,51 +350,51 @@ void SceneText::Update(double dt)
 		newTroop->SetDestination(Vector3(0, 10, 0));
 		spawnedTroops++;
 	}
-	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
-	{
-		//Setting a designated position for all troops
-		Vector3 estimatedDestination[22];
-		testTroop[0]->SetDestination(Vector3(playerInfo->GetTarget().x + (mouse_X - 800 /2), 10, playerInfo->GetTarget().z + (mouse_Y - 500 / 2)));
-		testTroop[0]->SetActionDone(false);
+	//if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
+	//{
+	//	//Setting a designated position for all troops
+	//	Vector3 estimatedDestination[22];
+	//	testTroop[0]->SetDestination(Vector3(playerInfo->GetTarget().x + (mouse_X - 800 /2), 10, playerInfo->GetTarget().z + (mouse_Y - 500 / 2)));
+	//	testTroop[0]->SetActionDone(false);
 
-		for (int i = 0; i < 22; i++)
-		{
-			bool tooClose = false;
-			estimatedDestination[i].Set(testTroop[0]->GetFinalDestination().x + Math::RandFloatMinMax(1.2 * -22, 1.2 * 22), 10, testTroop[0]->GetFinalDestination().z + Math::RandFloatMinMax(1.2 * -22,1.2 * 22));
-			//check for closeness with each troops
-			do
-			{
-				tooClose = false;
-				for (int x = 0; x < i; x++)
-				{
-					if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
-					{
-						tooClose = true;
-						estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
-					}
-				}
-			}while(tooClose);
-		}
+	//	for (int i = 0; i < 22; i++)
+	//	{
+	//		bool tooClose = false;
+	//		estimatedDestination[i].Set(testTroop[0]->GetFinalDestination().x + Math::RandFloatMinMax(1.2 * -22, 1.2 * 22), 10, testTroop[0]->GetFinalDestination().z + Math::RandFloatMinMax(1.2 * -22,1.2 * 22));
+	//		//check for closeness with each troops
+	//		do
+	//		{
+	//			tooClose = false;
+	//			for (int x = 0; x < i; x++)
+	//			{
+	//				if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
+	//				{
+	//					tooClose = true;
+	//					estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
+	//				}
+	//			}
+	//		}while(tooClose);
+	//	}
 
-		for (int i = 0; i < 20; i++)
-		{
-			newTroop[i]->SetDestination(estimatedDestination[i]);
-			newTroop[i]->SetActionDone(false);
-		}
-		for (int i = 1; i < 3; i++)
-		{
-			testTroop[i]->SetDestination(estimatedDestination[i + 19]);
-			testTroop[i]->SetActionDone(false);
-		}
-	}
-	if (KeyboardController::GetInstance()->IsKeyPressed('9'))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			testTroop[i]->SetFire(true);
-			testTroop[i]->SetFireDestination(Vector3(0, 10, 100)); //This is one of the turret's position
-		}
-	}
+	//	for (int i = 0; i < 20; i++)
+	//	{
+	//		newTroop[i]->SetDestination(estimatedDestination[i]);
+	//		newTroop[i]->SetActionDone(false);
+	//	}
+	//	for (int i = 1; i < 3; i++)
+	//	{
+	//		testTroop[i]->SetDestination(estimatedDestination[i + 19]);
+	//		testTroop[i]->SetActionDone(false);
+	//	}
+	//}
+	//if (KeyboardController::GetInstance()->IsKeyPressed('9'))
+	//{
+	//	for (int i = 0; i < 3; i++)
+	//	{
+	//		testTroop[i]->SetFire(true);
+	//		testTroop[i]->SetFireDestination(Vector3(0, 10, 100)); //This is one of the turret's position
+	//	}
+	//}
 
 
 	

@@ -2,9 +2,9 @@
 #include "EntityBase.h"
 #include "Vector3.h"
 #include "Collider/Collider.h"
+#include "../GenericEntity.h"
 
 class Mesh;
-class CEnemy3D;
 
 class CProjectile : public EntityBase, public CCollider
 {
@@ -34,9 +34,9 @@ public:
 	// Get the speed of the projectile
 	float GetSpeed(void) const;
 	// Set the source of the projectile
-	void SetSource(CEnemy3D* _source);
+	void SetSource(GenericEntity* _source);
 	// Get the source of the projectile
-	CEnemy3D* GetSource(void) const;
+	GenericEntity* GetSource(void) const;
 	void SetFireDestination(Vector3 destination) { fireDestination = destination; };
 	Vector3 GetFireDestination() { return fireDestination; };
 	// Update the status of this projectile
@@ -55,7 +55,7 @@ protected:
 	// The direction of the projectile
 	Vector3 theDirection;
 	// The character which fired this projectile
-	CEnemy3D* theSource;
+	GenericEntity* theSource;
 };
 
 namespace Create
@@ -65,6 +65,7 @@ namespace Create
 							const Vector3& _direction, 
 							const float m_fLifetime, 
 							const float m_fSpeed,
-		                    CEnemy3D* _source=NULL);
+							const int m_iType,
+		                    GenericEntity* _source=NULL);
 };
 

@@ -155,6 +155,9 @@
     <ClCompile Include="Source\Bomb.cpp">
       <Filter>Bomb</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\Troop3D.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="Source\Bomb.h">
       <Filter>Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Troop3D.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

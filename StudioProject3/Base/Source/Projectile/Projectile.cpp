@@ -4,7 +4,6 @@
 #include "../EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
-#include "../Enemy/Enemy3D.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -92,13 +91,13 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 }
 
 // Set the source of the projectile
-void CProjectile::SetSource(CEnemy3D* _source)
+void CProjectile::SetSource(GenericEntity* _source)
 {
 	theSource = _source;
 }
 
 // Get the source of the projectile
-CEnemy3D* CProjectile::GetSource(void) const
+GenericEntity* CProjectile::GetSource(void) const
 {
 	return theSource;
 }
@@ -148,7 +147,8 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const Vector3& _direction, 
 								const float m_fLifetime, 
 								const float m_fSpeed,
-	                            CEnemy3D* _source)
+								const int m_iType,
+								GenericEntity* _source)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -159,14 +159,15 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetStatus(true);
 	result->SetCollider(true);
 	result->SetSource(_source);
-//	EntityManager::GetInstance()->AddEntity(result);
-	switch (_source->GetType())
+	switch (m_iType)
 	{
 	case 1:
 		EntityManager::GetInstance()->AddTroopProjectileEntity(result);
 		break;
 	case 2:
 		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
+		break;
+	default:
 		break;
 	}
 	return result;
