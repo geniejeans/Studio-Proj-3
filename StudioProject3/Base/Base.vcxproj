@@ -15,7 +15,11 @@
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
     <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
     <ClCompile Include="Source\Enemy\RadarScan.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Source\Enemy\Troop3D.cpp" />
+=======
+    <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp" />
+>>>>>>> a85e9756077ac3048c6077e61e7033afb059d12e
     <ClCompile Include="Source\Furniture\Furniture.cpp" />
     <ClCompile Include="Source\GameUI\GameUI.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Controller.cpp" />
@@ -52,7 +56,11 @@
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
     <ClInclude Include="Source\Enemy\Enemy3D.h" />
     <ClInclude Include="Source\Enemy\RadarScan.h" />
+<<<<<<< HEAD
     <ClInclude Include="Source\Enemy\Troop3D.h" />
+=======
+    <ClInclude Include="Source\Enemy\Turrets\Turrets.h" />
+>>>>>>> a85e9756077ac3048c6077e61e7033afb059d12e
     <ClInclude Include="Source\Furniture\Furniture.h" />
     <ClInclude Include="Source\GameUI\GameUI.h" />
     <ClInclude Include="Source\Hardware Abstraction\Controller.h" />

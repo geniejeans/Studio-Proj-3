@@ -2,13 +2,11 @@
 #include "../Enemy/Enemy3D.h"
 #include "../Furniture/Furniture.h"
 #include "../Trees/Trees.h"
+#include "../Enemy/Turrets/Turrets.h"
 #include "../EntityManager.h"
 
 #include <fstream>
 #include <iostream>
-
-using namespace std;
-FileManager* FileManager::Instance = 0;
 
 FileManager::FileManager()
 	: m_iColumn(1)
@@ -110,7 +108,7 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.positionX = (tempinfo);
+						storeObj.positionX = tempinfo;
 						break;
 					}
 					case 4: //position.y
@@ -130,7 +128,7 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.positionY = (tempinfo);
+						storeObj.positionY = tempinfo;
 						break;
 					}
 					case 5: //position.z
@@ -150,7 +148,7 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.positionZ = (tempinfo);
+						storeObj.positionZ = tempinfo;
 						break;
 					}
 					case 6: //scale.x
@@ -170,7 +168,7 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.scaleX = (tempinfo);
+						storeObj.scaleX = tempinfo;
 						break;
 					}
 					case 7: //scale.y
@@ -190,7 +188,7 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.scaleY = (tempinfo);
+						storeObj.scaleY = tempinfo;
 						break;
 					}
 					case 8: //scale.z
@@ -210,7 +208,27 @@ void FileManager::ReadFile(const string m_sFilename)
 								break;
 							}
 						}
-						storeObj.scaleZ = (tempinfo);
+						storeObj.scaleZ = tempinfo;
+						break;
+					}
+					case 9: //if have, obj type
+					{
+						//take in individual chars
+						for (int chara = i; chara < info.length(); ++chara)
+						{
+							//before comma
+							if (info[chara] != ',')
+							{
+								tempinfo += info[chara];
+							}
+							else
+							{
+								//when comma, set i to read the next string
+								i = chara;
+								break;
+							}
+						}
+						storeObj.objType = tempinfo;
 						break;
 					}
 
@@ -244,16 +262,17 @@ void FileManager::CreateObjects()
 				Vector3(stof(store.positionX), stof(store.positionY), stof(store.positionZ)),
 				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)));
 		}
-		// Enemy
-		else if (stoi(store.Type) == 2)
+
+		// Enemy ninja troops
+		/*else if (stoi(store.Type) == 2)
 		{
-			CEnemy3D *turret = new CEnemy3D;
-			turret = Create::Enemy3D(store.Name,
+			CEnemy3D* enemy = new CEnemy3D();
+			enemy = Create::Enemy3D(store.Name,
 				Vector3(stof(store.positionX), stof(store.positionY), stof(store.positionZ)),
-				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)), 2);
-			turret->Init();
-			turret->SetType(2);
-		}
+				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)), stoi(store.objType));
+			enemy->Init();
+			enemy->SetType(1);
+		}*/
 
 		// Trees (Random Spawn)
 		else if (stoi(store.Type) == 3)
@@ -264,6 +283,14 @@ void FileManager::CreateObjects()
 					, stof(store.positionY),
 					Math::RandFloatMinMax(-stof(store.positionZ), stof(store.positionZ))),
 				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)));
+		}
+
+		// Turrets
+		else if (stoi(store.Type) == 4)
+		{
+			Create::Turret3D(store.Name,
+				Vector3(stof(store.positionX), stof(store.positionY), stof(store.positionZ)),
+				Vector3(stof(store.scaleX), stof(store.scaleY), stof(store.scaleZ)), stoi(store.objType));
 		}
 	}
 	objVec.clear();

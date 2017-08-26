@@ -5,6 +5,9 @@
 #include "../GenericEntity.h"
 
 class Mesh;
+class CEnemy3D;
+class Turret;
+class GenericEntity;
 
 class CProjectile : public EntityBase, public CCollider
 {
@@ -12,7 +15,7 @@ public:
 	CProjectile(void);
 	CProjectile(Mesh* _modelMesh);
 	~CProjectile(void);
-public:
+
 	// Activate the projectile. true == active, false == inactive
 	void SetStatus(const bool m_bStatus);
 	// get status of the projectile. true == active, false == inactive
@@ -44,6 +47,16 @@ public:
 	// Render this projectile
 	virtual void Render(void);
 protected:
+	enum PROJECTILE_TYPE
+	{
+		NONE = 0,
+		TROOP,
+		TURRET,
+
+		NUM_PROJECTILE
+	};
+	PROJECTILE_TYPE projectile;
+
 	// The model mesh for this projectile
 	Mesh* modelMesh;
 	// Boolean flag to indicate if this projectile is active. If not active, then do not compute/update
@@ -56,6 +69,8 @@ protected:
 	Vector3 theDirection;
 	// The character which fired this projectile
 	GenericEntity* theSource;
+public:
+	void SetProjType(int type);
 };
 
 namespace Create

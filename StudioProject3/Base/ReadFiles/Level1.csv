@@ -1,7 +1,9 @@
-#Type,#Name,#Position.x,#Position.y,#Position.z,#Scale.x,#Scale.y,#Scale.z
-2,turretTop,0,10,-300,7,7,7
-2,turretTop,-200,10,-400,7,7,7
-2,turretTop,200,10,-400,7,7,7
-1,playerBase,0,10,400,50,50,50
-1,enemyBase,0,10,-500,50,50,50
-3,tree,300,10,300,0.1,0.1,0.1
+#Type,#Name,#Position.x,#Position.y,#Position.z,#Scale.x,#Scale.y,#Scale.z,#Type
+4,turretTop,0,10,-300,7,7,7,1
+4,turretTop,-200,10,-400,7,7,7,1
+4,turretTop,200,10,-400,7,7,7,1
+1,playerBase,0,10,400,50,50,50,0
+1,enemyBase,0,10,-500,50,50,50,0
+3,tree,300,10,300,0.1,0.1,0.1,0
+4,rturretTop,0,10,0,7,7,7,2
+4,wturretTop,100,10,100,7,7,7,3

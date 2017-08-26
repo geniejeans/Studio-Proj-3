@@ -10,7 +10,7 @@ class Trees : public GenericEntity, public Singleton<Trees>
 {
 	friend Singleton<Trees>;
 public:
-	Trees();
+	Trees() {};
 	Trees(Mesh* _modelMesh);
 	~Trees();
 	//void init();

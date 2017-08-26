@@ -9,7 +9,7 @@ int Trees::m_iCountTree = 0;
 int Trees::m_iMaxCountOfTrees = 0;
 double Trees::m_dRate = 0;
 
-Trees::Trees()
+Trees::Trees(Mesh* _modelMesh)
 	: GenericEntity(NULL)
 	, defaultPosition(Vector3(0.0f, 0.0f, 0.0f))
 	, defaultTarget(Vector3(0.0f, 0.0f, 0.0f))
@@ -23,11 +23,6 @@ Trees::Trees()
 	, m_Scale(1, 1, 1)
 	, m_dSpawnTime(10.0)
 	, m_bSpawn(false)
-{
-
-}
-
-Trees::Trees(Mesh* _modelMesh)
 {
 	this->modelMesh = _modelMesh;
 }
@@ -69,7 +64,6 @@ void Trees::Update(double dt)
 					,10,
 					Math::RandFloatMinMax(-300, 300)),
 				Trees::GetInstance()->GetScale());
-			
 		}
 		m_dSpawnTime = m_dRate;
 	}
