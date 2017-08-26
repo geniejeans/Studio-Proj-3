@@ -51,6 +51,9 @@
     <Filter Include="Bomb">
       <UniqueIdentifier>{be2dea01-2741-4d20-aaae-42d07b2661de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\Turret">
+      <UniqueIdentifier>{c609d529-8668-400f-be97-81a6facb67cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Source\Bomb.cpp">
       <Filter>Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp">
+      <Filter>Enemy\Turret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +267,9 @@
     </ClInclude>
     <ClInclude Include="Source\Bomb.h">
       <Filter>Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Turrets\Turrets.h">
+      <Filter>Enemy\Turret</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

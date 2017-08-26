@@ -5,6 +5,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "../Enemy/Enemy3D.h"
+#include "../Enemy/Turrets/Turrets.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
@@ -92,15 +93,28 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 }
 
 // Set the source of the projectile
-void CProjectile::SetSource(CEnemy3D* _source)
+void CProjectile::SetSource(GenericEntity* _source)
 {
 	theSource = _source;
 }
 
 // Get the source of the projectile
-CEnemy3D* CProjectile::GetSource(void) const
+GenericEntity* CProjectile::GetSource(void) const
 {
 	return theSource;
+}
+
+void CProjectile::SetProjType(int type)
+{
+	switch (type)
+	{
+	case 1:
+		this->projectile = PROJECTILE_TYPE::TROOP;
+		break;
+	case 2:
+		this->projectile = PROJECTILE_TYPE::TURRET;
+		break;
+	}
 }
 
 // Update the status of this projectile
@@ -123,7 +137,6 @@ void CProjectile::Update(double dt)
 					position.y + (float)(theDirection.y * dt * m_fSpeed),
 					position.z + (float)(theDirection.z * dt * m_fSpeed));
 }
-
 
 // Render this projectile
 void CProjectile::Render(void)
@@ -148,7 +161,8 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const Vector3& _direction, 
 								const float m_fLifetime, 
 								const float m_fSpeed,
-	                            CEnemy3D* _source)
+								const int m_iType,
+								GenericEntity* _source)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -160,14 +174,46 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetCollider(true);
 	result->SetSource(_source);
 //	EntityManager::GetInstance()->AddEntity(result);
-	switch (_source->GetType())
+
+	// For enemy troops
+	switch (m_iType)
 	{
 	case 1:
 		EntityManager::GetInstance()->AddTroopProjectileEntity(result);
 		break;
-	case 2:
+	case 2: 
 		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
 		break;
 	}
+
 	return result;
 }
+
+//CProjectile * Create::ProjectileTurret(const std::string & _meshName, 
+//										const Vector3 & _position,
+//										const Vector3 & _direction, 
+//										const float m_fLifetime, 
+//										const float m_fSpeed, 
+//										Turret * _source)
+//{
+//	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
+//	if (modelMesh == nullptr)
+//		return nullptr;
+//
+//	CProjectile* result = new CProjectile(modelMesh);
+//	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
+//	result->SetStatus(true);
+//	result->SetCollider(true);
+//	result->SetSourceTurret(_source);
+//	//	EntityManager::GetInstance()->AddEntity(result);
+//
+//	// For Turret
+//	//switch (_source->GetType())
+//	//{
+//	//case 1:
+//		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
+//	//	break;
+//	//}
+//
+//	return result;
+//}

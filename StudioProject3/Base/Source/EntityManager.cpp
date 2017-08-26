@@ -7,10 +7,12 @@
 #include "Trees\Trees.h"
 #include "Enemy\RadarScan.h"
 #include "Bomb.h"
+#include "Enemy\Turrets\Turrets.h"
+#include "Enemy\Enemy3D.h"
 
 #include <iostream>
 using namespace std;
-std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8, it9, it10;
 
 // Update all entities
 void EntityManager::Update(double _dt)
@@ -119,7 +121,7 @@ void EntityManager::Update(double _dt)
 			(*it7)->SetBuffer(0);
 		}
 
-		// Troops Projectile - Others
+		// Troops Projectile - Ninja
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
@@ -209,6 +211,7 @@ void EntityManager::Update(double _dt)
 			{
 				if (Bomb::GetInstance()->GetBombActive())
 				{
+					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					(*it_T)->SetBuffer(2);
 					(*it_T)->SetIsDone(true);
 				}
@@ -268,7 +271,7 @@ void EntityManager::Update(double _dt)
 				}
 			}
 
-		
+			// Ninja - Troops
 			for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
 			{
 				CEnemy3D* ninja = dynamic_cast<CEnemy3D*>(*it7);
@@ -314,10 +317,11 @@ void EntityManager::Update(double _dt)
 	// ====================== Setting Turret' actions / hit ====================== //
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
-		CEnemy3D* turret = dynamic_cast<CEnemy3D*>(*it2);
+		Turret* turret = dynamic_cast<Turret*>(*it2);
 
 		Vector3 targetPos;
-		turret->m_fElapsedTimeBeforeUpdate += _dt;
+		turret->m_dCoolDown += _dt;
+		int range;
 
 		//TURRET shooting at TROOP
 		for (it = troopList.begin(); it != troopList.end(); it++)
@@ -326,21 +330,33 @@ void EntityManager::Update(double _dt)
 			{
 				CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
 
-				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-				if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||
-					(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+				if (turret->GetType() == 1 || turret->GetType() == 2)
 				{
-					targetPos = troop->GetPos();
-					break;
+					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+					if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||
+						(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+					{
+						targetPos = troop->GetPos();
+						break;
+					}
+				}
+				else if(turret->GetType() == 3)
+				{
+					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+					if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 140 * 140 && (targetPos.IsZero() ||
+						(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+					{
+						targetPos = troop->GetPos();
+						break;
+					}
 				}
 			}
 		
 		}
+
 		//TURRET getting hit by TROOP projectiles
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
-			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition()) //Leave it in if FPS drops
-			continue;*/
 			if (!(*it4)->IsDone())
 			{
 				if (CheckSphereCollision(*it2, *it4))
@@ -351,6 +367,8 @@ void EntityManager::Update(double _dt)
 					{
 						(*it2)->SetIsDone(true);
 					}
+
+					cout << (*it2)->GetHealth() << endl;
 				}
 			}
 		
@@ -370,12 +388,19 @@ void EntityManager::Update(double _dt)
 		}
 
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
-		if (turret->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
+		if (turret->m_dCoolDown > 0.5 && !targetPos.IsZero() 
+			&& (turret->GetType() == 1 || turret->GetType() == 3))
 		{
-			turret->m_fElapsedTimeBeforeUpdate = 0;
+			turret->m_dCoolDown = 0;
 			turret->SetFire(true);
 			turret->SetFireDestination(targetPos);
-
+			continue;
+		}
+		else if (turret->m_dCoolDown > 0.1 && !targetPos.IsZero() && turret->GetType() == 2)
+		{
+			turret->m_dCoolDown = 0;
+			turret->SetFire(true);
+			turret->SetFireDestination(targetPos);
 			continue;
 		}
 		turret->SetFire(false);

@@ -4,6 +4,7 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
+#include "MouseController.h"
 
 double Bomb::m_dRate = 0;
 bool Bomb::b_LMBtrue = false;
