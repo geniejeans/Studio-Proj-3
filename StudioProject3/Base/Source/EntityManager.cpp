@@ -239,7 +239,7 @@ void EntityManager::Update(double _dt)
 				if (!(*it6)->IsDone())
 				{
 					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						targetPos = (*it6)->GetPosition();
@@ -254,7 +254,7 @@ void EntityManager::Update(double _dt)
 				if (!(*it_T)->IsDone())
 				{
 					// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
-					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						// Set to shoot at object
@@ -268,7 +268,7 @@ void EntityManager::Update(double _dt)
 			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
 			{
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 					((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 				{
 					targetPos = (*it2)->GetPosition();
@@ -281,7 +281,7 @@ void EntityManager::Update(double _dt)
 				CEnemy3D* ninja = dynamic_cast<CEnemy3D*>(*it7);
 				if (!ninja->IsDone() && (RadarScan::GetInstance()->GetRPressed() || ninja->m_bRealRendered))
 				{
-					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && ((ninja)->GetPosition() != troop->GetPos()) &&
+					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && ((ninja)->GetPosition() != troop->GetPos()) &&
 						(targetPos.IsZero() || ((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						// Set to shoot at object
@@ -617,9 +617,9 @@ void EntityManager::Render()
 	for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
 	{
 		// Troop's Textures
-		if (Shield::GetInstance()->GetShieldActive())
+		if (Shield::GetInstance()->GetShieldActive() && (*it3)->GetMeshName() == "testTroop")
 			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedTroop"));
-		else
+		else if ((*it3)->GetMeshName() == "testTroop")
 			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop"));
 		(*it3)->Render();
 	}

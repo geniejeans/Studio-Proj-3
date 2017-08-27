@@ -214,9 +214,13 @@ void CTroop3D::Update(double dt)
 		}
 		else if (type == CTROOP3D_TYPE::ARCHER)
 		{
-			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 100.0f, 1, 5, this);
+			Vector3 velocity = (fireDestination - position).Normalized() * 2.5;
+			velocity.y = (fireDestination - position).Length() / 2;
+			std::cout << velocity << std::endl;
+			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 20.0f, 1, 5, this);
 			aProjectile->SetCollider(true);
 			aProjectile->SetFireDestination(fireDestination);
+			aProjectile->SetVelocity(velocity);
 			m_bFireProjectile = false;
 		}
 		else
@@ -279,14 +283,17 @@ CTroop3D* Create::Troop3D(const std::string& _meshName,
 	switch (type)
 	{
 	case 1:
+		result->SetRange(60 * 60);
 		result->SetHealth(50);
 		result->SetType(1);
 		break;
 	case 2:
+		result->SetRange(120 * 120);
 		result->SetHealth(50);
 		result->SetType(2);
 		break;
 	case 3:
+		result->SetRange(40 * 40);
 		result->SetHealth(80);
 		result->SetType(3);
 		break;

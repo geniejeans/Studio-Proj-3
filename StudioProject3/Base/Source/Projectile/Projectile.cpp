@@ -11,6 +11,8 @@ CProjectile::CProjectile(void)
 	: modelMesh(NULL)
 	, m_bStatus(false)
 	, theDirection(0, 0, 0)
+	, theVelocity(0, 0, 0)
+	, m_gravity (0,-2.5f,0)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
@@ -21,6 +23,8 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
 	, m_bStatus(false)
 	, theDirection(0, 0, 0)
+	, theVelocity(0, 0, 0)
+	, m_gravity(0, -2.5f, 0)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
@@ -102,6 +106,11 @@ void CProjectile::SetDamage(int m_iDamage)
 {
 	this->m_iDamage = m_iDamage;
 }
+//Set the velocity of the projectile
+void CProjectile::SetVelocity(Vector3 velocity)
+{
+	theVelocity = velocity;
+}
 //Get the damage of the projectile
 int CProjectile::GetDamage()
 {
@@ -142,9 +151,23 @@ void CProjectile::Update(double dt)
 	}
 
 	// Update Position
-	position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
-					position.y + (float)(theDirection.y * dt * m_fSpeed),
-					position.z + (float)(theDirection.z * dt * m_fSpeed));
+	if (theVelocity.IsZero())
+	{
+		position.Set(position.x + (float)(theDirection.x * dt * m_fSpeed),
+			position.y + (float)(theDirection.y * dt * m_fSpeed),
+			position.z + (float)(theDirection.z * dt * m_fSpeed));
+	}
+
+	else
+	{
+		Vector3 dv = m_gravity * (float)dt * m_fSpeed;
+		theVelocity += dv;
+
+		Vector3 ds = theVelocity * (float)dt * m_fSpeed;
+		position += ds;
+	}
+
+
 }
 
 // Render this projectile

@@ -46,7 +46,8 @@ public:
 	void SetDamage(int m_iDamage);
 	//Get the damage of the projectile
 	int GetDamage();
-
+	//Set the velocity of the projectile
+	void SetVelocity(Vector3 velocity);
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
@@ -74,6 +75,10 @@ protected:
 	int m_iDamage;
 	// The direction of the projectile
 	Vector3 theDirection;
+	//The velocity of the projectile
+	Vector3 theVelocity;
+	//The gravity of the world
+	Vector3 m_gravity;
 	// The character which fired this projectile
 	GenericEntity* theSource;
 public:
