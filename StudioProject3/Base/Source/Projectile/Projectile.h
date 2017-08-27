@@ -5,8 +5,6 @@
 #include "../GenericEntity.h"
 
 class Mesh;
-class CEnemy3D;
-class Turret;
 class GenericEntity;
 
 class CProjectile : public EntityBase, public CCollider

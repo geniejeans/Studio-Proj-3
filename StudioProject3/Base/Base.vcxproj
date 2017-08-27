@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Bomb.cpp" />
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
-    <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
+    <ClCompile Include="Source\Enemy\Ninja3D.cpp" />
     <ClCompile Include="Source\Enemy\RadarScan.cpp" />
     <ClCompile Include="Source\Enemy\Shield.cpp" />
     <ClCompile Include="Source\Enemy\Troop3D.cpp" />
@@ -52,7 +52,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Bomb.h" />
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
-    <ClInclude Include="Source\Enemy\Enemy3D.h" />
+    <ClInclude Include="Source\Enemy\Ninja3D.h" />
     <ClInclude Include="Source\Enemy\RadarScan.h" />
     <ClInclude Include="Source\Enemy\Shield.h" />
     <ClInclude Include="Source\Enemy\Troop3D.h" />

@@ -1,5 +1,4 @@
 #include "FileManager.h"
-#include "../Enemy/Enemy3D.h"
 #include "../Furniture/Furniture.h"
 #include "../Trees/Trees.h"
 #include "../Enemy/Turrets/Turrets.h"

@@ -304,13 +304,13 @@ void SceneText::Init()
 
 
 	// Enemy's Turrets
-	for (int i = 0; i < 20; ++i)
+	/*for (int i = 0; i < 20; ++i)
 	{
 		turret[i] = Create::Enemy3D("sphere", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(4, 4, 4),2);
 		turret[i]->Init();
 		turret[i]->SetTerrain(groundEntity);
 		turret[i]->SetType(2);
-	}
+	}*/
 
 	playerInfo->SetTimeCountdown(40.f);
 
@@ -347,16 +347,16 @@ void SceneText::Update(double dt)
 	float mouse_X, mouse_Y;
 	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
 
-	if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE))
-	{
-		CEnemy3D* newTroop;
-		newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
-		newTroop->Init();
-		newTroop->SetTerrain(groundEntity);
-		newTroop->SetType(1);
-		newTroop->SetDestination(Vector3(0, 10, 0));
-		spawnedTroops++;
-	}
+	//if (KeyboardController::GetInstance()->IsKeyDown(VK_SPACE))
+	//{
+	//	CEnemy3D* newTroop;
+	//	newTroop = Create::Enemy3D("testTroop", Vector3(Math::RandFloatMinMax(-200.f, 200.f), 10, Math::RandFloatMinMax(-200.f, 200.f)), Vector3(1, 1, 1));
+	//	newTroop->Init();
+	//	newTroop->SetTerrain(groundEntity);
+	//	newTroop->SetType(1);
+	//	newTroop->SetDestination(Vector3(0, 10, 0));
+	//	spawnedTroops++;
+	//}
 	//if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && mouse_Y < 500)
 	//{
 	//	//Setting a designated position for all troops

@@ -9,9 +9,9 @@
 #include "Bomb.h"
 #include "Enemy\Troop3D.h"
 #include "Enemy\Turrets\Turrets.h"
-#include "Enemy\Enemy3D.h"
 #include "Projectile\Projectile.h"
 #include "Enemy\Shield.h"
+#include "Enemy\Ninja3D.h"
 
 #include <iostream>
 using namespace std;
@@ -278,7 +278,7 @@ void EntityManager::Update(double _dt)
 			// Ninja - Troops
 			for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
 			{
-				CEnemy3D* ninja = dynamic_cast<CEnemy3D*>(*it7);
+				CNinja3D* ninja = dynamic_cast<CNinja3D*>(*it7);
 				if (!ninja->IsDone() && (RadarScan::GetInstance()->GetRPressed() || ninja->m_bRealRendered))
 				{
 					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && ((ninja)->GetPosition() != troop->GetPos()) &&
@@ -654,11 +654,10 @@ void EntityManager::Render()
 //after certain time
 void EntityManager::GenerateNinja(GroundEntity *groundEntity, double dt)
 {
-	CEnemy3D *ninjaTroop = new CEnemy3D;
-	ninjaTroop = Create::Enemy3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-50.f, 50.f), 10, Math::RandFloatMinMax(-490.f, -480.f)), Vector3(1, 1, 1), 3);
+	CNinja3D *ninjaTroop = new CNinja3D;
+	ninjaTroop = Create::Ninja3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-50.f, 50.f), 10, Math::RandFloatMinMax(-490.f, -480.f)), Vector3(1, 1, 1));
 	ninjaTroop->Init();
 	ninjaTroop->SetTerrain(groundEntity);
-	ninjaTroop->SetType(3);
 	ninjaTroop->SetDestination(Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(330.f, 350.f)));
 	do
 	{

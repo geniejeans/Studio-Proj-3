@@ -9,7 +9,6 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "GenericEntity.h"
-#include "Enemy/Enemy3D.h"
 #include "Hardware Abstraction/Keyboard.h"
 #include "Hardware Abstraction/mouse.h"
 #include "MiniMap\Minimap.h"
@@ -48,12 +47,6 @@ private:
 	static SceneText* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
 	CMouse* theMouse;
-
-	//CEnemy3D* testTroop[3];
-	//CEnemy3D* newTroop[20];
-	CEnemy3D* ninjaTroop[7];
-
-	CEnemy3D* turret[20];
 	int spawnedTroops = 23;
 
 	float spawnDelay = 0.f;
