@@ -71,7 +71,7 @@ Level1::~Level1()
 
 void Level1::Init()
 {
-	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
+	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture2.fragmentshader");
 
 	// Tell the shader program to store these uniform locations
 	currProg->AddUniform("MVP");
@@ -212,7 +212,7 @@ void Level1::Init()
 	float halfFontSize = fontSize / 2.0f;
 	//Creating textOBj
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + halfFontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2, -halfWindowHeight + fontSize * 2.5, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -437,7 +437,7 @@ void Level1::Update(double dt)
 	ss << "FPS: " << fps;
 	textObj[0]->SetText(ss.str());
 	ss.str("");
-	ss << "Money: " << Money::GetInstance()->GetMoney();
+	ss << Money::GetInstance()->GetMoney();
 	textObj[1]->SetText(ss.str());
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{

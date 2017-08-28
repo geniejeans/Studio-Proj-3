@@ -13,12 +13,12 @@ void GameUI::Update(GroundEntity *groundEntity)
 {
 	float mouse_X, mouse_Y;
 	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
-//	std::cout << mouse_X << " and " << mouse_Y << std::endl;
+	std::cout << mouse_X << " and " << mouse_Y << std::endl;
 //	std::cout << mouse_X - 800 / 2 << " and " << mouse_Y - 500 / 2 << std::endl;
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
 		if (mouse_X > 5.f && mouse_X < 170.f
-			&& mouse_Y > 504.f && mouse_Y < 545.f)
+			&& mouse_Y > 550.f && mouse_Y < 595.f)
 		{
 			if (!RadarScan::GetInstance()->GetCooldown())
 				RadarScan::GetInstance()->SetRPressed(true);
