@@ -189,6 +189,26 @@ void Level4::Init()
 	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
 	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
+	// Money Rain
+	for (int i = 0; i < 50; i++)
+	{
+		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+			Vector3(200.f, 200.f, 1.f),
+			Vector3(0.f, 0.f, 0.f));
+	}
+
+	m_fTime_MoneyRain = 0.0;
+	m_fTimeMAXLimit_MoneyRain = Math::RandFloatMinMax(30.0f, 100.0f);
+	m_bSwitchTime_MoneyRain = true;
+
+	// Thunder Storm
+	for (int i = 0; i < 50; i++)
+	{
+		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+			Vector3(200.f, 200.f, 1.f),
+			Vector3(0.f, 0.f, 0.f));
+	}
+
 	theKeyboard = new CKeyboard();
 	theKeyboard->Create(playerInfo);
 	theMouse = new CMouse();
@@ -323,6 +343,54 @@ void Level4::Update(double dt)
 			}
 			numberOfSelected = 0;
 			bSelected = false;
+		}
+	}
+
+	// Money Rain
+	m_fTime_MoneyRain += dt;
+
+	if (m_bSwitchTime_MoneyRain)
+	{
+		m_fTimeMAXLimit_MoneyRain = Math::RandFloatMinMax(50.0f, 100.0f);
+		m_bSwitchTime_MoneyRain = false;
+		m_fTime_MoneyRain = 0;
+	}
+
+	if (m_fTime_MoneyRain > m_fTimeMAXLimit_MoneyRain)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			theMoney[i]->SetFall(true);
+
+			if (theMoney[i]->GetPosition().y < groundEntity->GetPosition().y)
+			{
+				theMoney[i]->SetFall(false);
+				m_bSwitchTime_MoneyRain = true;
+			}
+		}
+	}
+
+	// Thunder Storm
+	m_fTime_ThunderStorm += dt;
+
+	if (m_bSwitchTime_ThunderStorm)
+	{
+		m_fTimeMAXLimit_ThunderStorm = Math::RandFloatMinMax(50.0f, 100.0f);
+		m_bSwitchTime_ThunderStorm = false;
+		m_fTime_ThunderStorm = 0;
+	}
+
+	if (m_fTime_ThunderStorm > m_fTimeMAXLimit_ThunderStorm)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			theStorm[i]->SetFall(true);
+
+			if (theStorm[i]->GetPosition().y < groundEntity->GetPosition().y)
+			{
+				theStorm[i]->SetFall(false);
+				m_bSwitchTime_ThunderStorm = true;
+			}
 		}
 	}
 

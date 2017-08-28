@@ -17,6 +17,8 @@
 #include "../SpriteEntity.h"
 #include "../Furniture\Furniture.h"
 #include "../Bomb.h"
+#include "../RandomEvents/MoneyRain.h"
+#include "../RandomEvents/Thunderstorm.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -55,6 +57,18 @@ private:
 	EntityBase* testTrack;
 	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;
+	MoneyRain* theMoney[50];
+	Thunderstorm* theStorm[50];
+
+	// Money Rain
+	bool m_bSwitchTime_MoneyRain;
+	float m_fTimeMAXLimit_MoneyRain;
+	float m_fTime_MoneyRain;
+
+	// Thunder Storm
+	bool m_bSwitchTime_ThunderStorm;
+	float m_fTimeMAXLimit_ThunderStorm;
+	float m_fTime_ThunderStorm;
 
 	static Level3* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;
