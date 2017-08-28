@@ -26,7 +26,6 @@
 #include "..//Trees/Trees.h"
 #include "../Enemy/RadarScan.h"
 #include "../Enemy/Shield.h"
-
 #include "RenderHelper.h"
 #include "..//Enemy/Turrets/Turrets.h"
 
