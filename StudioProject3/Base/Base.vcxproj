@@ -13,8 +13,11 @@
   <ItemGroup>
     <ClCompile Include="Source\Bomb.cpp" />
     <ClCompile Include="Source\CameraEffects\CameraEffects.cpp" />
-    <ClCompile Include="Source\Enemy\Enemy3D.cpp" />
+    <ClCompile Include="Source\Enemy\Ninja3D.cpp" />
     <ClCompile Include="Source\Enemy\RadarScan.cpp" />
+    <ClCompile Include="Source\Enemy\Shield.cpp" />
+    <ClCompile Include="Source\Enemy\Troop3D.cpp" />
+    <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp" />
     <ClCompile Include="Source\Furniture\Furniture.cpp" />
     <ClCompile Include="Source\GameUI\GameUI.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Controller.cpp" />
@@ -49,8 +52,11 @@
   <ItemGroup>
     <ClInclude Include="Source\Bomb.h" />
     <ClInclude Include="Source\CameraEffects\CameraEffects.h" />
-    <ClInclude Include="Source\Enemy\Enemy3D.h" />
+    <ClInclude Include="Source\Enemy\Ninja3D.h" />
     <ClInclude Include="Source\Enemy\RadarScan.h" />
+    <ClInclude Include="Source\Enemy\Shield.h" />
+    <ClInclude Include="Source\Enemy\Troop3D.h" />
+    <ClInclude Include="Source\Enemy\Turrets\Turrets.h" />
     <ClInclude Include="Source\Furniture\Furniture.h" />
     <ClInclude Include="Source\GameUI\GameUI.h" />
     <ClInclude Include="Source\Hardware Abstraction\Controller.h" />

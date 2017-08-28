@@ -25,9 +25,10 @@
 #include "../MoneyManager/Money.h"
 #include "..//Trees/Trees.h"
 #include "../Enemy/RadarScan.h"
+#include "../Enemy/Shield.h"
 
 #include "RenderHelper.h"
-
+#include "..//Enemy/Turrets/Turrets.h"
 
 #include <iostream>
 using namespace std;
@@ -70,7 +71,7 @@ Level1::~Level1()
 
 void Level1::Init()
 {
-	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
+	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture2.fragmentshader");
 
 	// Tell the shader program to store these uniform locations
 	currProg->AddUniform("MVP");
@@ -189,7 +190,7 @@ void Level1::Init()
 	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
 	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
-	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, 10, 0), Vector3(10, 10, 10));
+	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, -10, 0), Vector3(10, 10, 10));
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
@@ -211,7 +212,7 @@ void Level1::Init()
 	float halfFontSize = fontSize / 2.0f;
 	//Creating textOBj
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + halfFontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2, -halfWindowHeight + fontSize * 2.5, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -261,7 +262,7 @@ void Level1::Update(double dt)
 	// Indicator RayCasting
 	if (!GameUI::GetInstance()->GetBombRender())
 	{
-		IndicatorTarget->SetPosition(test);
+//		IndicatorTarget->SetPosition(test);
 		BombTarget->SetPosition(Vector3(1000, 0, 0));
 	}
 	else
@@ -277,6 +278,11 @@ void Level1::Update(double dt)
 		{
 			bMstate = true;
 			topLeft = test;
+		}
+		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget->GetPosition().y != 10.f))
+		{
+			IndicatorTarget->SetPosition(Vector3(topLeft.x + (test.x - topLeft.x) / 2, 10, topLeft.z + (test.z - topLeft.z) / 2));
+			IndicatorTarget->SetScale(Vector3(abs(test.x - topLeft.x) / 2, 10, abs(test.z - topLeft.z) / 2));
 		}
 		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 		{
@@ -313,6 +319,8 @@ void Level1::Update(double dt)
 		}
 		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
 		{
+			IndicatorTarget->SetPosition(test);
+			IndicatorTarget->SetScale(Vector3(10, 10, 10));
 			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
 			vector<Vector3>estimatedDestination;
 			std::list<EntityBase*>::iterator it;
@@ -359,7 +367,12 @@ void Level1::Update(double dt)
 			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
 			spawnDelay = 0.f;
 		}
-		
+
+		Shield::GetInstance()->Update(dt);
+		if (GameUI::GetInstance()->GetShieldIsPressed())
+		{
+			Shield::GetInstance()->Update(dt);
+		}
 		RadarScan::GetInstance()->Update(dt);
 		Money::GetInstance()->UpdateMoney(dt);
 		GameUI::GetInstance()->Update(groundEntity);
@@ -424,7 +437,7 @@ void Level1::Update(double dt)
 	ss << "FPS: " << fps;
 	textObj[0]->SetText(ss.str());
 	ss.str("");
-	ss << "Money: " << Money::GetInstance()->GetMoney();
+	ss << Money::GetInstance()->GetMoney();
 	textObj[1]->SetText(ss.str());
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{

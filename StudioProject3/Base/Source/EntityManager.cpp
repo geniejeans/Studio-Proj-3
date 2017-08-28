@@ -7,10 +7,15 @@
 #include "Trees\Trees.h"
 #include "Enemy\RadarScan.h"
 #include "Bomb.h"
+#include "Enemy\Troop3D.h"
+#include "Enemy\Turrets\Turrets.h"
+#include "Projectile\Projectile.h"
+#include "Enemy\Shield.h"
+#include "Enemy\Ninja3D.h"
 
 #include <iostream>
 using namespace std;
-std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8, it9, it10;
 
 // Update all entities
 void EntityManager::Update(double _dt)
@@ -119,15 +124,15 @@ void EntityManager::Update(double _dt)
 			(*it7)->SetBuffer(0);
 		}
 
-		// Troops Projectile - Others
+		// Troops Projectile - Ninja
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 			continue;*/
-
+			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it7, *it4))
 			{
-				(*it7)->SetHealth((*it7)->GetHealth() - 1);
+				(*it7)->SetHealth((*it7)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it7)->GetHealth() <= 0)
 				{
@@ -145,10 +150,10 @@ void EntityManager::Update(double _dt)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 				continue;*/
-
+			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it6, *it4))
 			{
-				(*it6)->SetHealth((*it6)->GetHealth() - 1);
+				(*it6)->SetHealth((*it6)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it6)->GetHealth() <= 0)
 				{
@@ -166,8 +171,9 @@ void EntityManager::Update(double _dt)
 		{
 			if (CheckSphereCollision(*it_T, *it4))
 			{
+				CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 				// Health of trees
-				(*it_T)->SetHealth((*it_T)->GetHealth() - 1);
+				(*it_T)->SetHealth((*it_T)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it_T)->GetHealth() <= 0)
 				{
@@ -209,6 +215,7 @@ void EntityManager::Update(double _dt)
 			{
 				if (Bomb::GetInstance()->GetBombActive())
 				{
+					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					(*it_T)->SetBuffer(2);
 					(*it_T)->SetIsDone(true);
 				}
@@ -219,7 +226,7 @@ void EntityManager::Update(double _dt)
 	// ====================== Setting Troops' actions / hit ====================== //
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
-		CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
+		CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
 	
 		Vector3 targetPos;
 		troop->m_fElapsedTimeBeforeUpdate += _dt;
@@ -232,7 +239,7 @@ void EntityManager::Update(double _dt)
 				if (!(*it6)->IsDone())
 				{
 					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						targetPos = (*it6)->GetPosition();
@@ -247,7 +254,7 @@ void EntityManager::Update(double _dt)
 				if (!(*it_T)->IsDone())
 				{
 					// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
-					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						// Set to shoot at object
@@ -261,20 +268,20 @@ void EntityManager::Update(double _dt)
 			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
 			{
 				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && (targetPos.IsZero() ||
+				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 					((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 				{
 					targetPos = (*it2)->GetPosition();
 				}
 			}
 
-		
+			// Ninja - Troops
 			for (it7 = ninjaList.begin(); it7 != ninjaList.end(); it7++)
 			{
-				CEnemy3D* ninja = dynamic_cast<CEnemy3D*>(*it7);
+				CNinja3D* ninja = dynamic_cast<CNinja3D*>(*it7);
 				if (!ninja->IsDone() && (RadarScan::GetInstance()->GetRPressed() || ninja->m_bRealRendered))
 				{
-					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < 60 * 60 && ((ninja)->GetPosition() != troop->GetPos()) &&
+					if (((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && ((ninja)->GetPosition() != troop->GetPos()) &&
 						(targetPos.IsZero() || ((ninja)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						// Set to shoot at object
@@ -290,7 +297,11 @@ void EntityManager::Update(double _dt)
 			// Checking Bullet with Troop
 			if (CheckSphereCollision(*it, *it5))
 			{
-				(*it)->SetHealth((*it)->GetHealth() - 1);
+				CProjectile* projectile = dynamic_cast<CProjectile*>(*it5);
+				if (!Shield::GetInstance()->GetShieldActive())
+				{
+					(*it)->SetHealth((*it)->GetHealth() - projectile->GetDamage());
+				}
 				(*it5)->SetIsDone(true);
 				if ((*it)->GetHealth() <= 0)
 				{
@@ -314,43 +325,59 @@ void EntityManager::Update(double _dt)
 	// ====================== Setting Turret' actions / hit ====================== //
 	for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 	{
-		CEnemy3D* turret = dynamic_cast<CEnemy3D*>(*it2);
+		Turret* turret = dynamic_cast<Turret*>(*it2);
 
 		Vector3 targetPos;
-		turret->m_fElapsedTimeBeforeUpdate += _dt;
+		turret->m_dCoolDown += _dt;
+		int range;
 
 		//TURRET shooting at TROOP
 		for (it = troopList.begin(); it != troopList.end(); it++)
 		{
 			if (!(*it)->IsDone())
 			{
-				CEnemy3D* troop = dynamic_cast<CEnemy3D*>(*it);
+				CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
 
-				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
-				if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||
-					(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+				if (turret->GetType() == 1 || turret->GetType() == 2)
 				{
-					targetPos = troop->GetPos();
-					break;
+					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+					if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 40 * 40 && (targetPos.IsZero() ||
+						(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+					{
+						targetPos = troop->GetPos();
+						break;
+					}
+				}
+				else if(turret->GetType() == 3)
+				{
+					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
+					if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 140 * 140 && (targetPos.IsZero() ||
+						(troop->GetPos() - turret->GetPos()).LengthSquared() < (targetPos - turret->GetPos()).LengthSquared()))
+					{
+						targetPos = troop->GetPos();
+						break;
+					}
 				}
 			}
 		
 		}
+
 		//TURRET getting hit by TROOP projectiles
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
-			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition()) //Leave it in if FPS drops
-			continue;*/
 			if (!(*it4)->IsDone())
 			{
 				if (CheckSphereCollision(*it2, *it4))
 				{
-					(*it2)->SetHealth((*it2)->GetHealth() - 1);
+					CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
+					(*it2)->SetHealth((*it2)->GetHealth() - projectile->GetDamage());
 					(*it4)->SetIsDone(true);
 					if ((*it2)->GetHealth() <= 0)
 					{
 						(*it2)->SetIsDone(true);
 					}
+
+					cout << (*it2)->GetHealth() << endl;
 				}
 			}
 		
@@ -370,12 +397,19 @@ void EntityManager::Update(double _dt)
 		}
 
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
-		if (turret->m_fElapsedTimeBeforeUpdate > 0.5 && !targetPos.IsZero())
+		if (turret->m_dCoolDown > 0.5 && !targetPos.IsZero() 
+			&& (turret->GetType() == 1 || turret->GetType() == 3))
 		{
-			turret->m_fElapsedTimeBeforeUpdate = 0;
+			turret->m_dCoolDown = 0;
 			turret->SetFire(true);
 			turret->SetFireDestination(targetPos);
-
+			continue;
+		}
+		else if (turret->m_dCoolDown > 0.1 && !targetPos.IsZero() && turret->GetType() == 2)
+		{
+			turret->m_dCoolDown = 0;
+			turret->SetFire(true);
+			turret->SetFireDestination(targetPos);
 			continue;
 		}
 		turret->SetFire(false);
@@ -582,6 +616,11 @@ void EntityManager::Render()
 	}
 	for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
 	{
+		// Troop's Textures
+		if (Shield::GetInstance()->GetShieldActive() && (*it3)->GetMeshName() == "testTroop")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedTroop"));
+		else if ((*it3)->GetMeshName() == "testTroop")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop"));
 		(*it3)->Render();
 	}
 	for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
@@ -615,11 +654,10 @@ void EntityManager::Render()
 //after certain time
 void EntityManager::GenerateNinja(GroundEntity *groundEntity, double dt)
 {
-	CEnemy3D *ninjaTroop = new CEnemy3D;
-	ninjaTroop = Create::Enemy3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-50.f, 50.f), 10, Math::RandFloatMinMax(-490.f, -480.f)), Vector3(1, 1, 1), 3);
+	CNinja3D *ninjaTroop = new CNinja3D;
+	ninjaTroop = Create::Ninja3D("ninjaTroop", Vector3(Math::RandFloatMinMax(-50.f, 50.f), 10, Math::RandFloatMinMax(-490.f, -480.f)), Vector3(1, 1, 1));
 	ninjaTroop->Init();
 	ninjaTroop->SetTerrain(groundEntity);
-	ninjaTroop->SetType(3);
 	ninjaTroop->SetDestination(Vector3(Math::RandFloatMinMax(-60.f, 60.f), 10, Math::RandFloatMinMax(330.f, 350.f)));
 	do
 	{

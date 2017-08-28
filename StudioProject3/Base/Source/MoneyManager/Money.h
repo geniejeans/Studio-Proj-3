@@ -20,7 +20,8 @@ class Money : public Singleton<Money>
 	bool m_bActiveDestroyed;
 	// Amount to increase by 
 	int m_iIncreaseMoney;
-
+	// Money Price Rate for the Shield
+	int m_iShieldPriceRate;
 	MoneyRain* theMoneyRain;
 	Thunderstorm* theThunderStorm;
 
@@ -53,6 +54,17 @@ public:
 	bool GetActiveRain();
 	bool GetActiveStorm();
 
+	//Shield=====
+	// Set Shield Price Rate
+	void SetShieldPriceRate(int rate);
+	// Get Shield Price Rate
+	int GetShieldPriceRate();
+
+	// Set the Cool Down Timer
+	void SetCoolDownTime(double time);
+	// Get the Cool Down Timer
+	double GetCoolDownTime();
+	//Shield======
 	// Set Amount to increase by
 	void SetIncreaseMoney(int increase);
 	// Get Amount increased by

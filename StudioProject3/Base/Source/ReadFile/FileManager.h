@@ -4,15 +4,14 @@
 #include <sstream>
 
 #include "Vector3.h"
+#include "SingletonTemplate.h"
 
 using std::string;
 using std::vector;
 
-class FileManager
+class FileManager : public Singleton<FileManager>
 {
 	int m_iColumn; //each column in csv file
-
-	static FileManager* Instance; //private static pointer
 
 public:
 	FileManager();
@@ -20,14 +19,16 @@ public:
 	
 	struct objectData
 	{
-		string Type;
-		string Name;
-		string positionX;
-		string positionY;
-		string positionZ;
-		string scaleX;
-		string scaleY;
-		string scaleZ;
+		string Type,
+				Name,
+				positionX,
+				positionY,
+				positionZ,
+				scaleX,
+				scaleY,
+				scaleZ,
+				objType;
+		 
 	}object;
 
 	//vector storing all the objects
@@ -42,13 +43,4 @@ public:
 
 	//Debug Purpose
 	void PrintData();
-
-	//get static pointer
-	static FileManager* GetInstance()
-	{
-		if (!Instance) //no instance is found
-			Instance = new FileManager(); //create new instance
-
-		return Instance;
-	}
 };

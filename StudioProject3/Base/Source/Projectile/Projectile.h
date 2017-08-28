@@ -2,9 +2,10 @@
 #include "EntityBase.h"
 #include "Vector3.h"
 #include "Collider/Collider.h"
+#include "../GenericEntity.h"
 
 class Mesh;
-class CEnemy3D;
+class GenericEntity;
 
 class CProjectile : public EntityBase, public CCollider
 {
@@ -12,7 +13,7 @@ public:
 	CProjectile(void);
 	CProjectile(Mesh* _modelMesh);
 	~CProjectile(void);
-public:
+
 	// Activate the projectile. true == active, false == inactive
 	void SetStatus(const bool m_bStatus);
 	// get status of the projectile. true == active, false == inactive
@@ -34,16 +35,32 @@ public:
 	// Get the speed of the projectile
 	float GetSpeed(void) const;
 	// Set the source of the projectile
-	void SetSource(CEnemy3D* _source);
+	void SetSource(GenericEntity* _source);
 	// Get the source of the projectile
-	CEnemy3D* GetSource(void) const;
+	GenericEntity* GetSource(void) const;
 	void SetFireDestination(Vector3 destination) { fireDestination = destination; };
 	Vector3 GetFireDestination() { return fireDestination; };
+	//Set the damage of the projectile
+	void SetDamage(int m_iDamage);
+	//Get the damage of the projectile
+	int GetDamage();
+	//Set the velocity of the projectile
+	void SetVelocity(Vector3 velocity);
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
 	// Render this projectile
 	virtual void Render(void);
 protected:
+	enum PROJECTILE_TYPE
+	{
+		NONE = 0,
+		TROOP,
+		TURRET,
+
+		NUM_PROJECTILE
+	};
+	PROJECTILE_TYPE projectile;
+
 	// The model mesh for this projectile
 	Mesh* modelMesh;
 	// Boolean flag to indicate if this projectile is active. If not active, then do not compute/update
@@ -52,10 +69,18 @@ protected:
 	float m_fLifetime;
 	// Speed of this projectile in unit / sec
 	float m_fSpeed;
+	//Damage of the projectile
+	int m_iDamage;
 	// The direction of the projectile
 	Vector3 theDirection;
+	//The velocity of the projectile
+	Vector3 theVelocity;
+	//The gravity of the world
+	Vector3 m_gravity;
 	// The character which fired this projectile
-	CEnemy3D* theSource;
+	GenericEntity* theSource;
+public:
+	void SetProjType(int type);
 };
 
 namespace Create
@@ -65,6 +90,8 @@ namespace Create
 							const Vector3& _direction, 
 							const float m_fLifetime, 
 							const float m_fSpeed,
-		                    CEnemy3D* _source=NULL);
+							const int m_iType,
+							const int m_iDamage,
+		                    GenericEntity* _source=NULL);
 };
 

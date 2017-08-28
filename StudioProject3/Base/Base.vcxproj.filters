@@ -51,6 +51,9 @@
     <Filter Include="Bomb">
       <UniqueIdentifier>{be2dea01-2741-4d20-aaae-42d07b2661de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\Turret">
+      <UniqueIdentifier>{c609d529-8668-400f-be97-81a6facb67cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -110,9 +113,6 @@
     <ClCompile Include="Source\Hardware Abstraction\Mouse.cpp">
       <Filter>Hardware</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy\Enemy3D.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneText.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
@@ -154,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="Source\Bomb.cpp">
       <Filter>Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Troop3D.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp">
+      <Filter>Enemy\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Shield.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Ninja3D.cpp">
+      <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,9 +226,6 @@
     <ClInclude Include="Source\Hardware Abstraction\Mouse.h">
       <Filter>Hardware</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\Enemy3D.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneText.h">
       <Filter>Levels</Filter>
     </ClInclude>
@@ -261,6 +270,18 @@
     </ClInclude>
     <ClInclude Include="Source\Bomb.h">
       <Filter>Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Troop3D.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Turrets\Turrets.h">
+      <Filter>Enemy\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Shield.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Ninja3D.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,7 +5,6 @@
 #include <list>
 #include "Vector3.h"
 #include "PlayerInfo\PlayerInfo.h"
-#include "SceneText.h"
 
 class EntityBase;
 
@@ -19,7 +18,9 @@ public:
 
 	void AddEntity(EntityBase* _newEntity);
 	void AddOther(EntityBase* _newEntity);
+
 	void AddTurretEntity(EntityBase* _newEntity);
+
 	void AddTroopEntity(EntityBase* _newEntity);
 	void AddNinjaEntity(EntityBase* _newEntity);
 	void AddTroopProjectileEntity(EntityBase* _newEntity);

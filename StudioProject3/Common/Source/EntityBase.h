@@ -58,6 +58,9 @@ public:
 	virtual void SetHealth(const int _value) { m_iHealth = _value; };
 	virtual int GetHealth() { return m_iHealth; };
 
+	virtual void SetRange(const int _value) { m_iFireRange = _value; };
+	virtual int GetRange() { return m_iFireRange; };
+
 	virtual void SetDestination(Vector3 destination) { this->destination = destination; };
 	//Reset 
 	virtual void ResetGame();
@@ -77,7 +80,7 @@ protected:
 	bool m_bActionDone; //Action has been done
 	bool m_bSelected;
 	int m_iHealth;
-	
+	int m_iFireRange; //Range of how far can shoot
 	float m_fBuffer;
 
 	Mesh* modelMesh;

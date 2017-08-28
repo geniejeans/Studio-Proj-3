@@ -5,11 +5,14 @@
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
 #include "../Enemy/Enemy3D.h"
+#include "../Enemy/Turrets/Turrets.h"
 
 CProjectile::CProjectile(void)
 	: modelMesh(NULL)
 	, m_bStatus(false)
 	, theDirection(0, 0, 0)
+	, theVelocity(0, 0, 0)
+	, m_gravity (0,-2.5f,0)
 	, m_fLifetime(-1.0f)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
@@ -20,6 +23,8 @@ CProjectile::CProjectile(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
 	, m_bStatus(false)
 	, theDirection(0, 0, 0)
+	, theVelocity(0, 0, 0)
+	, m_gravity(0, -2.5f, 0)
 	, m_fLifetime(-1)
 	, m_fSpeed(10.0f)
 	, theSource(NULL)
@@ -92,15 +97,42 @@ void CProjectile::SetSpeed(const float m_fSpeed)
 }
 
 // Set the source of the projectile
-void CProjectile::SetSource(CEnemy3D* _source)
+void CProjectile::SetSource(GenericEntity* _source)
 {
 	theSource = _source;
 }
-
+//Set the damage of the projectile
+void CProjectile::SetDamage(int m_iDamage)
+{
+	this->m_iDamage = m_iDamage;
+}
+//Set the velocity of the projectile
+void CProjectile::SetVelocity(Vector3 velocity)
+{
+	theVelocity = velocity;
+}
+//Get the damage of the projectile
+int CProjectile::GetDamage()
+{
+	return m_iDamage;
+}
 // Get the source of the projectile
-CEnemy3D* CProjectile::GetSource(void) const
+GenericEntity* CProjectile::GetSource(void) const
 {
 	return theSource;
+}
+
+void CProjectile::SetProjType(int type)
+{
+	switch (type)
+	{
+	case 1:
+		this->projectile = PROJECTILE_TYPE::TROOP;
+		break;
+	case 2:
+		this->projectile = PROJECTILE_TYPE::TURRET;
+		break;
+	}
 }
 
 // Update the status of this projectile
@@ -119,11 +151,24 @@ void CProjectile::Update(double dt)
 	}
 
 	// Update Position
-	position.Set(	position.x + (float)(theDirection.x * dt * m_fSpeed),
-					position.y + (float)(theDirection.y * dt * m_fSpeed),
-					position.z + (float)(theDirection.z * dt * m_fSpeed));
-}
+	if (theVelocity.IsZero())
+	{
+		position.Set(position.x + (float)(theDirection.x * dt * m_fSpeed),
+			position.y + (float)(theDirection.y * dt * m_fSpeed),
+			position.z + (float)(theDirection.z * dt * m_fSpeed));
+	}
 
+	else
+	{
+		Vector3 dv = m_gravity * (float)dt * m_fSpeed;
+		theVelocity += dv;
+
+		Vector3 ds = theVelocity * (float)dt * m_fSpeed;
+		position += ds;
+	}
+
+
+}
 
 // Render this projectile
 void CProjectile::Render(void)
@@ -148,7 +193,9 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 								const Vector3& _direction, 
 								const float m_fLifetime, 
 								const float m_fSpeed,
-	                            CEnemy3D* _source)
+								const int m_iType,
+								const int m_iDamage,
+								GenericEntity* _source)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
 	if (modelMesh == nullptr)
@@ -159,15 +206,47 @@ CProjectile* Create::Projectile(const std::string& _meshName,
 	result->SetStatus(true);
 	result->SetCollider(true);
 	result->SetSource(_source);
-//	EntityManager::GetInstance()->AddEntity(result);
-	switch (_source->GetType())
+	result->SetDamage(m_iDamage);
+	switch (m_iType)
 	{
 	case 1:
 		EntityManager::GetInstance()->AddTroopProjectileEntity(result);
 		break;
-	case 2:
+	case 2: 
 		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
 		break;
+	default:
+		break;
 	}
+
 	return result;
 }
+
+//CProjectile * Create::ProjectileTurret(const std::string & _meshName, 
+//										const Vector3 & _position,
+//										const Vector3 & _direction, 
+//										const float m_fLifetime, 
+//										const float m_fSpeed, 
+//										Turret * _source)
+//{
+//	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
+//	if (modelMesh == nullptr)
+//		return nullptr;
+//
+//	CProjectile* result = new CProjectile(modelMesh);
+//	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
+//	result->SetStatus(true);
+//	result->SetCollider(true);
+//	result->SetSourceTurret(_source);
+//	//	EntityManager::GetInstance()->AddEntity(result);
+//
+//	// For Turret
+//	//switch (_source->GetType())
+//	//{
+//	//case 1:
+//		EntityManager::GetInstance()->AddTurretProjectileEntity(result);
+//	//	break;
+//	//}
+//
+//	return result;
+//}
