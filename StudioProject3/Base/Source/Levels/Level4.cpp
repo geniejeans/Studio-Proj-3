@@ -206,6 +206,7 @@ void Level4::Init()
 
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
+	GameUI::GetInstance()->SetLevelName("Level4");
 }
 
 void Level4::Update(double dt)

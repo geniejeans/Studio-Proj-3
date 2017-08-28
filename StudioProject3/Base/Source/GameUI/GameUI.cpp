@@ -17,26 +17,27 @@ void GameUI::Update(GroundEntity *groundEntity)
 //	std::cout << mouse_X - 800 / 2 << " and " << mouse_Y - 500 / 2 << std::endl;
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
+		//RADAR
 		if (mouse_X > 5.f && mouse_X < 170.f
-			&& mouse_Y > 550.f && mouse_Y < 595.f)
+			&& mouse_Y > 550.f && mouse_Y < 595.f && m_sLevelName != "Level1")
 		{
 			if (!RadarScan::GetInstance()->GetCooldown())
 				RadarScan::GetInstance()->SetRPressed(true);
 		}
+		//BOMB
 		else if (mouse_X > 180.f && mouse_X < 280.f
-			&& mouse_Y > 500.f && mouse_Y < 590.f)
+			&& mouse_Y > 500.f && mouse_Y < 590.f && m_sLevelName != "Level1")
 		{
-			//do bomb
 			if (GetBombRender())
 				SetBombRender(false);
 			else
 				SetBombRender(true);
 		}
-
+		//SHIELD
 		else if (mouse_X > 295.f && mouse_X < 395.f
-			&& mouse_Y > 500.f && mouse_Y < 590.f)
+			&& mouse_Y > 500.f && mouse_Y < 590.f 
+			&& (m_sLevelName == "Level3" || m_sLevelName == "Level4"))
 		{
-			//do shield
 			SetBombRender(false);
 			if (Money::GetInstance()->GetMoney() >= Money::GetInstance()->GetShieldPriceRate())
 			{
@@ -66,6 +67,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 			}
 
 		}
+		//TROOPS
 		else if (mouse_X > 410.f && mouse_X < 510.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
@@ -78,8 +80,10 @@ void GameUI::Update(GroundEntity *groundEntity)
 			newTroop->SetDestination(Vector3(0, 10, 0));
 			Money::GetInstance()->DeductMoney(10);
 		}
-
-		else if (mouse_X > 525.f && mouse_X < 625.f
+		if (m_sLevelName == "Level3" || m_sLevelName == "Level4")
+		{
+			//ARCHER
+		 if (mouse_X > 525.f && mouse_X < 625.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
 			SetBombRender(false);
@@ -91,7 +95,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 			newTroop->SetDestination(Vector3(0, 10, 0));
 			Money::GetInstance()->DeductMoney(20);
 		}
-
+		//TANKER
 		else if (mouse_X > 640.f && mouse_X < 740.f
 			&& mouse_Y > 500.f && mouse_Y < 590.f)
 		{
@@ -104,6 +108,8 @@ void GameUI::Update(GroundEntity *groundEntity)
 			newTroop->SetDestination(Vector3(0, 10, 0));
 			Money::GetInstance()->DeductMoney(30);
 		}
+		}
+	
 	}
 }
 
@@ -126,4 +132,16 @@ void GameUI::SetShieldIsPressed(bool is_True)
 bool GameUI::GetShieldIsPressed()
 {
 	return m_bShieldIsPressed;
+}
+
+//Setting level name
+void GameUI::SetLevelName(string levelName)
+{
+	m_sLevelName = levelName;
+}
+
+//Getting level name
+string GameUI::GetLevelName()
+{
+	return m_sLevelName;
 }

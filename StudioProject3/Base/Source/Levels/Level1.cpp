@@ -238,6 +238,7 @@ void Level1::Init()
 
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
+	GameUI::GetInstance()->SetLevelName("Level1");
 }
 
 void Level1::Update(double dt)
@@ -359,14 +360,6 @@ void Level1::Update(double dt)
 	
 	if (elapsed_time >= 3.f)
 	{
-		spawnDelay += (float)dt;
-
-		if (spawnDelay >= coolDown)
-		{
-			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
-			spawnDelay = 0.f;
-		}
-
 		Shield::GetInstance()->Update(dt);
 		if (GameUI::GetInstance()->GetShieldIsPressed())
 		{
@@ -484,7 +477,7 @@ void Level1::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
 		modelStack.Scale(800, 600, 1);
-		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UILevel1"));
 		modelStack.PopMatrix();
 	}
 	glDisable(GL_BLEND);

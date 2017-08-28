@@ -206,6 +206,7 @@ void Level2::Init()
 
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
+	GameUI::GetInstance()->SetLevelName("Level2");
 }
 
 void Level2::Update(double dt)
@@ -452,7 +453,7 @@ void Level2::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
 		modelStack.Scale(800, 600, 1);
-		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UILevel2"));
 		modelStack.PopMatrix();
 	}
 	glDisable(GL_BLEND);
