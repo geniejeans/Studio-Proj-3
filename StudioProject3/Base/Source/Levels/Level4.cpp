@@ -232,118 +232,16 @@ void Level4::Init()
 void Level4::Update(double dt)
 {
 	elapsed_time += dt;
-	float mouse_X, mouse_Y;
-	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
-	float x = (2.0f * mouse_X) / 800.f - 1.0f;
-	float y = 1.0f - (2.0f * mouse_Y) / 600.f;
-	float z = 1.0f;
-	Vector3 ray_nds = Vector3(x, y, z);
-	Vector3 ray_clip = Vector3(ray_nds.x, ray_nds.y, -1.0f);
-	Mtx44 perspective;
-	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-	Vector3 ray_eye = perspective.GetInverse() * ray_clip;
-	ray_eye = Vector3(ray_eye.x, ray_eye.y, -1.0f);
-	Vector3 ray_wor = playerInfo->GetCamera()->GetViewMatrix().GetInverse() * ray_eye;
-	ray_wor = ray_wor.Normalize();
-	float distanceFromRay = -(playerInfo->GetPos().Dot(Vector3(0, 1, 0) + 0) / ray_wor.Dot(Vector3(0, 1, 0))) - 20.f;
-	test = Vector3(playerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, playerInfo->GetPos().z + ray_wor.z * distanceFromRay);
+	
 	// Indicator RayCasting
 	if (!GameUI::GetInstance()->GetBombRender())
 	{
-		//		IndicatorTarget->SetPosition(test);
 		BombTarget->SetPosition(Vector3(1000, 0, 0));
 	}
 	else
 	{
 		BombTarget->SetPosition(test);
 		IndicatorTarget->SetPosition(Vector3(1000, 0, 0));
-	}
-	//troop selection
-
-	if (mouse_Y < 500)
-	{
-		if (!bMstate && MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
-		{
-			bMstate = true;
-			topLeft = test;
-		}
-		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget->GetPosition().y != 10.f))
-		{
-			IndicatorTarget->SetPosition(Vector3(topLeft.x + (test.x - topLeft.x) / 2, 10, topLeft.z + (test.z - topLeft.z) / 2));
-			IndicatorTarget->SetScale(Vector3(abs(test.x - topLeft.x) / 2, 10, abs(test.z - topLeft.z) / 2));
-		}
-		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
-		{
-			botRight = test;
-			bMstate = false;
-			bSelection = true;
-		}
-
-		if (bSelection && (topLeft != botRight))
-		{
-			if (topLeft != botRight)
-			{
-				numberOfSelected = 0;
-				bSelected = false;
-			}
-
-			//storedMiddle.x = topLeft.x + (abs(topLeft.x) - abs(botRight.x));
-			//storedMiddle.y = 10.f;
-			//storedMiddle.z = topLeft.z + (abs(topLeft.z) - abs(botRight.z));
-			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
-			std::list<EntityBase*>::iterator it;
-			for (it = list.begin(); it != list.end(); ++it)
-			{
-				(*it)->SetSelected(false);
-				if (((*it)->GetPosition().x > topLeft.x && (*it)->GetPosition().x < botRight.x)
-					&& ((*it)->GetPosition().z > topLeft.z && (*it)->GetPosition().z < botRight.z))
-				{
-					(*it)->SetSelected(true);
-					bSelected = true;
-					numberOfSelected++;
-				}
-			}
-			bSelection = false;
-		}
-		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
-		{
-			IndicatorTarget->SetPosition(test);
-			IndicatorTarget->SetScale(Vector3(10, 10, 10));
-			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
-			vector<Vector3>estimatedDestination;
-			std::list<EntityBase*>::iterator it;
-
-			for (int i = 0; i < numberOfSelected; i++)
-			{
-				bool tooClose = false;
-				estimatedDestination.push_back(Vector3(topLeft.x, 10, topLeft.z));
-				do
-				{
-					tooClose = false;
-					for (int x = 0; x < i; x++)
-					{
-						if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
-						{
-							tooClose = true;
-							estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
-						}
-					}
-				} while (tooClose);
-			}
-			int i = 0;
-			for (it = list.begin(); it != list.end(); ++it)
-			{
-				if ((*it)->GetSelected())
-				{
-					(*it)->SetDestination(Vector3(estimatedDestination[i].x, 10, estimatedDestination[i].z));
-					(*it)->SetActionDone(false);
-					(*it)->SetSelected(false);
-					i++;
-				}
-			}
-			numberOfSelected = 0;
-			bSelected = false;
-		}
 	}
 
 	// Money Rain
@@ -396,6 +294,15 @@ void Level4::Update(double dt)
 
 	if (elapsed_time >= 3.f)
 	{
+		//Hardware Abstraction
+		if (theKeyboard)
+			theKeyboard->Read(dt);
+
+		if (theMouse)
+		{
+			theMouse->Read(dt);
+			theMouse->SetTroopMovement(*BombTarget, *IndicatorTarget);
+		}
 		spawnDelay += (float)dt;
 
 		if (spawnDelay >= coolDown)
@@ -453,15 +360,6 @@ void Level4::Update(double dt)
 		lights[0]->position.y -= (float)(10.f * dt);
 	if (KeyboardController::GetInstance()->IsKeyDown('P'))
 		lights[0]->position.y += (float)(10.f * dt);
-
-
-	//Hardware Abstraction
-	if (theKeyboard)
-		theKeyboard->Read(dt);
-
-	if (theMouse)
-		theMouse->Read(dt);
-
 
 	GraphicsManager::GetInstance()->UpdateLights(dt);
 

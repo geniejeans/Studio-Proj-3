@@ -7,6 +7,8 @@
 #include "../PlayerInfo/PlayerInfo.h"
 #include "../Enemy/Enemy3D.h"
 
+class Bomb;
+
 class CMouse :
 	public CController
 { 
@@ -37,9 +39,9 @@ public:
 	// Read from the controller
 	virtual int Read(const float deltaTime);
 
-	// Setting position
-	void SetTroopsDestination(double x, double y, int w, int h);
 	void Selection(double x, double y);
+	// Setting position
+	void SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget);
 
 };
 #endif
