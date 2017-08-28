@@ -19,7 +19,7 @@ void Shield::Update(double dt)
 	{
 		//start timer
 		elapsedTime += dt;
-		if (elapsedTime >2)
+		if (elapsedTime > 3.0)
 		{
 			//if timer is more then 2 sec set to false
 			m_bShieldActive = false;
