@@ -21,9 +21,13 @@
 #include "../Light.h"
 #include "../SkyBox/SkyBoxEntity.h"
 #include "../ReadFile/FileManager.h"
-
+#include "../GameUI/GameUI.h"
+#include "../MoneyManager/Money.h"
+#include "..//Trees/Trees.h"
+#include "../Enemy/RadarScan.h"
+#include "../Enemy/Shield.h"
 #include "RenderHelper.h"
-
+#include "..//Enemy/Turrets/Turrets.h"
 
 #include <iostream>
 using namespace std;
@@ -66,7 +70,7 @@ Level4::~Level4()
 
 void Level4::Init()
 {
-	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
+	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture2.fragmentshader");
 
 	// Tell the shader program to store these uniform locations
 	currProg->AddUniform("MVP");
@@ -147,13 +151,13 @@ void Level4::Init()
 	playerInfo->AttachCamera(&camera);
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
-	// Load all the meshes
-
 	// Create entities into the scene
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
-
+	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
+	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, -10, 0), Vector3(10, 10, 10));
 
 	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
@@ -173,11 +177,9 @@ void Level4::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 1; ++i)
-	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	}
-
+	//Creating textOBj
+	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2, -halfWindowHeight + fontSize * 2.5, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -191,17 +193,161 @@ void Level4::Init()
 	theKeyboard->Create(playerInfo);
 	theMouse = new CMouse();
 	theMouse->Create(playerInfo);
-
+	//Trees::GetInstance()->init();
 	FileManager::GetInstance()->ReadFile("ReadFiles//Level4.csv");
 	FileManager::GetInstance()->CreateObjects();
+	Money::GetInstance()->SetMoney(100);
+	Money::GetInstance()->SetMoneyRate(10);
+	bMstate = false;
+	numberOfSelected = 0;
+	topLeft.SetZero();
+	botRight.SetZero();
 	elapsed_time = 0.0f;
+
+	Trees::GetInstance()->SetMaxCount(20);
+	Trees::GetInstance()->SetSpawnRate(5);
 }
 
 void Level4::Update(double dt)
 {
 	elapsed_time += dt;
-	// Update our entities
-	EntityManager::GetInstance()->Update(dt);
+	float mouse_X, mouse_Y;
+	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
+	float x = (2.0f * mouse_X) / 800.f - 1.0f;
+	float y = 1.0f - (2.0f * mouse_Y) / 600.f;
+	float z = 1.0f;
+	Vector3 ray_nds = Vector3(x, y, z);
+	Vector3 ray_clip = Vector3(ray_nds.x, ray_nds.y, -1.0f);
+	Mtx44 perspective;
+	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	Vector3 ray_eye = perspective.GetInverse() * ray_clip;
+	ray_eye = Vector3(ray_eye.x, ray_eye.y, -1.0f);
+	Vector3 ray_wor = playerInfo->GetCamera()->GetViewMatrix().GetInverse() * ray_eye;
+	ray_wor = ray_wor.Normalize();
+	float distanceFromRay = -(playerInfo->GetPos().Dot(Vector3(0, 1, 0) + 0) / ray_wor.Dot(Vector3(0, 1, 0))) - 20.f;
+	test = Vector3(playerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, playerInfo->GetPos().z + ray_wor.z * distanceFromRay);
+	// Indicator RayCasting
+	if (!GameUI::GetInstance()->GetBombRender())
+	{
+		//		IndicatorTarget->SetPosition(test);
+		BombTarget->SetPosition(Vector3(1000, 0, 0));
+	}
+	else
+	{
+		BombTarget->SetPosition(test);
+		IndicatorTarget->SetPosition(Vector3(1000, 0, 0));
+	}
+	//troop selection
+
+	if (mouse_Y < 500)
+	{
+		if (!bMstate && MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
+		{
+			bMstate = true;
+			topLeft = test;
+		}
+		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget->GetPosition().y != 10.f))
+		{
+			IndicatorTarget->SetPosition(Vector3(topLeft.x + (test.x - topLeft.x) / 2, 10, topLeft.z + (test.z - topLeft.z) / 2));
+			IndicatorTarget->SetScale(Vector3(abs(test.x - topLeft.x) / 2, 10, abs(test.z - topLeft.z) / 2));
+		}
+		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
+		{
+			botRight = test;
+			bMstate = false;
+			bSelection = true;
+		}
+
+		if (bSelection && (topLeft != botRight))
+		{
+			if (topLeft != botRight)
+			{
+				numberOfSelected = 0;
+				bSelected = false;
+			}
+
+			//storedMiddle.x = topLeft.x + (abs(topLeft.x) - abs(botRight.x));
+			//storedMiddle.y = 10.f;
+			//storedMiddle.z = topLeft.z + (abs(topLeft.z) - abs(botRight.z));
+			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
+			std::list<EntityBase*>::iterator it;
+			for (it = list.begin(); it != list.end(); ++it)
+			{
+				(*it)->SetSelected(false);
+				if (((*it)->GetPosition().x > topLeft.x && (*it)->GetPosition().x < botRight.x)
+					&& ((*it)->GetPosition().z > topLeft.z && (*it)->GetPosition().z < botRight.z))
+				{
+					(*it)->SetSelected(true);
+					bSelected = true;
+					numberOfSelected++;
+				}
+			}
+			bSelection = false;
+		}
+		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
+		{
+			IndicatorTarget->SetPosition(test);
+			IndicatorTarget->SetScale(Vector3(10, 10, 10));
+			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
+			vector<Vector3>estimatedDestination;
+			std::list<EntityBase*>::iterator it;
+
+			for (int i = 0; i < numberOfSelected; i++)
+			{
+				bool tooClose = false;
+				estimatedDestination.push_back(Vector3(topLeft.x, 10, topLeft.z));
+				do
+				{
+					tooClose = false;
+					for (int x = 0; x < i; x++)
+					{
+						if ((estimatedDestination[i] - estimatedDestination[x]).Length() < 5)
+						{
+							tooClose = true;
+							estimatedDestination[i].Set(estimatedDestination[i].x + Math::RandFloatMinMax(-10, 10), 10, estimatedDestination[i].z + Math::RandFloatMinMax(-10, 10));
+						}
+					}
+				} while (tooClose);
+			}
+			int i = 0;
+			for (it = list.begin(); it != list.end(); ++it)
+			{
+				if ((*it)->GetSelected())
+				{
+					(*it)->SetDestination(Vector3(estimatedDestination[i].x, 10, estimatedDestination[i].z));
+					(*it)->SetActionDone(false);
+					(*it)->SetSelected(false);
+					i++;
+				}
+			}
+			numberOfSelected = 0;
+			bSelected = false;
+		}
+	}
+
+	if (elapsed_time >= 3.f)
+	{
+		spawnDelay += (float)dt;
+
+		if (spawnDelay >= coolDown)
+		{
+			EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
+			spawnDelay = 0.f;
+		}
+
+		Shield::GetInstance()->Update(dt);
+		if (GameUI::GetInstance()->GetShieldIsPressed())
+		{
+			Shield::GetInstance()->Update(dt);
+		}
+		RadarScan::GetInstance()->Update(dt);
+		Money::GetInstance()->UpdateMoney(dt);
+		GameUI::GetInstance()->Update(groundEntity);
+		// Update our entities
+		EntityManager::GetInstance()->Update(dt);
+		// Update the player position and other details based on keyboard and mouse inputs
+		playerInfo->Update(dt);
+	}
 
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	if (KeyboardController::GetInstance()->IsKeyDown('1'))
@@ -246,8 +392,7 @@ void Level4::Update(double dt)
 
 	if (theMouse)
 		theMouse->Read(dt);
-	// Update the player position and other details based on keyboard and mouse inputs
-	playerInfo->Update(dt);
+
 
 	GraphicsManager::GetInstance()->UpdateLights(dt);
 
@@ -258,6 +403,9 @@ void Level4::Update(double dt)
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
 	textObj[0]->SetText(ss.str());
+	ss.str("");
+	ss << Money::GetInstance()->GetMoney();
+	textObj[1]->SetText(ss.str());
 	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
 	{
 		SceneManager::GetInstance()->SetActiveScene("Start");
@@ -284,7 +432,6 @@ void Level4::Render()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
-
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	if (elapsed_time <= 3.f)
 	{
