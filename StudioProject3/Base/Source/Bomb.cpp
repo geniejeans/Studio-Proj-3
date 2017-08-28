@@ -6,6 +6,7 @@
 #include "MeshBuilder.h"
 #include "MouseController.h"
 #include "MoneyManager\Money.h"
+#include "GameUI\GameUI.h"
 
 double Bomb::m_dRate = 0;
 bool Bomb::b_LMBtrue = false;
@@ -57,7 +58,7 @@ void Bomb::Update(double dt)
 		//b_LMBtrue = true;
 		SetBombActive(true);	
 		if (mouse_X > 0.f && mouse_X < 800.f
-			&& mouse_Y < 493.f && mouse_Y > 0.f)
+			&& mouse_Y < 493.f && mouse_Y > 0.f && GameUI::GetInstance()->GetBombRender())
 		{
 			Money::GetInstance()->SetActiveDestroyed(true);
 			Money::GetInstance()->DeductMoney(40);

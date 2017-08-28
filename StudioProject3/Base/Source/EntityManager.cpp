@@ -113,6 +113,8 @@ void EntityManager::Update(double _dt)
 				if (Bomb::GetInstance()->GetBombActive())
 				{
 					(*it7)->SetBuffer(2);
+					Money::GetInstance()->SetActiveDestroyed(true); // Ninja will +10p when destroyed by Bomb
+					Money::GetInstance()->SetIncreaseMoney(10);
 					(*it7)->SetIsDone(true);
 				}
 			}
@@ -136,6 +138,8 @@ void EntityManager::Update(double _dt)
 				(*it4)->SetIsDone(true);
 				if ((*it7)->GetHealth() <= 0)
 				{
+					Money::GetInstance()->SetActiveDestroyed(true); //Get 10 points for each ninja destroyed by troops
+					Money::GetInstance()->SetIncreaseMoney(10);
 					(*it7)->SetIsDone(true);
 				}
 			}
@@ -179,7 +183,7 @@ void EntityManager::Update(double _dt)
 				{
 					srand(time(NULL));
 					Money::GetInstance()->SetActiveDestroyed(true);
-					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(5, 20));
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20)); // +15p when Trees get destroyed by Troops
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					(*it_T)->SetIsDone(true);
 				}
@@ -216,6 +220,8 @@ void EntityManager::Update(double _dt)
 				if (Bomb::GetInstance()->GetBombActive())
 				{
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
+					Money::GetInstance()->SetActiveDestroyed(true);
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20));
 					(*it_T)->SetBuffer(2);
 					(*it_T)->SetIsDone(true);
 				}
@@ -375,6 +381,8 @@ void EntityManager::Update(double _dt)
 					if ((*it2)->GetHealth() <= 0)
 					{
 						(*it2)->SetIsDone(true);
+						Money::GetInstance()->SetActiveDestroyed(true);
+						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
 					}
 
 					cout << (*it2)->GetHealth() << endl;
@@ -391,6 +399,8 @@ void EntityManager::Update(double _dt)
 				if (Bomb::GetInstance()->GetBombActive())
 				{
 					(*it2)->SetBuffer(2);
+					Money::GetInstance()->SetActiveDestroyed(true);
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
 					(*it2)->SetIsDone(true);
 				}
 			}
