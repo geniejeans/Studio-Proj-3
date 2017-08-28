@@ -37,6 +37,11 @@ void Trees::Render(void)
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Scale(m_Scale.x, m_Scale.y, m_Scale.z);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, scale.y + 10, 0);
+	modelStack.Scale(m_iHealth / 5, 0.3, 1);
+	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
+	modelStack.PopMatrix();
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
 }

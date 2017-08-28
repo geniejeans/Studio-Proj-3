@@ -36,6 +36,15 @@ void CFurniture::Render(void)
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
+
+	if (meshName == "enemyBase")
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(position.x, scale.y + 10, position.z);
+		modelStack.Scale(m_iHealth / 5, 1, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
+		modelStack.PopMatrix();
+	}
 }
 
 CFurniture* Create::Furniture3D(const std::string& _meshName,

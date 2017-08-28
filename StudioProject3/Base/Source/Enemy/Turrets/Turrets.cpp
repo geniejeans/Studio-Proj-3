@@ -246,6 +246,13 @@ void Turret::Render(void)
 	}
 
 	modelStack.PopMatrix();
+
+	//Health
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x, position.y + scale.y * 2 + 20, position.z);
+	modelStack.Scale(m_iHealth / 5, 1, 1);
+	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
+	modelStack.PopMatrix();
 }
 
 Turret * Create::Turret3D(const std::string & _meshName, 

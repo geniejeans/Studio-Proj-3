@@ -149,6 +149,8 @@ void SceneText::Init()
 	// Load all the meshes
 	MeshBuilder::GetInstance()->GenerateAxes("reference");
 	MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
+	MeshBuilder::GetInstance()->GenerateQuad("healthR", Color(1, 0, 0), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("healthG", Color(0, 0.5, 0), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);

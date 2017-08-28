@@ -279,6 +279,12 @@ void CNinja3D::Render(void)
 		modelStack.Translate(position.x, position.y, position.z);
 		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 		modelStack.Scale(scale.x, scale.y, scale.z);
+		modelStack.PushMatrix();
+		modelStack.Translate(0, scale.y + 10, 0);
+		modelStack.Scale(m_iHealth / 5, 0.5, 1);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
+		modelStack.PopMatrix();
+		RenderHelper::RenderMesh(modelMesh);
 		RenderHelper::RenderMesh(modelMesh);
 		modelStack.PopMatrix();
 	}
