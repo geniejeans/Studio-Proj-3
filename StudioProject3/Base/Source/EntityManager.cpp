@@ -616,11 +616,24 @@ void EntityManager::Render()
 	}
 	for (it3 = troopList.begin(); it3 != troopList.end(); ++it3)
 	{
-		// Troop's Textures
+		// Normal Troop's Textures
 		if (Shield::GetInstance()->GetShieldActive() && (*it3)->GetMeshName() == "testTroop")
 			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedTroop"));
 		else if ((*it3)->GetMeshName() == "testTroop")
 			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop"));
+
+		// Archer Troop's Textures
+		if (Shield::GetInstance()->GetShieldActive() && (*it3)->GetMeshName() == "testTroop2")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedArcherTroop"));
+		else if ((*it3)->GetMeshName() == "testTroop2")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop2"));
+
+		// Tank Troop's Textures
+		if (Shield::GetInstance()->GetShieldActive() && (*it3)->GetMeshName() == "testTroop3")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("ShieldedTankTroop"));
+		else if ((*it3)->GetMeshName() == "testTroop3")
+			(*it3)->SetMesh(MeshBuilder::GetInstance()->GetMesh("testTroop3"));
+
 		(*it3)->Render();
 	}
 	for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
