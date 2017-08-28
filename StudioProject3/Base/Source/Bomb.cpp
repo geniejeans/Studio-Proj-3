@@ -5,6 +5,7 @@
 #include "RenderHelper.h"
 #include "MeshBuilder.h"
 #include "MouseController.h"
+#include "MoneyManager\Money.h"
 
 double Bomb::m_dRate = 0;
 bool Bomb::b_LMBtrue = false;
@@ -48,11 +49,19 @@ void Bomb::Render(void)
 // This function will be called in EntityManager to update the bomb
 void Bomb::Update(double dt)
 {
-	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB) && !b_LMBtrue)
+	float mouse_X, mouse_Y;
+	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
+
+	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB) && !b_LMBtrue) //if player uses bomb outside of UI, -40 points
 	{
 		//b_LMBtrue = true;
-		SetBombActive(true);
-		
+		SetBombActive(true);	
+		if (mouse_X > 0.f && mouse_X < 800.f
+			&& mouse_Y < 493.f && mouse_Y > 0.f)
+		{
+			Money::GetInstance()->SetActiveDestroyed(true);
+			Money::GetInstance()->DeductMoney(40);
+		}
 	}
 	else if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB) && b_LMBtrue)
 	{
