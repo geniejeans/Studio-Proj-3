@@ -176,6 +176,7 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vec
 			vector<Vector3>estimatedDestination;
 			std::list<EntityBase*>::iterator it;
 
+			//Setting of destination
 			for (int i = 0; i < numberOfSelected; i++)
 			{
 				bool tooClose = false;
@@ -193,6 +194,7 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vec
 					}
 				} while (tooClose);
 			}
+			//Assignment of destination
 			int i = 0;
 			for (it = list.begin(); it != list.end(); ++it)
 			{

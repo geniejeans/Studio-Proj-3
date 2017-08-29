@@ -13,7 +13,8 @@ EntityBase::EntityBase()
 	, isDone(false)
 	, m_bCollider(false)
 	, m_bCollide(false)
-	,m_bActionDone(false)
+	, m_bActionDone(false)
+	, m_bSelected(false)
 {
 }
 

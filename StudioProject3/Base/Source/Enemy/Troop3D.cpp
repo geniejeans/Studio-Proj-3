@@ -263,11 +263,22 @@ void CTroop3D::Render(void)
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 	modelStack.Scale(scale.x, scale.y, scale.z);
+	//Render health bar===
 	modelStack.PushMatrix();
 	modelStack.Translate(0, scale.y + 10.f, 0);
 	modelStack.Scale(m_iHealth / 5.f, 0.5f, 1.f);
 	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthG"));
 	modelStack.PopMatrix();
+	//Render if selected==
+	if (m_bSelected)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(0, -8, 0);
+		modelStack.Scale(5,5,5);
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("IndicatorTarget"));
+		modelStack.PopMatrix();
+	}
+	//====================
 	RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
 }

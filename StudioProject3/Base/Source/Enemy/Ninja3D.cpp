@@ -231,7 +231,7 @@ void CNinja3D::Update(double dt)
 			stealDelay += (float)dt;
 			if (stealDelay >= 3.0f)
 			{
-				Money::GetInstance()->DeductMoney(Math::RandIntMinMax(5, 10));
+				Money::GetInstance()->DeductMoney(Math::RandIntMinMax(5, 20));
 				stealDelay = 0.0f;
 			}
 		}

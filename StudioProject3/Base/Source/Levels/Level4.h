@@ -71,7 +71,7 @@ private:
 	float elapsed_time;
 	float complete_time;
 	float spawnDelay = 0.f;
-	const float coolDown = 30.f;
+	const float coolDown = 10.f;
 };
 
 #endif

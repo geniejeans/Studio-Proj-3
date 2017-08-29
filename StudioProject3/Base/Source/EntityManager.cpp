@@ -183,7 +183,7 @@ void EntityManager::Update(double _dt)
 				{
 					srand((unsigned int)time(NULL));
 					Money::GetInstance()->SetActiveDestroyed(true);
-					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20)); // +15p when Trees get destroyed by Troops
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(0, 10)); // +15p when Trees get destroyed by Troops
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					(*it_T)->SetIsDone(true);
 				}
@@ -221,7 +221,7 @@ void EntityManager::Update(double _dt)
 				{
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					Money::GetInstance()->SetActiveDestroyed(true);
-					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20));
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(0, 10));
 					(*it_T)->SetBuffer(2);
 					(*it_T)->SetIsDone(true);
 				}
@@ -379,7 +379,7 @@ void EntityManager::Update(double _dt)
 					{
 						(*it2)->SetIsDone(true);
 						Money::GetInstance()->SetActiveDestroyed(true);
-						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
+						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
 					}
 				}
 			}
@@ -395,7 +395,7 @@ void EntityManager::Update(double _dt)
 				{
 					(*it2)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true);
-					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
 					(*it2)->SetIsDone(true);
 				}
 			}

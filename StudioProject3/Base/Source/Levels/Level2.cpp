@@ -199,7 +199,7 @@ void Level2::Init()
 	Money::GetInstance()->SetMoney(100);
 	Money::GetInstance()->SetMoneyRate(10);
 	elapsed_time = 0.0f;
-	complete_time = 150.0f;
+	complete_time = 180.0f;
 
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
