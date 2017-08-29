@@ -45,6 +45,7 @@
     <ClCompile Include="Source\SceneText.cpp" />
     <ClCompile Include="Source\Screen.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
+    <ClCompile Include="Source\SoundEngine.cpp" />
     <ClCompile Include="Source\SpriteEntity.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
     <ClCompile Include="Source\Trees\Trees.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\Screen.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
+    <ClInclude Include="Source\SoundEngine.h" />
     <ClInclude Include="Source\SpriteEntity.h" />
     <ClInclude Include="Source\TextEntity.h" />
     <ClInclude Include="Source\Trees\Trees.h" />

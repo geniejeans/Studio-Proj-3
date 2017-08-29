@@ -167,6 +167,9 @@
     <ClCompile Include="Source\Enemy\Ninja3D.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SoundEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -282,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy\Ninja3D.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundEngine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
