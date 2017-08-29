@@ -258,6 +258,7 @@ void Level4::Update(double dt)
 
 	if (m_fTime_MoneyRain > m_fTimeMAXLimit_MoneyRain)
 	{
+		bool resetTime = true;
 		for (int i = 0; i < 15; i++)
 		{
 			theMoney[i]->SetFall(true);
@@ -265,9 +266,12 @@ void Level4::Update(double dt)
 			if (theMoney[i]->GetPosition().y < groundEntity->GetPosition().y)
 			{
 				theMoney[i]->SetFall(false);
-				m_bSwitchTime_MoneyRain = true;
 			}
+			else
+				resetTime = false;
 		}
+		if (resetTime)
+			m_bSwitchTime_MoneyRain = true;
 	}
 
 	// Thunder Storm
@@ -282,6 +286,7 @@ void Level4::Update(double dt)
 
 	if (m_fTime_ThunderStorm > m_fTimeMAXLimit_ThunderStorm)
 	{
+		bool resetTime = true;
 		for (int i = 0; i < 15; i++)
 		{
 			theStorm[i]->SetFall(true);
@@ -289,9 +294,12 @@ void Level4::Update(double dt)
 			if (theStorm[i]->GetPosition().y < groundEntity->GetPosition().y)
 			{
 				theStorm[i]->SetFall(false);
-				m_bSwitchTime_ThunderStorm = true;
 			}
+			else
+				resetTime = false;
 		}
+		if (resetTime)
+			m_bSwitchTime_ThunderStorm = true;
 	}
 
 	if (elapsed_time >= 3.f)

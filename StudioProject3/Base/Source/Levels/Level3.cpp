@@ -191,7 +191,7 @@ void Level3::Init()
 	for (int i = 0; i < 15; i++)
 	{
 		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
+			Vector3(20.f, 20.f, 1.f),
 			Vector3(0.f, 0.f, 0.f));
 	}
 
@@ -204,7 +204,7 @@ void Level3::Init()
 	for (int i = 0; i < 15; i++)
 	{
 		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
+			Vector3(20.f, 20.f, 1.f),
 			Vector3(0.f, 0.f, 0.f));
 	}
 
@@ -259,6 +259,7 @@ void Level3::Update(double dt)
 
 	if (m_fTime_MoneyRain > m_fTimeMAXLimit_MoneyRain)
 	{
+		bool resetTime = true;
 		for (int i = 0; i < 15; i++)
 		{
 			theMoney[i]->SetFall(true);
@@ -266,9 +267,13 @@ void Level3::Update(double dt)
 			if (theMoney[i]->GetPosition().y < groundEntity->GetPosition().y)
 			{
 				theMoney[i]->SetFall(false);
-				m_bSwitchTime_MoneyRain = true;
 			}
+			else
+				resetTime = false;
 		}
+		if (resetTime)
+			m_bSwitchTime_MoneyRain = true;
+
 	}
 
 	// Thunder Storm
@@ -283,6 +288,7 @@ void Level3::Update(double dt)
 
 	if (m_fTime_ThunderStorm > m_fTimeMAXLimit_ThunderStorm)
 	{
+		bool resetTime = true;
 		for (int i = 0; i < 15; i++)
 		{
 			theStorm[i]->SetFall(true);
@@ -290,9 +296,12 @@ void Level3::Update(double dt)
 			if (theStorm[i]->GetPosition().y < groundEntity->GetPosition().y)
 			{
 				theStorm[i]->SetFall(false);
-				m_bSwitchTime_ThunderStorm = true;
 			}
+			else
+				resetTime = false;
 		}
+		if (resetTime)
+			m_bSwitchTime_ThunderStorm = true;
 	}
 
 	if (elapsed_time >= 3.f)

@@ -165,6 +165,12 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
+	//MoneyRain
+	MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//Coin.tga");
+	//ThunderStorm
+	MeshBuilder::GetInstance()->GenerateQuad("THUNDER_STORM", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//RandomEvents//Lightning.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("UI", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("UI")->textureID = LoadTGA("Image//HUDScreen_Full.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("UILevel1", Color(1, 1, 1), 1.f);
@@ -173,7 +179,6 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("UILevel2")->textureID = LoadTGA("Image//HUDScreen_Lv2.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("Loading", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("Loading")->textureID = LoadTGA("Image//LoadingScreen.tga");
-//	MeshBuilder::GetInstance()->GenerateCube("testTroop", Color(1.f, 0.5f, 0.4f), 1.0f);
 
 	//TROOPS
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
