@@ -65,7 +65,7 @@ void Bomb::Update(double dt)
 			CSoundEngine::GetInstance()->AddSound("BombExplode", "Image//Sounds/Bomb_Exploding.mp3");
 			CSoundEngine::GetInstance()->PlayASound("BombExplode", false);
 
-			Money::GetInstance()->SetActiveDestroyed(true);
+			//Money::GetInstance()->SetActiveDestroyed(true);
 			Money::GetInstance()->DeductMoney(40);
 		}
 	}
