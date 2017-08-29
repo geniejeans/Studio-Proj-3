@@ -4,17 +4,15 @@
 #include "SceneManager.h"
 #include "GraphicsManager.h"
 
+//Include the standard C++ headers
+#include <stdio.h>
+#include <stdlib.h>
+
 //Include GLEW
 #include <GL/glew.h>
 
 //Include GLFW
 #include <GLFW/glfw3.h>
-
-//Include the standard C++ headers
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "SceneText.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game

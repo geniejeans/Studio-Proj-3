@@ -133,7 +133,7 @@ void Money::UpdateMoney(double dt)
 
 		if (m_dMoneyOverTime > 1.5)
 		{
-			m_iMoney -= (m_iMoneyRate * 0.5f);
+			m_iMoney -= (m_iMoneyRate / 2);
 			m_dMoneyOverTime = 0;
 		}
 	}

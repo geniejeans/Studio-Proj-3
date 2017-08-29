@@ -134,13 +134,13 @@ void CPlayerInfo::Update(double dt)
 	double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
 	double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
 	
-	Vector3 viewUVXY = Vector3(target.x - position.x, 0, target.z - position.z).Normalized();
-	CMinimap::GetInstance()->SetAngle(Vector3(0, 0, -1).Dot(viewUVXY));
+//	Vector3 viewUVXY = Vector3(target.x - position.x, 0, target.z - position.z).Normalized();
+//	CMinimap::GetInstance()->SetAngle(Vector3(0, 0, -1).Dot(viewUVXY));
 	//Update the camera direction based on mouse move
 
 	// Update minimap rotation angle
-	Vector3 viewUV = (target - position).Normalized();
-	CMinimap::GetInstance()->SetAngle(atan2(viewUV.z, viewUV.x) * 57.2883513685549146);
+//	Vector3 viewUV = (target - position).Normalized();
+//	CMinimap::GetInstance()->SetAngle(atan2(viewUV.z, viewUV.x) * 57.2883513685549146);
 
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)

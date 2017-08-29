@@ -264,8 +264,8 @@ void CTroop3D::Render(void)
 	modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 	modelStack.Scale(scale.x, scale.y, scale.z);
 	modelStack.PushMatrix();
-	modelStack.Translate(0, scale.y + 10, 0);
-	modelStack.Scale(m_iHealth / 5, 0.5, 1);
+	modelStack.Translate(0, scale.y + 10.f, 0);
+	modelStack.Scale(m_iHealth / 5.f, 0.5f, 1.f);
 	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthG"));
 	modelStack.PopMatrix();
 	RenderHelper::RenderMesh(modelMesh);

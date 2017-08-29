@@ -250,7 +250,7 @@ void Turret::Render(void)
 	//Health
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y + scale.y * 2 + 20, position.z);
-	modelStack.Scale(m_iHealth / 5, 1, 1);
+	modelStack.Scale(m_iHealth / 5.f, 1.f, 1.f);
 	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
 	modelStack.PopMatrix();
 }
@@ -275,7 +275,6 @@ Turret * Create::Turret3D(const std::string & _meshName,
 	{
 	case 1:
 		result->SetHealth(100);
-	
 		EntityManager::GetInstance()->AddTurretEntity(result);
 		break;
 	case 2:
@@ -286,5 +285,8 @@ Turret * Create::Turret3D(const std::string & _meshName,
 		result->SetHealth(200);
 		EntityManager::GetInstance()->AddTurretEntity(result);
 		break;
+	default:
+		break;
 	}
+	return result;
 }

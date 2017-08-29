@@ -24,7 +24,7 @@ bool CController::Create(CPlayerInfo* thePlayerInfo)
 }
 
 // Read from the controller
-int CController::Read(const const float deltaTime)
+int CController::Read(const float deltaTime)
 {
 	return 0;
 }
@@ -65,7 +65,7 @@ bool CController::Look_UpDown(const float deltaTime, const bool direction, doubl
 {
 	if (thePlayerInfo)
 	{
-		thePlayerInfo->Look_UpDown(deltaTime, direction, cameraPitch);
+		thePlayerInfo->Look_UpDown(deltaTime, direction, (float)cameraPitch);
 	}
 	return false;
 }
@@ -75,7 +75,7 @@ bool CController::Look_LeftRight(const float deltaTime, const bool direction, do
 {
 	if (thePlayerInfo)
 	{
-		thePlayerInfo->Look_LeftRight(deltaTime, direction, cameraYaw);
+		thePlayerInfo->Look_LeftRight(deltaTime, direction, (float)cameraYaw);
 	}
 	return false;
 }

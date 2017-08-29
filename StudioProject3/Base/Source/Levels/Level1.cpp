@@ -144,7 +144,6 @@ void Level1::Init()
 
 
 	//	std::cout << _DEBUG << std::endl;
-	int a;
 
 	// Create and attach the camera to the scene
 	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
@@ -210,8 +209,8 @@ void Level1::Init()
 	float halfFontSize = fontSize / 2.0f;
 	//Creating textOBj
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2, -halfWindowHeight + fontSize * 2.5, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2.f, -halfWindowHeight + fontSize * 2.5f, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2.f, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -241,7 +240,7 @@ void Level1::Init()
 void Level1::Update(double dt)
 {
 
-	elapsed_time += dt;
+	elapsed_time += (float)dt;
 	// Indicator RayCasting
 	if (!GameUI::GetInstance()->GetBombRender())
 	{
@@ -255,16 +254,16 @@ void Level1::Update(double dt)
 	
 	if (elapsed_time >= 3.f)
 	{
-		complete_time -= dt;
+		complete_time -= (float)dt;
 		if (complete_time <= 0)
 			complete_time = 0.0f;
 		//Hardware Abstraction
 		if (theKeyboard)
-			theKeyboard->Read(dt);
+			theKeyboard->Read((float)dt);
 
 		if (theMouse)
 		{
-			theMouse->Read(dt);
+			theMouse->Read((float)dt);
 			theMouse->SetTroopMovement(*BombTarget, *IndicatorTarget, test);
 		}
 	

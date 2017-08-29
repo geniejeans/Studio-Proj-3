@@ -87,8 +87,8 @@ void Thunderstorm::Update(double dt)
 	{
 		Money::GetInstance()->SetActiveStorm(true);
 
-		_vel += _Gravity * m_fSpeed * dt;
-		_pos.y += _vel.y * m_fSpeed * dt;
+		_vel += _Gravity * m_fSpeed * (float)dt;
+		_pos.y += _vel.y * m_fSpeed * (float)dt;
 
 		SetPosition(_pos);
 	}

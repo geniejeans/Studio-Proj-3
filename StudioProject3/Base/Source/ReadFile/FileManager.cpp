@@ -46,14 +46,14 @@ void FileManager::ReadFile(const string m_sFilename)
 			}
 
 			//check for individual values
-			for (int i = 0; i < info.length(); ++i)
+			for (size_t i = 0; i < info.length(); ++i)
 			{
 				switch (m_iColumn)
 				{
 					case 1: //type
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -73,7 +73,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 2: //name
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -93,7 +93,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 3: //position.x
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -113,7 +113,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 4: //position.y
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -133,7 +133,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 5: //position.z
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -153,7 +153,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 6: //scale.x
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -173,7 +173,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 7: //scale.y
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -193,7 +193,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 8: //scale.z
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -213,7 +213,7 @@ void FileManager::ReadFile(const string m_sFilename)
 					case 9: //if have, obj type
 					{
 						//take in individual chars
-						for (int chara = i; chara < info.length(); ++chara)
+						for (size_t chara = i; chara < info.length(); ++chara)
 						{
 							//before comma
 							if (info[chara] != ',')
@@ -276,7 +276,7 @@ void FileManager::CreateObjects()
 		// Trees (Random Spawn)
 		else if (stoi(store.Type) == 3)
 		{
-			srand(time(NULL));
+			srand((unsigned int)time(NULL));
 			Create::Trees3D(store.Name,
 				Vector3(Math::RandFloatMinMax(-stof(store.positionX), stof(store.positionX))
 					, stof(store.positionY),

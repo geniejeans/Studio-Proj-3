@@ -139,7 +139,6 @@ void SceneText::Init()
 
 
 //	std::cout << _DEBUG << std::endl;
-	int a;
 
 	// Create and attach the camera to the scene
 	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
@@ -461,10 +460,10 @@ void SceneText::Update(double dt)
 
 	//Hardware Abstraction
 	if(theKeyboard)
-		theKeyboard->Read(dt);
+		theKeyboard->Read((float)dt);
 
 	if (theMouse)
-		theMouse->Read(dt);
+		theMouse->Read((float)dt);
 	// Update the player position and other details based on keyboard and mouse inputs
 	playerInfo->Update(dt);
 

@@ -29,7 +29,7 @@ void RadarScan::Update(double dt)
 	}
 
 	if (m_bRadarOnCooldown && m_fRadarCooldown <= 20.f)
-		m_fRadarCooldown += dt;
+		m_fRadarCooldown += (float)dt;
 
 	else if (m_fRadarCooldown >= 20.f)
 	{

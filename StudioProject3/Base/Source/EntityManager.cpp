@@ -181,7 +181,7 @@ void EntityManager::Update(double _dt)
 				(*it4)->SetIsDone(true);
 				if ((*it_T)->GetHealth() <= 0)
 				{
-					srand(time(NULL));
+					srand((unsigned int)time(NULL));
 					Money::GetInstance()->SetActiveDestroyed(true);
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20)); // +15p when Trees get destroyed by Troops
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
@@ -235,7 +235,7 @@ void EntityManager::Update(double _dt)
 		CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
 	
 		Vector3 targetPos;
-		troop->m_fElapsedTimeBeforeUpdate += _dt;
+		troop->m_fElapsedTimeBeforeUpdate += (float)_dt;
 
 		if ((*it)->GetActionDone())
 		{
@@ -332,7 +332,6 @@ void EntityManager::Update(double _dt)
 
 		Vector3 targetPos;
 		turret->m_dCoolDown += _dt;
-		int range;
 
 		//TURRET shooting at TROOP
 		for (it = troopList.begin(); it != troopList.end(); it++)

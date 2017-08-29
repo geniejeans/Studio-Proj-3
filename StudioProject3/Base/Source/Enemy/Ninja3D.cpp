@@ -199,7 +199,7 @@ void CNinja3D::Update(double dt)
 			//If radar is active
 			if (RadarScan::GetInstance()->GetRPressed())
 			{
-				RenderDelay += dt;
+				RenderDelay += (float)dt;
 				if (RenderDelay >= 0.3f)
 				{
 					if (m_bRadarActive)
@@ -228,7 +228,7 @@ void CNinja3D::Update(double dt)
 			m_bRealRendered = true;
 		if (m_bActionDone)
 		{
-			stealDelay += dt;
+			stealDelay += (float)dt;
 			if (stealDelay >= 3.0f)
 			{
 				Money::GetInstance()->DeductMoney(Math::RandIntMinMax(5, 10));
@@ -280,8 +280,8 @@ void CNinja3D::Render(void)
 		modelStack.Rotate(Math::RadianToDegree(atan2(rotate.x, rotate.z)), 0, 1, 0);
 		modelStack.Scale(scale.x, scale.y, scale.z);
 		modelStack.PushMatrix();
-		modelStack.Translate(0, scale.y + 10, 0);
-		modelStack.Scale(m_iHealth / 5, 0.5, 1);
+		modelStack.Translate(0, scale.y + 10.f, 0);
+		modelStack.Scale(m_iHealth / 5.f, 0.5f, 1.f);
 		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
 		modelStack.PopMatrix();
 		RenderHelper::RenderMesh(modelMesh);

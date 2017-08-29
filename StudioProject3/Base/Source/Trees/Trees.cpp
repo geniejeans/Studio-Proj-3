@@ -38,8 +38,8 @@ void Trees::Render(void)
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Scale(m_Scale.x, m_Scale.y, m_Scale.z);
 	modelStack.PushMatrix();
-	modelStack.Translate(0, scale.y + 10, 0);
-	modelStack.Scale(m_iHealth / 5, 0.3, 1);
+	modelStack.Translate(0, scale.y + 10.f, 0);
+	modelStack.Scale(m_iHealth / 5.f, 0.3f, 1.f);
 	RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("healthR"));
 	modelStack.PopMatrix();
 	RenderHelper::RenderMesh(modelMesh);
@@ -53,9 +53,9 @@ void Trees::Update(double dt)
 	if (m_dSpawnTime > 0.0)
 	{
 		m_bSpawn = false;
-		if (m_Scale < Vector3(5, 5, 5))
+		if (m_Scale < Vector3(5.f, 5.f, 5.f))
 		{
-			m_Scale += Vector3(1, 1, 1) * dt;
+			m_Scale += Vector3(1.f, 1.f, 1.f) * (float)dt;
 		}
 	}
 	else if (m_dSpawnTime < 0.0)
