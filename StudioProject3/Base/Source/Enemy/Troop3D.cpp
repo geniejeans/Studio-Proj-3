@@ -172,7 +172,7 @@ void CTroop3D::Update(double dt)
 			}
 
 			if (!m_bCollide || m_bChangeDir)
-				position += viewVector * (float)m_dSpeed * (float)dt;
+				position += viewVector * (float)m_dSpeed * (float)dt * 1.5;
 
 			else
 			{
@@ -216,8 +216,9 @@ void CTroop3D::Update(double dt)
 		{
 			Vector3 velocity = (fireDestination - position).Normalized() * 2.5;
 			velocity.y = (fireDestination - position).Length() / 2;
-			std::cout << velocity << std::endl;
 			CProjectile* aProjectile = Create::Projectile("Troopbullet", position, (fireDestination - position).Normalized(), 4.0f, 20.0f, 1, 5, this);
+			if (velocity.y > 40.f)
+				aProjectile->SetSpeed(10.0f);
 			aProjectile->SetCollider(true);
 			aProjectile->SetFireDestination(fireDestination);
 			aProjectile->SetVelocity(velocity);

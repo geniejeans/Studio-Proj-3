@@ -99,7 +99,7 @@ void CMouse::Selection(double x, double y)
 	cout << x << " | " << y << endl;
 }
 
-void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget)
+void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vector3 &mousePos)
 {
 	float mouse_X, mouse_Y;
 	MouseController::GetInstance()->GetMousePosition(mouse_X, mouse_Y);
@@ -124,7 +124,7 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget)
 
 	//Testing of ray
 	float distanceFromRay = -(thePlayerInfo->GetPos().Dot(Vector3(0, 1, 0) + 0) / ray_wor.Dot(Vector3(0, 1, 0))) - 20.f;
-	test = Vector3(thePlayerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, thePlayerInfo->GetPos().z + ray_wor.z * distanceFromRay);
+	mousePos = Vector3(thePlayerInfo->GetPos().x + ray_wor.x * distanceFromRay, 10.f, thePlayerInfo->GetPos().z + ray_wor.z * distanceFromRay);
 
 	//troop selection
 	if (mouse_Y < 500)
@@ -132,16 +132,16 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget)
 		if (!bMstate && MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 		{
 			bMstate = true;
-			topLeft = test;
+			topLeft = mousePos;
 		}
 		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget.GetPosition().y != 10.f))
 		{
-			IndicatorTarget.SetPosition(Vector3(topLeft.x + (test.x - topLeft.x) / 2, 10, topLeft.z + (test.z - topLeft.z) / 2));
-			IndicatorTarget.SetScale(Vector3(abs(test.x - topLeft.x) / 2, 10, abs(test.z - topLeft.z) / 2));
+			IndicatorTarget.SetPosition(Vector3(topLeft.x + (mousePos.x - topLeft.x) / 2, 10, topLeft.z + (mousePos.z - topLeft.z) / 2));
+			IndicatorTarget.SetScale(Vector3(abs(mousePos.x - topLeft.x) / 2, 10, abs(mousePos.z - topLeft.z) / 2));
 		}
 		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
 		{
-			botRight = test;
+			botRight = mousePos;
 			bMstate = false;
 			bSelection = true;
 		}
@@ -170,7 +170,7 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget)
 		}
 		if (numberOfSelected != 0 && !topLeft.IsZero() && (topLeft == botRight))
 		{
-			IndicatorTarget.SetPosition(test);
+			IndicatorTarget.SetPosition(mousePos);
 			IndicatorTarget.SetScale(Vector3(10, 10, 10));
 			std::list<EntityBase*> list = EntityManager::GetInstance()->GetTroopList();
 			vector<Vector3>estimatedDestination;

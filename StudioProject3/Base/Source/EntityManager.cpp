@@ -242,9 +242,8 @@ void EntityManager::Update(double _dt)
 			// Others - Troops
 			for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 			{
-				if (!(*it6)->IsDone())
+				if (!(*it6)->IsDone() && (*it6)->GetMeshName() =="enemyBase")
 				{
-					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
 					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
@@ -259,7 +258,6 @@ void EntityManager::Update(double _dt)
 			{
 				if (!(*it_T)->IsDone())
 				{
-					// Making the range of 60 * 60, and ensuring that the closest troops are shoot first.
 					if (((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it_T)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
@@ -273,7 +271,6 @@ void EntityManager::Update(double _dt)
 			// Turret - Troops
 			for (it2 = turretList.begin(); it2 != turretList.end(); it2++)
 			{
-				// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
 				if (((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 					((*it2)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 				{
@@ -373,7 +370,8 @@ void EntityManager::Update(double _dt)
 		{
 			if (!(*it4)->IsDone())
 			{
-				if (CheckSphereCollision(*it2, *it4))
+				(*it4)->SetBuffer(-4);
+				if (CheckSphereCollision(*it4, *it2))
 				{
 					CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 					(*it2)->SetHealth((*it2)->GetHealth() - projectile->GetDamage());
@@ -384,8 +382,6 @@ void EntityManager::Update(double _dt)
 						Money::GetInstance()->SetActiveDestroyed(true);
 						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
 					}
-
-					cout << (*it2)->GetHealth() << endl;
 				}
 			}
 		

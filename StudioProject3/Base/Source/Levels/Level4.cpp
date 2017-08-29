@@ -154,7 +154,6 @@ void Level4::Init()
 	// Create entities into the scene
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
-	testTrack = Create::Entity("sphere", Vector3(0, 10, 0), Vector3(2, 2, 2));
 
 	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
 	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, -10, 0), Vector3(10, 10, 10));
@@ -180,6 +179,8 @@ void Level4::Init()
 	//Creating textOBj
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2, -halfWindowHeight + fontSize * 2.5, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+
 	//Minimap
 	theMinimap = Create::Minimap(false);
 	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
@@ -218,11 +219,8 @@ void Level4::Init()
 	FileManager::GetInstance()->CreateObjects();
 	Money::GetInstance()->SetMoney(100);
 	Money::GetInstance()->SetMoneyRate(10);
-	bMstate = false;
-	numberOfSelected = 0;
-	topLeft.SetZero();
-	botRight.SetZero();
 	elapsed_time = 0.0f;
+	complete_time = 270.0f;
 
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
@@ -294,6 +292,9 @@ void Level4::Update(double dt)
 
 	if (elapsed_time >= 3.f)
 	{
+		complete_time -= dt;
+		if (complete_time <= 0)
+			complete_time = 0.0f;
 		//Hardware Abstraction
 		if (theKeyboard)
 			theKeyboard->Read(dt);
@@ -301,7 +302,7 @@ void Level4::Update(double dt)
 		if (theMouse)
 		{
 			theMouse->Read(dt);
-			theMouse->SetTroopMovement(*BombTarget, *IndicatorTarget);
+			theMouse->SetTroopMovement(*BombTarget, *IndicatorTarget, test);
 		}
 		spawnDelay += (float)dt;
 
@@ -373,7 +374,11 @@ void Level4::Update(double dt)
 	ss.str("");
 	ss << Money::GetInstance()->GetMoney();
 	textObj[1]->SetText(ss.str());
-	if (KeyboardController::GetInstance()->IsKeyPressed('0'))
+	ss.str("");
+	ss.precision(3);
+	ss << complete_time;
+	textObj[3]->SetText(ss.str());
+	if (KeyboardController::GetInstance()->IsKeyPressed('0') || EntityManager::GetInstance()->GetOtherList().size() == 1 || complete_time <= 0.0f)
 	{
 		SceneManager::GetInstance()->SetActiveScene("Start");
 	}

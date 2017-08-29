@@ -41,7 +41,7 @@ public:
 
 	void Selection(double x, double y);
 	// Setting position
-	void SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget);
+	void SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vector3 &mousePos);
 
 };
 #endif

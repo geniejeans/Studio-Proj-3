@@ -36,6 +36,7 @@ public:
 	void CleanAllList();//All cleaning of lists are inside this function for neater codes
 
 	std::list<EntityBase*> GetTroopList() { return troopList; };
+	std::list<EntityBase*> GetOtherList() { return otherList; };
 	float m_fBuffer = 0.0f;
 
 	void GenerateNinja(GroundEntity *groundEntity, double dt);
