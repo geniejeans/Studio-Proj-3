@@ -190,7 +190,7 @@ void Level3::Init()
 	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
 	// Money Rain
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
 			Vector3(200.f, 200.f, 1.f),
@@ -202,7 +202,7 @@ void Level3::Init()
 	m_bSwitchTime_MoneyRain = true;
 
 	// Thunder Storm
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
 			Vector3(200.f, 200.f, 1.f),
@@ -229,6 +229,8 @@ void Level3::Init()
 	Trees::GetInstance()->SetSpawnRate(5);
 	GameUI::GetInstance()->SetLevelName("Level3");
 	GameUI::SetBombRender(false);
+
+	WinLose = WinLoseScreen::GetInstance();
 }
 
 void Level3::Update(double dt)
@@ -382,9 +384,16 @@ void Level3::Update(double dt)
 	ss.precision(3);
 	ss << complete_time;
 	textObj[3]->SetText(ss.str());
-	if (KeyboardController::GetInstance()->IsKeyPressed('0') || EntityManager::GetInstance()->GetOtherList().size() == 1 || complete_time <= 0.0f)
+	if (KeyboardController::GetInstance()->IsKeyPressed('0') || EntityManager::GetInstance()->GetOtherList().size() == 1)
 	{
 		SceneManager::GetInstance()->SetActiveScene("Level4");
+	}
+	if (complete_time <= 0.0f || Money::GetInstance()->GetMoney() <= 0)
+	{
+		WinLose->SetStates(1);	// Lose Screen
+		WinLose->SetLevel("3");	// Level 3
+		WinLose->SetSwitchLevel(true);	// Boolean true to restart this level
+		SceneManager::GetInstance()->SetActiveScene("WinLoseScreen");
 	}
 }
 

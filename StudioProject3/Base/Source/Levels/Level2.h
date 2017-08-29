@@ -17,6 +17,7 @@
 #include "../SpriteEntity.h"
 #include "../Furniture\Furniture.h"
 #include "../Bomb.h"
+#include "../GameUI/WinLoseScreen.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -48,6 +49,7 @@ private:
 	CMinimap *theMinimap;
 	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;
+	WinLoseScreen* WinLose;
 
 	static Level2* sInstance; // The pointer to the object that gets registered
 	CKeyboard* theKeyboard;

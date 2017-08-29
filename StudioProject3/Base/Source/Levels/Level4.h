@@ -19,6 +19,7 @@
 #include "../Bomb.h"
 #include "../RandomEvents/MoneyRain.h"
 #include "../RandomEvents/Thunderstorm.h"
+#include "../GameUI/WinLoseScreen.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -51,8 +52,9 @@ private:
 	EntityBase* testTrack;
 	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;
-	MoneyRain* theMoney[50];
-	Thunderstorm* theStorm[50];
+	MoneyRain* theMoney[15];
+	Thunderstorm* theStorm[15];
+	WinLoseScreen* WinLose;
 
 	// Money Rain
 	bool m_bSwitchTime_MoneyRain;

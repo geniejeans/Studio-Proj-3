@@ -20,7 +20,11 @@ WinLoseScreen::WinLoseScreen()
 
 WinLoseScreen::WinLoseScreen(SceneManager * _sceneMgr) :
 	theWinLoseState(WIN),
-	Win_Background(NULL)
+	Win_Background(NULL),
+	Level(""),
+	m_bSwitchLevel(false),
+	m_fTimeBeforeLevelChange(4.f),
+	States(0)
 {
 	_sceneMgr->AddScene("WinLoseScreen", this);
 }
@@ -32,6 +36,50 @@ WinLoseScreen::~WinLoseScreen()
 		delete Win_Background;
 		Win_Background = NULL;
 	}
+}
+
+void WinLoseScreen::SetStates(int WinLoseState)
+{
+	switch (WinLoseState)
+	{
+	case 0:
+	{
+		theWinLoseState = WIN_LOSE_STATE::WIN;
+		States = WinLoseState;
+		break;
+	}
+	case 1:
+	{
+		theWinLoseState = WIN_LOSE_STATE::LOSE;
+		States = WinLoseState;
+		break;
+	}
+	}
+}
+
+int WinLoseScreen::GetStates()
+{
+	return States;
+}
+
+void WinLoseScreen::SetLevel(string Level)
+{
+	this->Level = Level;
+}
+
+string WinLoseScreen::GetLevel()
+{
+	return Level;
+}
+
+void WinLoseScreen::SetSwitchLevel(bool is_True)
+{
+	this->m_bSwitchLevel = is_True;
+}
+
+bool WinLoseScreen::GetSwitchLevel()
+{
+	return m_bSwitchLevel;
 }
 
 void WinLoseScreen::Init()
@@ -58,15 +106,12 @@ void WinLoseScreen::Init()
 	Lose_Background = Create::Sprite2DObject("LOSE_BACKGROUND",
 		Vector3(m_worldWidth * 0.f, m_worldHeight * 0.f, 0.f),
 		Vector3(m_worldWidth, m_worldHeight, 0.f), true);
-}
 
-void WinLoseScreen::SetStates()
-{
+	//Creating textOBj
+	float fontSize = 80.0f;
 
-}
+	textObj[0] = Create::Text2DObject("text", Vector3(0 - 80.f, m_worldHeight * -0.15f, 2.f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 
-int WinLoseScreen::GetStates()
-{
 }
 
 void WinLoseScreen::Update(double dt)
@@ -89,24 +134,65 @@ void WinLoseScreen::Update(double dt)
 	{
 		Win_Background->SetPosition(Vector3(m_worldWidth * 0.f, m_worldHeight * 0.f, 0.f));
 		Lose_Background->SetPosition(Vector3(m_worldWidth * 0.f, m_worldHeight * 0.f, 1.f));
-		
+
 		break;
 	}
 	}
 
-	// Testing Purposes
-	if (MouseController::GetInstance()->IsButtonPressed(MouseController::MMB))
+	if (GetSwitchLevel())
 	{
-		theWinLoseState = WIN;
-	}
-	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
-	{
-		theWinLoseState = LOSE;
-	}
+		m_fTimeBeforeLevelChange -= dt;
 
-	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
-	{
-		SceneManager::GetInstance()->SetActiveScene("Screen");
+		std::ostringstream ss;
+		ss.precision(1);
+		ss << m_fTimeBeforeLevelChange;
+		textObj[0]->SetText(ss.str());
+
+		if (GetLevel() == "1" && GetStates() == 1)
+		{
+			if (m_fTimeBeforeLevelChange < 1.f)
+			{
+				SceneManager::GetInstance()->SetActiveScene("Level1");
+				m_fTimeBeforeLevelChange = 4.f;
+				m_bSwitchLevel = false;
+			}
+		}
+		else if (GetLevel() == "2" && GetStates() == 1)
+		{
+			if (m_fTimeBeforeLevelChange < 1.f)
+			{
+				SceneManager::GetInstance()->SetActiveScene("Level2");
+				m_fTimeBeforeLevelChange = 4.f;
+				m_bSwitchLevel = false;
+			}
+		}
+		else if (GetLevel() == "3" && GetStates() == 1)
+		{
+			if (m_fTimeBeforeLevelChange < 1.f)
+			{
+				SceneManager::GetInstance()->SetActiveScene("Level3");
+				m_fTimeBeforeLevelChange = 4.f;
+				m_bSwitchLevel = false;
+			}
+		}
+		else if (GetLevel() == "4"  && GetStates() == 1)
+		{
+			if (m_fTimeBeforeLevelChange < 1.f)
+			{
+				SceneManager::GetInstance()->SetActiveScene("Level4");
+				m_fTimeBeforeLevelChange = 4.f;
+				m_bSwitchLevel = false;
+			}
+		}
+		else if (GetLevel() == "4" && GetStates() == 0)
+		{
+			if (m_fTimeBeforeLevelChange < 1.f)
+			{
+				SceneManager::GetInstance()->SetActiveScene("Screen");
+				m_fTimeBeforeLevelChange = 4.f;
+				m_bSwitchLevel = false;
+			}
+		}
 	}
 }
 
