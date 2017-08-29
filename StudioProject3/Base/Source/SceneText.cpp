@@ -173,13 +173,16 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//RandomEvents//Lightning.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("UI", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("UI")->textureID = LoadTGA("Image//HUDScreen_Full.tga");
+	MeshBuilder::GetInstance()->GenerateQuad("UIRno", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("UIRno")->textureID = LoadTGA("Image//HUDScreen_FullRadarNo.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("UILevel1", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("UILevel1")->textureID = LoadTGA("Image//HUDScreen_Lv1.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("UILevel2", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("UILevel2")->textureID = LoadTGA("Image//HUDScreen_Lv2.tga");
 	MeshBuilder::GetInstance()->GenerateQuad("Loading", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("Loading")->textureID = LoadTGA("Image//LoadingScreen.tga");
-
+	MeshBuilder::GetInstance()->GenerateQuad("UILevel2Rno", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("UILevel2Rno")->textureID = LoadTGA("Image//HUDScreen_Lv2RadarNo.tga");
 	//TROOPS
 	MeshBuilder::GetInstance()->GenerateOBJ("testTroop", "OBJ//PlayerTrooperOBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("testTroop")->textureID = LoadTGA("Image//Troop_TextureTGA.tga");

@@ -362,8 +362,14 @@ void Level2::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
 		modelStack.Scale(800, 600, 1);
-		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UILevel2"));
-		modelStack.PopMatrix();
+		if (RadarScan::GetInstance()->GetCooldown() || RadarScan::GetInstance()->GetDuration() > 0.f)
+		{
+			RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UILevel2Rno"));
+		}
+		else
+		{
+			RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UILevel2"));
+		}		modelStack.PopMatrix();
 	}
 	glDisable(GL_BLEND);
 

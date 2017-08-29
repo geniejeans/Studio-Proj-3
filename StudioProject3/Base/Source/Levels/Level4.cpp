@@ -448,8 +448,14 @@ void Level4::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
 		modelStack.Scale(800, 600, 1);
-		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
-		modelStack.PopMatrix();
+		if (RadarScan::GetInstance()->GetCooldown() || RadarScan::GetInstance()->GetDuration() > 0.f)
+		{
+			RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UIRno"));
+		}
+		else
+		{
+			RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("UI"));
+		}		modelStack.PopMatrix();
 	}
 	glDisable(GL_BLEND);
 

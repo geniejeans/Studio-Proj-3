@@ -14,5 +14,6 @@ public:
 	void SetRPressed(bool _value);
 	bool GetRPressed();
 	bool GetCooldown();
+	int GetDuration();
 	void Update(double dt);
 };
