@@ -12,7 +12,7 @@
 #include "Projectile\Projectile.h"
 #include "Enemy\Shield.h"
 #include "Enemy\Ninja3D.h"
-
+#include "SoundEngine.h"
 #include <iostream>
 using namespace std;
 std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8, it9, it10;
@@ -163,6 +163,7 @@ void EntityManager::Update(double _dt)
 				{
 					(*it6)->SetIsDone(true);
 				}
+		
 			}
 		}
 	}
@@ -179,6 +180,8 @@ void EntityManager::Update(double _dt)
 				// Health of trees
 				(*it_T)->SetHealth((*it_T)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
+
+
 				if ((*it_T)->GetHealth() <= 0)
 				{
 					srand((unsigned int)time(NULL));
@@ -186,6 +189,10 @@ void EntityManager::Update(double _dt)
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(15, 20)); // +15p when Trees get destroyed by Troops
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					(*it_T)->SetIsDone(true);
+
+					CSoundEngine::GetInstance()->Init();
+					CSoundEngine::GetInstance()->AddSound("Tree_Hit", "Image//Sounds/Tree_Hit.mp3");
+					CSoundEngine::GetInstance()->PlayASound("Tree_Hit", false);
 				}
 
 			//	cout << (*it_T)->GetHealth() << endl;
@@ -319,6 +326,9 @@ void EntityManager::Update(double _dt)
 			troop->m_fElapsedTimeBeforeUpdate = 0;
 			troop->SetFire(true);
 			troop->SetFireDestination(targetPos);
+			CSoundEngine::GetInstance()->Init();
+			CSoundEngine::GetInstance()->AddSound("Troop_Shooting", "Image//Sounds/Troop_Shooting.mp3");
+			CSoundEngine::GetInstance()->PlayASound("Troop_Shooting", false);
 
 			continue;
 		}
@@ -380,6 +390,10 @@ void EntityManager::Update(double _dt)
 						(*it2)->SetIsDone(true);
 						Money::GetInstance()->SetActiveDestroyed(true);
 						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(100, 200));
+
+						CSoundEngine::GetInstance()->Init();
+						CSoundEngine::GetInstance()->AddSound("Tree_Hit", "Image//Sounds/Tree_Hit.mp3");
+						CSoundEngine::GetInstance()->PlayASound("Tree_Hit", false);
 					}
 				}
 			}
@@ -415,6 +429,10 @@ void EntityManager::Update(double _dt)
 			turret->m_dCoolDown = 0;
 			turret->SetFire(true);
 			turret->SetFireDestination(targetPos);
+			CSoundEngine::GetInstance()->Init();
+			CSoundEngine::GetInstance()->AddSound("Turret_Shooting", "Image//Sounds/Turret_Shooting.mp3");
+			CSoundEngine::GetInstance()->PlayASound("Turret_Shooting", false);
+
 			continue;
 		}
 		turret->SetFire(false);

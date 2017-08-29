@@ -1,6 +1,7 @@
 // Player's Troops Shield.
 
 #include "Shield.h"
+#include "../SoundEngine.h"
 
 Shield::Shield() :
 	m_bShieldActive(false),
@@ -24,6 +25,7 @@ void Shield::Update(double dt)
 			//if timer is more then 2 sec set to false
 			m_bShieldActive = false;
 		}
+		
 	}
 	else
 		elapsedTime = 0;

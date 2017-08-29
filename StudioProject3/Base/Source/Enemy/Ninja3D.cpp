@@ -6,7 +6,7 @@
 #include "KeyboardController.h"
 #include "RadarScan.h"
 #include "../MoneyManager/Money.h"
-
+#include "../SoundEngine.h"
 bool CNinja3D::m_bIsRendered = true;
 bool CNinja3D::isRpressed = false;
 
@@ -233,7 +233,11 @@ void CNinja3D::Update(double dt)
 			{
 				Money::GetInstance()->DeductMoney(Math::RandIntMinMax(5, 10));
 				stealDelay = 0.0f;
+				CSoundEngine::GetInstance()->Init();
+				CSoundEngine::GetInstance()->AddSound("Ninja_Stealing", "Image//Sounds/Ninja_Stealing.mp3");
+				CSoundEngine::GetInstance()->PlayASound("Ninja_Stealing", false);
 			}
+
 		}
 	}
 	

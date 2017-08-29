@@ -7,6 +7,7 @@
 #include "MouseController.h"
 #include "MoneyManager\Money.h"
 #include "GameUI\GameUI.h"
+#include "SoundEngine.h"
 
 double Bomb::m_dRate = 0;
 bool Bomb::b_LMBtrue = false;
@@ -60,6 +61,10 @@ void Bomb::Update(double dt)
 		if (mouse_X > 0.f && mouse_X < 800.f
 			&& mouse_Y < 493.f && mouse_Y > 0.f && GameUI::GetInstance()->GetBombRender())
 		{
+			CSoundEngine::GetInstance()->Init();
+			CSoundEngine::GetInstance()->AddSound("BombExplode", "Image//Sounds/Bomb_Exploding.mp3");
+			CSoundEngine::GetInstance()->PlayASound("BombExplode", false);
+
 			Money::GetInstance()->SetActiveDestroyed(true);
 			Money::GetInstance()->DeductMoney(40);
 		}
