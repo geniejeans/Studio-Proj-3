@@ -170,6 +170,9 @@
     <ClCompile Include="Source\SoundEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameUI\WinLoseScreen.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -288,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="Source\SoundEngine.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameUI\WinLoseScreen.h">
+      <Filter>GameUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

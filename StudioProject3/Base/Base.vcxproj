@@ -20,6 +20,7 @@
     <ClCompile Include="Source\Enemy\Turrets\Turrets.cpp" />
     <ClCompile Include="Source\Furniture\Furniture.cpp" />
     <ClCompile Include="Source\GameUI\GameUI.cpp" />
+    <ClCompile Include="Source\GameUI\WinLoseScreen.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Controller.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Keyboard.cpp" />
     <ClCompile Include="Source\Hardware Abstraction\Mouse.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Source\Enemy\Turrets\Turrets.h" />
     <ClInclude Include="Source\Furniture\Furniture.h" />
     <ClInclude Include="Source\GameUI\GameUI.h" />
+    <ClInclude Include="Source\GameUI\WinLoseScreen.h" />
     <ClInclude Include="Source\Hardware Abstraction\Controller.h" />
     <ClInclude Include="Source\Hardware Abstraction\Keyboard.h" />
     <ClInclude Include="Source\Hardware Abstraction\Mouse.h" />
