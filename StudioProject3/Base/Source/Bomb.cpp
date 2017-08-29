@@ -67,7 +67,7 @@ void Bomb::Update(double dt)
 
 	//		Money::GetInstance()->SetActiveDestroyed(true);
 			if(Money::GetInstance()->GetMoney() > 40)
-				Money::GetInstance()->DeductMoney(40);
+			Money::GetInstance()->DeductMoney(40);
 		}
 	}
 	else if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB) && b_LMBtrue)
