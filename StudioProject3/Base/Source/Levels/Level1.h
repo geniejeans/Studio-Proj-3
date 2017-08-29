@@ -17,13 +17,14 @@
 #include "../SpriteEntity.h"
 #include "../Furniture\Furniture.h"
 #include "../Bomb.h"
+#include "../SceneText.h"
 
 class ShaderProgram;
 class SceneManager;
 class TextEntity;
 class Light;
 
-class Level1 : public Scene
+class Level1 : public SceneText
 {
 public:
 	Level1();

@@ -150,6 +150,7 @@ void Level1::Init()
 	playerInfo->AttachCamera(&camera);
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
+	SceneText::Init();
 	// Load all the meshes
 	//MeshBuilder::GetInstance()->GenerateAxes("reference");
 	//MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
@@ -235,6 +236,7 @@ void Level1::Init()
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
 	GameUI::GetInstance()->SetLevelName("Level1");
+	GameUI::SetBombRender(false);
 }
 
 void Level1::Update(double dt)

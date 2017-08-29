@@ -847,6 +847,7 @@ void EntityManager::ClearEntityList()
 	otherList.clear();
 	ninjaList.clear();
 	TreesList.clear();
+	bombList.clear();
 	troopProjectileList.clear();
 	turretProjectileList.clear();
 }

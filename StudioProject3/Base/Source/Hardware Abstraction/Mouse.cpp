@@ -136,7 +136,7 @@ void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vec
 		}
 		if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB) && (BombTarget.GetPosition().y != 10.f))
 		{
-			IndicatorTarget.SetPosition(Vector3(topLeft.x + (mousePos.x - topLeft.x) / 2, 10, topLeft.z + (mousePos.z - topLeft.z) / 2));
+			IndicatorTarget.SetPosition(Vector3(topLeft.x + (mousePos.x - topLeft.x) / 2, 8, topLeft.z + (mousePos.z - topLeft.z) / 2));
 			IndicatorTarget.SetScale(Vector3(abs(mousePos.x - topLeft.x) / 2, 10, abs(mousePos.z - topLeft.z) / 2));
 		}
 		if (bMstate && !MouseController::GetInstance()->IsButtonDown(MouseController::LMB))

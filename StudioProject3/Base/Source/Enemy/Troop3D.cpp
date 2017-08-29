@@ -273,9 +273,9 @@ void CTroop3D::Render(void)
 	if (m_bSelected)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(0, -8, 0);
+		modelStack.Translate(0, -1, 0);
 		modelStack.Scale(5,5,5);
-		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("IndicatorTarget"));
+		RenderHelper::RenderMesh(MeshBuilder::GetInstance()->GetMesh("IndicatorSelect"));
 		modelStack.PopMatrix();
 	}
 	//====================

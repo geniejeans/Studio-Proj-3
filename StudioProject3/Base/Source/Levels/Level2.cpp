@@ -204,6 +204,7 @@ void Level2::Init()
 	Trees::GetInstance()->SetMaxCount(20);
 	Trees::GetInstance()->SetSpawnRate(5);
 	GameUI::GetInstance()->SetLevelName("Level2");
+	GameUI::SetBombRender(false);
 }
 
 void Level2::Update(double dt)

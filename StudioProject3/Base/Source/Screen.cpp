@@ -241,7 +241,7 @@ void Screen::UpdateStartButton()
 	{
 		if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 		{
-			SceneManager::GetInstance()->SetActiveScene("Start");
+			SceneManager::GetInstance()->SetActiveScene("Level1");
 		}
 	}
 }

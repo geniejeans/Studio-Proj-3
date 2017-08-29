@@ -65,85 +65,85 @@ SceneText::~SceneText()
 
 void SceneText::Init()
 {
-	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
-	
-	// Tell the shader program to store these uniform locations
-	currProg->AddUniform("MVP");
-	currProg->AddUniform("MV");
-	currProg->AddUniform("MV_inverse_transpose");
-	currProg->AddUniform("material.kAmbient");
-	currProg->AddUniform("material.kDiffuse");
-	currProg->AddUniform("material.kSpecular");
-	currProg->AddUniform("material.kShininess");
-	currProg->AddUniform("lightEnabled");
-	currProg->AddUniform("numLights");
-	currProg->AddUniform("lights[0].type");
-	currProg->AddUniform("lights[0].position_cameraspace");
-	currProg->AddUniform("lights[0].color");
-	currProg->AddUniform("lights[0].power");
-	currProg->AddUniform("lights[0].kC");
-	currProg->AddUniform("lights[0].kL");
-	currProg->AddUniform("lights[0].kQ");
-	currProg->AddUniform("lights[0].spotDirection");
-	currProg->AddUniform("lights[0].cosCutoff");
-	currProg->AddUniform("lights[0].cosInner");
-	currProg->AddUniform("lights[0].exponent");
-	currProg->AddUniform("lights[1].type");
-	currProg->AddUniform("lights[1].position_cameraspace");
-	currProg->AddUniform("lights[1].color");
-	currProg->AddUniform("lights[1].power");
-	currProg->AddUniform("lights[1].kC");
-	currProg->AddUniform("lights[1].kL");
-	currProg->AddUniform("lights[1].kQ");
-	currProg->AddUniform("lights[1].spotDirection");
-	currProg->AddUniform("lights[1].cosCutoff");
-	currProg->AddUniform("lights[1].cosInner");
-	currProg->AddUniform("lights[1].exponent");
-	currProg->AddUniform("colorTextureEnabled");
-	currProg->AddUniform("colorTexture");
-	currProg->AddUniform("textEnabled");
-	currProg->AddUniform("textColor");
-	
-	// Tell the graphics manager to use the shader we just loaded
-	GraphicsManager::GetInstance()->SetActiveShader("default");
-
-	lights[0] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
-	lights[0]->type = Light::LIGHT_DIRECTIONAL;
-	lights[0]->position.Set(0, 20, 0);
-	lights[0]->color.Set(1, 1, 1);
-	lights[0]->power = 1;
-	lights[0]->kC = 1.f;
-	lights[0]->kL = 0.01f;
-	lights[0]->kQ = 0.001f;
-	lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
-	lights[0]->cosInner = cos(Math::DegreeToRadian(30));
-	lights[0]->exponent = 3.f;
-	lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
-	lights[0]->name = "lights[0]";
-
-	lights[1] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
-	lights[1]->type = Light::LIGHT_DIRECTIONAL;
-	lights[1]->position.Set(1, 1, 0);
-	lights[1]->color.Set(1, 1, 0.5f);
-	lights[1]->power = 0.4f;
-	lights[1]->name = "lights[1]";
-
-	currProg->UpdateInt("numLights", 1);
-	currProg->UpdateInt("textEnabled", 0);
-	
-	// Create the playerinfo instance, which manages all information about the player
-	playerInfo = CPlayerInfo::GetInstance();
-	playerInfo->Init();
-
-
-//	std::cout << _DEBUG << std::endl;
-
-	// Create and attach the camera to the scene
-	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
-	playerInfo->AttachCamera(&camera);
-	GraphicsManager::GetInstance()->AttachCamera(&camera);
+//	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
+//	
+//	// Tell the shader program to store these uniform locations
+//	currProg->AddUniform("MVP");
+//	currProg->AddUniform("MV");
+//	currProg->AddUniform("MV_inverse_transpose");
+//	currProg->AddUniform("material.kAmbient");
+//	currProg->AddUniform("material.kDiffuse");
+//	currProg->AddUniform("material.kSpecular");
+//	currProg->AddUniform("material.kShininess");
+//	currProg->AddUniform("lightEnabled");
+//	currProg->AddUniform("numLights");
+//	currProg->AddUniform("lights[0].type");
+//	currProg->AddUniform("lights[0].position_cameraspace");
+//	currProg->AddUniform("lights[0].color");
+//	currProg->AddUniform("lights[0].power");
+//	currProg->AddUniform("lights[0].kC");
+//	currProg->AddUniform("lights[0].kL");
+//	currProg->AddUniform("lights[0].kQ");
+//	currProg->AddUniform("lights[0].spotDirection");
+//	currProg->AddUniform("lights[0].cosCutoff");
+//	currProg->AddUniform("lights[0].cosInner");
+//	currProg->AddUniform("lights[0].exponent");
+//	currProg->AddUniform("lights[1].type");
+//	currProg->AddUniform("lights[1].position_cameraspace");
+//	currProg->AddUniform("lights[1].color");
+//	currProg->AddUniform("lights[1].power");
+//	currProg->AddUniform("lights[1].kC");
+//	currProg->AddUniform("lights[1].kL");
+//	currProg->AddUniform("lights[1].kQ");
+//	currProg->AddUniform("lights[1].spotDirection");
+//	currProg->AddUniform("lights[1].cosCutoff");
+//	currProg->AddUniform("lights[1].cosInner");
+//	currProg->AddUniform("lights[1].exponent");
+//	currProg->AddUniform("colorTextureEnabled");
+//	currProg->AddUniform("colorTexture");
+//	currProg->AddUniform("textEnabled");
+//	currProg->AddUniform("textColor");
+//	
+//	// Tell the graphics manager to use the shader we just loaded
+//	GraphicsManager::GetInstance()->SetActiveShader("default");
+//
+//	lights[0] = new Light();
+//	GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
+//	lights[0]->type = Light::LIGHT_DIRECTIONAL;
+//	lights[0]->position.Set(0, 20, 0);
+//	lights[0]->color.Set(1, 1, 1);
+//	lights[0]->power = 1;
+//	lights[0]->kC = 1.f;
+//	lights[0]->kL = 0.01f;
+//	lights[0]->kQ = 0.001f;
+//	lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
+//	lights[0]->cosInner = cos(Math::DegreeToRadian(30));
+//	lights[0]->exponent = 3.f;
+//	lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
+//	lights[0]->name = "lights[0]";
+//
+//	lights[1] = new Light();
+//	GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
+//	lights[1]->type = Light::LIGHT_DIRECTIONAL;
+//	lights[1]->position.Set(1, 1, 0);
+//	lights[1]->color.Set(1, 1, 0.5f);
+//	lights[1]->power = 0.4f;
+//	lights[1]->name = "lights[1]";
+//
+//	currProg->UpdateInt("numLights", 1);
+//	currProg->UpdateInt("textEnabled", 0);
+//	
+//	// Create the playerinfo instance, which manages all information about the player
+//	playerInfo = CPlayerInfo::GetInstance();
+//	playerInfo->Init();
+//
+//
+////	std::cout << _DEBUG << std::endl;
+//
+//	// Create and attach the camera to the scene
+//	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
+//	playerInfo->AttachCamera(&camera);
+//	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Load all the meshes
 	MeshBuilder::GetInstance()->GenerateAxes("reference");
@@ -227,6 +227,9 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateOBJ("IndicatorTarget", "OBJ//quad.obj");
 	MeshBuilder::GetInstance()->GetMesh("IndicatorTarget")->textureID = LoadTGA("Image//Target.tga");
 
+	MeshBuilder::GetInstance()->GenerateOBJ("IndicatorSelect", "OBJ//quad.obj");
+	MeshBuilder::GetInstance()->GetMesh("IndicatorSelect")->textureID = LoadTGA("Image//Selection.tga");
+
 
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
@@ -241,48 +244,48 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//boxUp.tga");
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
 
-	// Create entities into the scene
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+	//// Create entities into the scene
+	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 
 
-	groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
+	//groundEntity = Create::Ground("SKYBOX_BOTTOM", "SKYBOX_BOTTOM");
+	//Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, 0.0f), Vector3(10.0f, 10.0f, 10.0f));
 
-	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
-											 "SKYBOX_LEFT", "SKYBOX_RIGHT",
-											 "SKYBOX_TOP", "SKYBOX_BOTTOM");
+	//SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
+	//										 "SKYBOX_LEFT", "SKYBOX_RIGHT",
+	//										 "SKYBOX_TOP", "SKYBOX_BOTTOM");
 
-	// Customise the ground entity
-	groundEntity->SetPosition(Vector3(0, 0, 0));
-	groundEntity->SetScale(Vector3(100.0f, 150.0f, 150.0f));
-	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
-	playerInfo->SetTerrain(groundEntity);
+	//// Customise the ground entity
+	//groundEntity->SetPosition(Vector3(0, 0, 0));
+	//groundEntity->SetScale(Vector3(100.0f, 150.0f, 150.0f));
+	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
+	//playerInfo->SetTerrain(groundEntity);
 
-	// Setup the 2D entities
-	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
-	float fontSize = 25.0f;
-	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 2; ++i)
-	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
-	}
+	//// Setup the 2D entities
+	//float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
+	//float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+	//float fontSize = 25.0f;
+	//float halfFontSize = fontSize / 2.0f;
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
+	//}
 
-	//Minimap
-	theMinimap = Create::Minimap(false);
-	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
-	theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
-	theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
-	theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
-	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
-	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
+	////Minimap
+	//theMinimap = Create::Minimap(false);
+	//theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
+	//theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
+	//theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
+	//theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
+	//theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
+	//theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
-	theKeyboard = new CKeyboard();
-	theKeyboard->Create(playerInfo);
-	theMouse = new CMouse();
-	theMouse->Create(playerInfo);
+	//theKeyboard = new CKeyboard();
+	//theKeyboard->Create(playerInfo);
+	//theMouse = new CMouse();
+	//theMouse->Create(playerInfo);
 
 	//testTroop[0] = Create::Enemy3D("testTroop", Vector3(0, 10, 200), Vector3(1, 1, 1));
 	//testTroop[0]->Init();
@@ -322,33 +325,33 @@ void SceneText::Init()
 		turret[i]->SetType(2);
 	}*/
 
-	playerInfo->SetTimeCountdown(40.f);
+	//playerInfo->SetTimeCountdown(40.f);
 
-	Money::GetInstance()->SetMoney(100);
-	Money::GetInstance()->SetMoneyRate(10);
+	//Money::GetInstance()->SetMoney(100);
+	//Money::GetInstance()->SetMoneyRate(10);
 
-	// Money Rain---------------------------------------------------------
-	MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 0.08f);
-	MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//Coin.tga");
+	//// Money Rain---------------------------------------------------------
+	//MeshBuilder::GetInstance()->GenerateQuad("MONEY_RAIN", Color(1, 1, 1), 0.08f);
+	//MeshBuilder::GetInstance()->GetMesh("MONEY_RAIN")->textureID = LoadTGA("Image//RandomEvents//Coin.tga");
 
-	for (int i = 0; i < 50; i++)
-	{
-		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
-			Vector3(0.f, 0.f, 0.f));
-	}
-	// -------------------------------------------------------------------
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+	//		Vector3(200.f, 200.f, 1.f),
+	//		Vector3(0.f, 0.f, 0.f));
+	//}
+	//// -------------------------------------------------------------------
 
-	// Thunder Storm------------------------------------------------------
-	MeshBuilder::GetInstance()->GenerateQuad("THUNDER_STORM", Color(1, 1, 1), 0.08f);
-	MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//RandomEvents//Lightning.tga");
+	//// Thunder Storm------------------------------------------------------
+	//MeshBuilder::GetInstance()->GenerateQuad("THUNDER_STORM", Color(1, 1, 1), 0.08f);
+	//MeshBuilder::GetInstance()->GetMesh("THUNDER_STORM")->textureID = LoadTGA("Image//RandomEvents//Lightning.tga");
 
-	for (int i = 0; i < 50; i++)
-	{
-		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
-			Vector3(0.f, 0.f, 0.f));
-	}
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
+	//		Vector3(200.f, 200.f, 1.f),
+	//		Vector3(0.f, 0.f, 0.f));
+	//}
 	// -------------------------------------------------------------------
 }
 
@@ -536,12 +539,12 @@ void SceneText::Update(double dt)
 		EntityManager::GetInstance()->GenerateNinja(groundEntity, dt);
 		spawnDelay = 0.f;
 	}
-	ss << "spawnDelay: " << spawnDelay;
-	textObj[0]->SetText(ss.str());
+	//ss << "spawnDelay: " << spawnDelay;
+	//textObj[0]->SetText(ss.str());
 
-	ss.str("");
-	ss << "Money: " << Money::GetInstance()->GetMoney();
-	textObj[1]->SetText(ss.str());
+	//ss.str("");
+	//ss << "Money: " << Money::GetInstance()->GetMoney();
+	//textObj[1]->SetText(ss.str());
 
 }
 
