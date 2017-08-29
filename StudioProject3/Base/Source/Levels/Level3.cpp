@@ -460,4 +460,11 @@ void Level3::Exit()
 	EntityManager::GetInstance()->ClearEntityList();
 	theMouse = NULL;
 	theKeyboard = NULL;
+	for (int i = 0; i < 15; i++)
+	{
+		theMoney[i] = NULL;
+		theStorm[i] = NULL;
+	}
+
+
 }

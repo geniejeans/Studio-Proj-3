@@ -175,7 +175,7 @@ void Level4::Init()
 	for (int i = 0; i < 15; i++)
 	{
 		theMoney[i] = Create::Money("MONEY_RAIN", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
+			Vector3(20.f, 20.f, 1.f),
 			Vector3(0.f, 0.f, 0.f));
 	}
 
@@ -461,4 +461,9 @@ void Level4::Exit()
 	EntityManager::GetInstance()->ClearEntityList();
 	theMouse = NULL;
 	theKeyboard = NULL;
+	for (int i = 0; i < 15; i++)
+	{
+		theMoney[i] = NULL;
+		theStorm[i] = NULL;
+	}
 }

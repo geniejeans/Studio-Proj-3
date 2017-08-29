@@ -32,7 +32,7 @@ MoneyRain::~MoneyRain()
 void MoneyRain::Init(void)
 {
 	_pos.Set(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f));
-	_scale.Set(200.f, 200.f, 1.f);
+	_scale.Set(20.f, 20.f, 1.f);
 	_vel.Set(0.f, 0.f, 0.f);
 
 	//Physics

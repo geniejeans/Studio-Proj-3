@@ -44,6 +44,7 @@ SceneText::~SceneText()
 
 void SceneText::Init()
 {
+	glDisable(GL_CULL_FACE);
 	// Load all the meshes
 	MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
 	MeshBuilder::GetInstance()->GenerateQuad("healthR", Color(1, 0, 0), 1.f);
