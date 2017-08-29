@@ -146,7 +146,6 @@ void SceneText::Init()
 //	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Load all the meshes
-	MeshBuilder::GetInstance()->GenerateAxes("reference");
 	MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
 	MeshBuilder::GetInstance()->GenerateQuad("healthR", Color(1, 0, 0), 1.f);
 	MeshBuilder::GetInstance()->GenerateQuad("healthG", Color(0, 0.5, 0), 1.f);

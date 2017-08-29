@@ -42,7 +42,6 @@ void GameUI::Update(GroundEntity *groundEntity)
 			SetBombRender(false);
 			if (Money::GetInstance()->GetMoney() >= Money::GetInstance()->GetShieldPriceRate())
 			{
-				cout << "The current price is now " << Money::GetInstance()->GetShieldPriceRate() << " coins." << endl;
 
 				//set shield to true
 				Shield::GetInstance()->SetShieldActive();
@@ -68,15 +67,11 @@ void GameUI::Update(GroundEntity *groundEntity)
 				}
 
 			}
-			else
-			{
-				cout << "You do not have enough to pay " << Money::GetInstance()->GetShieldPriceRate() << " coins." << endl;
-			}
 
 		}
 		//TROOPS
 		else if (mouse_X > 410.f && mouse_X < 510.f
-			&& mouse_Y > 500.f && mouse_Y < 590.f)
+			&& mouse_Y > 500.f && mouse_Y < 590.f && Money::GetInstance()->GetMoney() > 10 )
 		{
 			SetBombRender(false);
 
@@ -91,7 +86,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 		{
 			//ARCHER
 		 if (mouse_X > 525.f && mouse_X < 625.f
-			&& mouse_Y > 500.f && mouse_Y < 590.f)
+			&& mouse_Y > 500.f && mouse_Y < 590.f && Money::GetInstance()->GetMoney() > 20)
 		{
 			SetBombRender(false);
 
@@ -104,7 +99,7 @@ void GameUI::Update(GroundEntity *groundEntity)
 		}
 		//TANKER
 		else if (mouse_X > 640.f && mouse_X < 740.f
-			&& mouse_Y > 500.f && mouse_Y < 590.f)
+			&& mouse_Y > 500.f && mouse_Y < 590.f && Money::GetInstance()->GetMoney() > 30)
 		{
 			SetBombRender(false);
 

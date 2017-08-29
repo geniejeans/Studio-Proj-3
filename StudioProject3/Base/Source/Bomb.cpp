@@ -65,8 +65,9 @@ void Bomb::Update(double dt)
 			CSoundEngine::GetInstance()->AddSound("BombExplode", "Image//Sounds/Bomb_Exploding.mp3");
 			CSoundEngine::GetInstance()->PlayASound("BombExplode", false);
 
-			Money::GetInstance()->SetActiveDestroyed(true);
-			Money::GetInstance()->DeductMoney(40);
+	//		Money::GetInstance()->SetActiveDestroyed(true);
+			if(Money::GetInstance()->GetMoney() > 40)
+				Money::GetInstance()->DeductMoney(40);
 		}
 	}
 	else if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB) && b_LMBtrue)

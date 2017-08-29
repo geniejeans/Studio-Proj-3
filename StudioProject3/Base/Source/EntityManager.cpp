@@ -116,7 +116,9 @@ void EntityManager::Update(double _dt)
 					(*it7)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true); // Ninja will +10p when destroyed by Bomb
 					Money::GetInstance()->SetIncreaseMoney(10);
-					(*it7)->SetIsDone(true);
+					(*it7)->SetHealth((*it7)->GetHealth() - Math::RandIntMinMax(30,100));
+					if ((*it7)->GetHealth() <= 0)
+						(*it7)->SetIsDone(true);
 				}
 			}
 		}
@@ -133,15 +135,14 @@ void EntityManager::Update(double _dt)
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 			continue;*/
 
-			theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
-			theParticle->Init();
-			theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
-				Math::RandFloatMinMax(-5, 5),
-				Math::RandFloatMinMax(-5, 5)));
-
 			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it7, *it4))
 			{
+				theParticle = Create::Partcle("particle", (*it7)->GetPosition(), Vector3(2, 2, 2));
+				theParticle->Init();
+				theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
+					Math::RandFloatMinMax(-5, 5),
+					Math::RandFloatMinMax(-5, 5)));
 				(*it7)->SetHealth((*it7)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
 				if ((*it7)->GetHealth() <= 0)
@@ -185,7 +186,7 @@ void EntityManager::Update(double _dt)
 		{
 			if (CheckSphereCollision(*it_T, *it4))
 			{
-				theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
+				theParticle = Create::Partcle("particle", (*it_T)->GetPosition(), Vector3(2, 2, 2));
 				theParticle->Init();
 				theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
 					Math::RandFloatMinMax(-5, 5),
@@ -245,7 +246,9 @@ void EntityManager::Update(double _dt)
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(0, 10));
 
 					(*it_T)->SetBuffer(2);
-					(*it_T)->SetIsDone(true);
+					(*it_T)->SetHealth((*it_T)->GetHealth() - Math::RandIntMinMax(30, 100));
+					if ((*it_T)->GetHealth() <= 0)
+						(*it_T)->SetIsDone(true);
 				}
 			}
 		}
@@ -266,7 +269,7 @@ void EntityManager::Update(double _dt)
 			{
 				if (!(*it6)->IsDone() && (*it6)->GetMeshName() == "enemyBase")
 				{
-					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
+					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (troop->GetRange() + 40 * 40 )&& (targetPos.IsZero() ||
 						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
 					{
 						targetPos = (*it6)->GetPosition();
@@ -398,7 +401,7 @@ void EntityManager::Update(double _dt)
 				(*it4)->SetBuffer(-4);
 				if (CheckSphereCollision(*it4, *it2))
 				{
-					theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
+					theParticle = Create::Partcle("particle", (*it2)->GetPosition(), Vector3(2, 2, 2));
 					theParticle->Init();
 					theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
 						Math::RandFloatMinMax(-5, 5),
@@ -434,7 +437,9 @@ void EntityManager::Update(double _dt)
 					Money::GetInstance()->SetActiveDestroyed(true);
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
 
-					(*it2)->SetIsDone(true);
+					(*it2)->SetHealth((*it2)->GetHealth() - Math::RandIntMinMax(30, 100));
+					if ((*it2)->GetHealth() <= 0)
+						(*it2)->SetIsDone(true);
 				}
 			}
 		}
@@ -446,6 +451,9 @@ void EntityManager::Update(double _dt)
 			turret->m_dCoolDown = 0;
 			turret->SetFire(true);
 			turret->SetFireDestination(targetPos);
+			CSoundEngine::GetInstance()->Init();
+			CSoundEngine::GetInstance()->AddSound("Turret_Shooting", "Image//Sounds/Turret_Shooting.mp3");
+			CSoundEngine::GetInstance()->PlayASound("Turret_Shooting", false);
 			continue;
 		}
 		else if (turret->m_dCoolDown > 0.1 && !targetPos.IsZero() && turret->GetType() == 2)

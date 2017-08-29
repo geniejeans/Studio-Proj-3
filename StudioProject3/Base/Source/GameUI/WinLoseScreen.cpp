@@ -141,7 +141,7 @@ void WinLoseScreen::Update(double dt)
 
 	if (GetSwitchLevel())
 	{
-		m_fTimeBeforeLevelChange -= dt;
+		m_fTimeBeforeLevelChange -= (float)dt;
 
 		std::ostringstream ss;
 		ss.precision(1);

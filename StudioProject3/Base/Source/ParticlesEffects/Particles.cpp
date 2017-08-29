@@ -10,11 +10,9 @@
 bool Particles::m_bIsSpawn = false;
 
 Particles::Particles(Mesh* modelMesh)
-	:
-	 m_velocity(0.f, 0.f, 0.f)
+	: m_velocity(0.f, 0.f, 0.f)
 	, m_Gravity(0.f,0.f,0.f)
 	, m_speed(0)
-
 	, m_dInterval(0.0)
 		
 {
@@ -44,6 +42,7 @@ void Particles::Update(double dt)
 		m_dInterval += dt;
 		if (m_dInterval > 1.f)
 		{
+			isDone = true;
 			m_bIsSpawn = false;
 			m_dInterval = 0.0;
 		}

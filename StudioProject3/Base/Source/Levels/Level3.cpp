@@ -151,8 +151,6 @@ void Level3::Init()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Create entities into the scene
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
 	IndicatorTarget = Create::Entity("IndicatorTarget", Vector3(0, -10, 0), Vector3(10, 10, 10));
@@ -197,7 +195,8 @@ void Level3::Init()
 			Vector3(0.f, 0.f, 0.f));
 	}
 
-	m_fTime_MoneyRain = 0.0;
+
+	m_fTime_MoneyRain = 0.0f;
 	m_fTimeMAXLimit_MoneyRain = Math::RandFloatMinMax(30.0f, 100.0f);
 	m_bSwitchTime_MoneyRain = true;
 
@@ -211,7 +210,7 @@ void Level3::Init()
 
 	m_bSwitchTime_ThunderStorm = true;
 	m_fTimeMAXLimit_ThunderStorm = Math::RandFloatMinMax(30.0f, 100.0f);
-	m_fTime_ThunderStorm = 0.0;
+	m_fTime_ThunderStorm = 0.0f;
 
 	theKeyboard = new CKeyboard();
 	theKeyboard->Create(playerInfo);
@@ -260,7 +259,7 @@ void Level3::Update(double dt)
 
 	if (m_fTime_MoneyRain > m_fTimeMAXLimit_MoneyRain)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 15; i++)
 		{
 			theMoney[i]->SetFall(true);
 
@@ -284,7 +283,7 @@ void Level3::Update(double dt)
 
 	if (m_fTime_ThunderStorm > m_fTimeMAXLimit_ThunderStorm)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 15; i++)
 		{
 			theStorm[i]->SetFall(true);
 
