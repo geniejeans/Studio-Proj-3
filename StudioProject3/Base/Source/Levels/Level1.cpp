@@ -184,7 +184,7 @@ void Level1::Init()
 	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
 
 	// Create entities into the scene
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 	BombTarget = Create::Bomb3D("BombTarget", Vector3(0, 10, 0), Vector3(15, 15, 15));
@@ -212,14 +212,14 @@ void Level1::Init()
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2.f, -halfWindowHeight + fontSize * 2.5f, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2.f, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	//Minimap
-	theMinimap = Create::Minimap(false);
-	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
-	theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
-	theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
-	theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
-	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
-	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
+	////Minimap
+	//theMinimap = Create::Minimap(false);
+	//theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
+	//theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
+	//theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
+	//theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
+	//theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
+	//theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
 	theKeyboard = new CKeyboard();
 	theKeyboard->Create(playerInfo);
@@ -386,7 +386,7 @@ void Level1::Render()
 	else
 	{
 		//Render Minimap
-		theMinimap->RenderUI();
+		//theMinimap->RenderUI();
 
 
 		//Do you rendering on screen here. Centre of screen is (0,0)

@@ -12,10 +12,11 @@
 #include "Projectile\Projectile.h"
 #include "Enemy\Shield.h"
 #include "Enemy\Ninja3D.h"
+#include "ParticlesEffects\Particles.h"
 #include "SoundEngine.h"
 #include <iostream>
 using namespace std;
-std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8, it9, it10;
+std::list<EntityBase*>::iterator it, it2, it3, it4, it5, it6, it7, it_T, it_T2, it8, it9, it10, it11;
 
 // Update all entities
 void EntityManager::Update(double _dt)
@@ -24,7 +25,7 @@ void EntityManager::Update(double _dt)
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
 		//Resetting collision for all troops
-		(*it)->SetCollide(false); 
+		(*it)->SetCollide(false);
 
 		// Turrets - Troops Collision
 		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
@@ -70,8 +71,8 @@ void EntityManager::Update(double _dt)
 	for (it7 = ninjaList.begin(); it7 != ninjaList.end(); ++it7)
 	{
 		//Resetting collision for all troops
-		(*it7)->SetCollide(false); 
-								  
+		(*it7)->SetCollide(false);
+
 		// Turrets - Ninja
 		for (it2 = turretList.begin(); it2 != turretList.end(); ++it2)
 		{
@@ -131,6 +132,13 @@ void EntityManager::Update(double _dt)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
 			continue;*/
+
+			theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
+			theParticle->Init();
+			theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
+				Math::RandFloatMinMax(-5, 5),
+				Math::RandFloatMinMax(-5, 5)));
+
 			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it7, *it4))
 			{
@@ -153,7 +161,8 @@ void EntityManager::Update(double _dt)
 		for (it4 = troopProjectileList.begin(); it4 != troopProjectileList.end(); it4++)
 		{
 			/*if ((*it4)->GetFireDestination() != (*it6)->GetPosition())  //Leave it in if FPS drops
-				continue;*/
+			continue;*/
+			theParticle->SetIsSpawn(true);
 			CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 			if (CheckSphereCollision(*it6, *it4))
 			{
@@ -163,7 +172,7 @@ void EntityManager::Update(double _dt)
 				{
 					(*it6)->SetIsDone(true);
 				}
-		
+
 			}
 		}
 	}
@@ -176,11 +185,16 @@ void EntityManager::Update(double _dt)
 		{
 			if (CheckSphereCollision(*it_T, *it4))
 			{
+				theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
+				theParticle->Init();
+				theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
+					Math::RandFloatMinMax(-5, 5),
+					Math::RandFloatMinMax(-5, 5)));
+
 				CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 				// Health of trees
 				(*it_T)->SetHealth((*it_T)->GetHealth() - projectile->GetDamage());
 				(*it4)->SetIsDone(true);
-
 
 				if ((*it_T)->GetHealth() <= 0)
 				{
@@ -195,7 +209,7 @@ void EntityManager::Update(double _dt)
 					CSoundEngine::GetInstance()->PlayASound("Tree_Hit", false);
 				}
 
-			//	cout << (*it_T)->GetHealth() << endl;
+				//	cout << (*it_T)->GetHealth() << endl;
 			}
 		}
 
@@ -229,6 +243,7 @@ void EntityManager::Update(double _dt)
 					Trees::GetInstance()->SetCountOfTrees(Trees::GetInstance()->GetCountOfTrees() - 1);
 					Money::GetInstance()->SetActiveDestroyed(true);
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(0, 10));
+
 					(*it_T)->SetBuffer(2);
 					(*it_T)->SetIsDone(true);
 				}
@@ -240,7 +255,7 @@ void EntityManager::Update(double _dt)
 	for (it = troopList.begin(); it != troopList.end(); ++it)
 	{
 		CTroop3D* troop = dynamic_cast<CTroop3D*>(*it);
-	
+
 		Vector3 targetPos;
 		troop->m_fElapsedTimeBeforeUpdate += (float)_dt;
 
@@ -249,7 +264,7 @@ void EntityManager::Update(double _dt)
 			// Others - Troops
 			for (it6 = otherList.begin(); it6 != otherList.end(); it6++)
 			{
-				if (!(*it6)->IsDone() && (*it6)->GetMeshName() =="enemyBase")
+				if (!(*it6)->IsDone() && (*it6)->GetMeshName() == "enemyBase")
 				{
 					if (((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < troop->GetRange() && (targetPos.IsZero() ||
 						((*it6)->GetPosition() - troop->GetPos()).LengthSquared() < (targetPos - troop->GetPos()).LengthSquared()))
@@ -257,7 +272,7 @@ void EntityManager::Update(double _dt)
 						targetPos = (*it6)->GetPosition();
 					}
 				}
-				
+
 			}
 
 			// Trees - Troops
@@ -272,7 +287,7 @@ void EntityManager::Update(double _dt)
 						targetPos = (*it_T)->GetPosition();
 					}
 				}
-				
+
 			}
 
 			// Turret - Troops
@@ -297,7 +312,7 @@ void EntityManager::Update(double _dt)
 						// Set to shoot at object
 						targetPos = (ninja)->GetPosition();
 					}
-				}	
+				}
 			}
 		}
 
@@ -307,6 +322,7 @@ void EntityManager::Update(double _dt)
 			// Checking Bullet with Troop
 			if (CheckSphereCollision(*it, *it5))
 			{
+				theParticle->SetIsSpawn(true);
 				CProjectile* projectile = dynamic_cast<CProjectile*>(*it5);
 				if (!Shield::GetInstance()->GetShieldActive())
 				{
@@ -360,7 +376,7 @@ void EntityManager::Update(double _dt)
 						break;
 					}
 				}
-				else if(turret->GetType() == 3)
+				else if (turret->GetType() == 3)
 				{
 					// Making the range of 40 * 40, and ensuring that the closest troops are shoot first.
 					if ((troop->GetPos() - turret->GetPos()).LengthSquared() < 140 * 140 && (targetPos.IsZero() ||
@@ -371,7 +387,7 @@ void EntityManager::Update(double _dt)
 					}
 				}
 			}
-		
+
 		}
 
 		//TURRET getting hit by TROOP projectiles
@@ -382,6 +398,12 @@ void EntityManager::Update(double _dt)
 				(*it4)->SetBuffer(-4);
 				if (CheckSphereCollision(*it4, *it2))
 				{
+					theParticle = Create::Partcle("particle", (*it4)->GetPosition(), Vector3(2, 2, 2));
+					theParticle->Init();
+					theParticle->SetVel(Vector3(Math::RandFloatMinMax(-5, 5),
+						Math::RandFloatMinMax(-5, 5),
+						Math::RandFloatMinMax(-5, 5)));
+
 					CProjectile* projectile = dynamic_cast<CProjectile*>(*it4);
 					(*it2)->SetHealth((*it2)->GetHealth() - projectile->GetDamage());
 					(*it4)->SetIsDone(true);
@@ -391,13 +413,14 @@ void EntityManager::Update(double _dt)
 						Money::GetInstance()->SetActiveDestroyed(true);
 						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
 
+
 						CSoundEngine::GetInstance()->Init();
 						CSoundEngine::GetInstance()->AddSound("Tree_Hit", "Image//Sounds/Tree_Hit.mp3");
 						CSoundEngine::GetInstance()->PlayASound("Tree_Hit", false);
 					}
 				}
 			}
-		
+
 		}
 
 		// Turrets - Bombs
@@ -410,13 +433,14 @@ void EntityManager::Update(double _dt)
 					(*it2)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true);
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
+
 					(*it2)->SetIsDone(true);
 				}
 			}
 		}
 
 		// Ensure that the turret is not shooting immediately and if targetPos is not zero.
-		if (turret->m_dCoolDown > 0.5 && !targetPos.IsZero() 
+		if (turret->m_dCoolDown > 0.5 && !targetPos.IsZero()
 			&& (turret->GetType() == 1 || turret->GetType() == 3))
 		{
 			turret->m_dCoolDown = 0;
@@ -437,7 +461,7 @@ void EntityManager::Update(double _dt)
 		}
 		turret->SetFire(false);
 	}
-	
+
 	//Cleaning up ENTITIES that are done==========================
 	CleanAllList();
 	//Updating ENTITIES===========================================
@@ -479,6 +503,10 @@ void EntityManager::UpdateAllList(double _dt)
 	{
 		(*it8)->Update(_dt);
 	}
+	for (it11 = ParticlesList.begin(); it11 != ParticlesList.end(); it11++)
+	{
+		(*it11)->Update(_dt);
+	}
 }
 
 void EntityManager::CleanAllList()
@@ -493,6 +521,7 @@ void EntityManager::CleanAllList()
 	it_T = TreesList.begin();
 	it7 = ninjaList.begin();
 	it8 = bombList.begin();
+	it11 = ParticlesList.begin();
 
 	while (it != entityList.end())
 	{
@@ -519,7 +548,7 @@ void EntityManager::CleanAllList()
 			// Move on otherwise
 			++it2;
 	}
-	
+
 	while (it3 != troopList.end())
 	{
 		if ((*it3)->IsDone())
@@ -610,6 +639,19 @@ void EntityManager::CleanAllList()
 			// Move on otherwise
 			++it8;
 	}
+
+	while (it11 != ParticlesList.end())
+	{
+		if ((*it11)->IsDone())
+		{
+			delete *it11;
+			// Remove turret projectile when done
+			it11 = ParticlesList.erase(it11);
+		}
+		else
+			// Move on otherwise
+			++it11;
+	}
 }
 
 void EntityManager::ResetGame(CPlayerInfo *Player)
@@ -684,6 +726,10 @@ void EntityManager::Render()
 	{
 		(*it8)->Render();
 	}
+	for (it11 = ParticlesList.begin(); it11 != ParticlesList.end(); it11++)
+	{
+		(*it11)->Render();
+	}
 }
 
 //Make this whole thing into a entityManager function. GenerateNinja(GroundEntity *groundEntity , dt)
@@ -718,7 +764,6 @@ void EntityManager::AddEntity(EntityBase* _newEntity)
 {
 	entityList.push_back(_newEntity);
 }
-
 
 void EntityManager::AddTurretEntity(EntityBase* _newEntity)
 {
@@ -760,6 +805,11 @@ void EntityManager::AddTreesEntity(EntityBase * _newEntity)
 	TreesList.push_back(_newEntity);
 }
 
+void EntityManager::AddParticleEntity(EntityBase * _newEntity)
+{
+	ParticlesList.push_back(_newEntity);
+}
+
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {
@@ -771,7 +821,7 @@ bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 	{
 		delete *findIter;
 		findIter = entityList.erase(findIter);
-		return true;	
+		return true;
 	}
 	// Return false if not found
 	return false;
@@ -789,7 +839,7 @@ EntityManager::~EntityManager()
 
 // Check for overlap
 bool EntityManager::CheckOverlap(Vector3 thisMinAABB, Vector3 thisMaxAABB, Vector3 thatMinAABB, Vector3 thatMaxAABB)
-{	
+{
 
 	return false;
 }
@@ -840,7 +890,7 @@ void EntityManager::ClearEntityList()
 	std::list<EntityBase*>::iterator it, it2, it3, end;
 	it = entityList.begin();
 	end = entityList.end();
-	
+
 	entityList.clear();
 	turretList.clear();
 	troopList.clear();
@@ -848,6 +898,7 @@ void EntityManager::ClearEntityList()
 	ninjaList.clear();
 	TreesList.clear();
 	bombList.clear();
+	ParticlesList.clear();
 	troopProjectileList.clear();
 	turretProjectileList.clear();
 }

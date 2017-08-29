@@ -160,6 +160,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.0f);
 	MeshBuilder::GetInstance()->GenerateSphere("Troopbullet", Color(0, 0, 1), 18, 36, 2.f);
 	MeshBuilder::GetInstance()->GenerateSphere("Turretbullet", Color(1, 0, 0), 18, 36, 2.f);
+	MeshBuilder::GetInstance()->GenerateSphere("particle", Color(1,0, 0), 18, 36, 0.4f);
+	
 	MeshBuilder::GetInstance()->GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
 	MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
 	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);

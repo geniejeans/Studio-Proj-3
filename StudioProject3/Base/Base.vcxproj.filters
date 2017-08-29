@@ -54,6 +54,9 @@
     <Filter Include="Enemy\Turret">
       <UniqueIdentifier>{c609d529-8668-400f-be97-81a6facb67cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{8bb160da-8d34-45d2-8e33-1456655a7ed3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="Source\GameUI\WinLoseScreen.cpp">
       <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticlesEffects\Particles.cpp">
+      <Filter>Particles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -294,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameUI\WinLoseScreen.h">
       <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticlesEffects\Particles.h">
+      <Filter>Particles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

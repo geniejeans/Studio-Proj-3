@@ -30,6 +30,7 @@
     <ClCompile Include="Source\Levels\Level4.cpp" />
     <ClCompile Include="Source\MiniMap\Minimap.cpp" />
     <ClCompile Include="Source\MoneyManager\Money.cpp" />
+    <ClCompile Include="Source\ParticlesEffects\Particles.cpp" />
     <ClCompile Include="Source\Projectile\Projectile.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\Levels\Level4.h" />
     <ClInclude Include="Source\MiniMap\Minimap.h" />
     <ClInclude Include="Source\MoneyManager\Money.h" />
+    <ClInclude Include="Source\ParticlesEffects\Particles.h" />
     <ClInclude Include="Source\Projectile\Projectile.h" />
     <ClInclude Include="Source\RandomEvents\MoneyRain.h" />
     <ClInclude Include="Source\RandomEvents\RandomEvents.h" />

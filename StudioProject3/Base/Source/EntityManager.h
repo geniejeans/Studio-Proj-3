@@ -7,6 +7,7 @@
 #include "PlayerInfo\PlayerInfo.h"
 
 class EntityBase;
+class Particles;
 
 class EntityManager : public Singleton<EntityManager>
 {
@@ -29,6 +30,8 @@ public:
 	void AddTreesEntity(EntityBase* _newEntity);
 	void AddBombEntity(EntityBase* _newEntity);
 
+	void AddParticleEntity(EntityBase* _newEntity);
+
 	bool RemoveEntity(EntityBase* _existingEntity);
 	void ClearEntityList();
 
@@ -36,8 +39,11 @@ public:
 	void CleanAllList();//All cleaning of lists are inside this function for neater codes
 
 	std::list<EntityBase*> GetTroopList() { return troopList; };
+	std::list<EntityBase*> GetParticleList() { return ParticlesList; };
 	std::list<EntityBase*> GetOtherList() { return otherList; };
+
 	float m_fBuffer = 0.0f;
+
 
 	void GenerateNinja(GroundEntity *groundEntity, double dt);
 
@@ -55,9 +61,9 @@ private:
 	bool CheckForCollision(void);
 
 	void CollisionResponse(EntityBase *ThisEntity, EntityBase *ThatEntity);
-
-
 	void ResetGame(CPlayerInfo *Player);
+
+	Particles* theParticle;
 
 	std::list<EntityBase*> entityList;
 	std::list<EntityBase*> turretList;
@@ -68,6 +74,8 @@ private:
 	std::list<EntityBase*> bombList;
 	std::list<EntityBase*> otherList; //This list contains base
 	std::list<EntityBase*> TreesList; //This list contains tree
+	std::list<EntityBase*> AnimationList; //This list contains animation
+	std::list<EntityBase*> ParticlesList; //This list contains particles
 };
 
 #endif // ENTITY_MANAGER_H
