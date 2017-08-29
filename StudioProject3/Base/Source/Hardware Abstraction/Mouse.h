@@ -38,8 +38,6 @@ public:
 	virtual bool Create(CPlayerInfo* thePlayerInfo = NULL);
 	// Read from the controller
 	virtual int Read(const float deltaTime);
-
-	void Selection(double x, double y);
 	// Setting position
 	void SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vector3 &mousePos);
 

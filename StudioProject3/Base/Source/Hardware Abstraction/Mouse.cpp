@@ -75,30 +75,6 @@ int CMouse::Read(const float deltaTime)
 	return 1;
 }
 
-// Generate selection quad
-void CMouse::Selection(double x, double y)
-{
-	//double storeX, storeY; //store click coordinates
-	//float scaleX, scaleY; //size of white quad
-
-	//// When holding
-	//if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
-	//{
-	//	//store when button pressed coords
-	//	MouseController::GetInstance()->GetMousePosition(storeX, storeY);
-	//	cout << storeX << " | " << storeY << endl;
-
-	//	//drag mouse
-	//	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
-	//	{
-
-	//	}
-	//	
-	//}
-	//
-	//cout << x << " | " << y << endl;
-}
-
 void CMouse::SetTroopMovement(Bomb &BombTarget, EntityBase &IndicatorTarget, Vector3 &mousePos)
 {
 	float mouse_X, mouse_Y;

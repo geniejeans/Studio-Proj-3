@@ -35,15 +35,13 @@ using namespace std;
 Level2* Level2::sInstance = new Level2(SceneManager::GetInstance());
 
 Level2::Level2()
-	: theMinimap(NULL),
-	theMouse(NULL),
+	:theMouse(NULL),
 	theKeyboard(NULL)
 {
 }
 
 Level2::Level2(SceneManager* _sceneMgr)
-	: theMinimap(NULL),
-	theMouse(NULL),
+	:theMouse(NULL),
 	theKeyboard(NULL)
 {
 	_sceneMgr->AddScene("Level2", this);
@@ -51,11 +49,6 @@ Level2::Level2(SceneManager* _sceneMgr)
 
 Level2::~Level2()
 {
-	if (theMinimap)
-	{
-		delete theMinimap;
-		theMinimap = NULL;
-	}
 	if (theMouse)
 	{
 		delete theMouse;
@@ -177,15 +170,6 @@ void Level2::Init()
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2.f, -halfWindowHeight + fontSize * 2.5f, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2.f, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-
-	//Minimap
-	theMinimap = Create::Minimap(false);
-	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
-	theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
-	theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
-	theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
-	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
-	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
 	theKeyboard = new CKeyboard();
 	theKeyboard->Create(playerInfo);
@@ -354,10 +338,6 @@ void Level2::Render()
 	}
 	else
 	{
-		//Render Minimap
-		theMinimap->RenderUI();
-
-
 		//Do you rendering on screen here. Centre of screen is (0,0)
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
@@ -393,7 +373,6 @@ void Level2::Exit()
 	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
 	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
 	EntityManager::GetInstance()->ClearEntityList();
-	theMinimap = NULL;
 	theMouse = NULL;
 	theKeyboard = NULL;
 }

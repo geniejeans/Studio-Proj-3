@@ -116,7 +116,7 @@ void EntityManager::Update(double _dt)
 					(*it7)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true); // Ninja will +10p when destroyed by Bomb
 					Money::GetInstance()->SetIncreaseMoney(10);
-					(*it7)->SetHealth((*it7)->GetHealth() - Math::RandIntMinMax(30,100));
+					(*it7)->SetHealth((*it7)->GetHealth() - Math::RandIntMinMax(20,50));
 					if ((*it7)->GetHealth() <= 0)
 						(*it7)->SetIsDone(true);
 				}
@@ -246,7 +246,7 @@ void EntityManager::Update(double _dt)
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(0, 10));
 
 					(*it_T)->SetBuffer(2);
-					(*it_T)->SetHealth((*it_T)->GetHealth() - Math::RandIntMinMax(30, 100));
+					(*it_T)->SetHealth((*it_T)->GetHealth() - Math::RandIntMinMax(20, 50));
 					if ((*it_T)->GetHealth() <= 0)
 						(*it_T)->SetIsDone(true);
 				}
@@ -437,7 +437,7 @@ void EntityManager::Update(double _dt)
 					Money::GetInstance()->SetActiveDestroyed(true);
 					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
 
-					(*it2)->SetHealth((*it2)->GetHealth() - Math::RandIntMinMax(30, 100));
+					(*it2)->SetHealth((*it2)->GetHealth() - Math::RandIntMinMax(20, 50));
 					if ((*it2)->GetHealth() <= 0)
 						(*it2)->SetIsDone(true);
 				}

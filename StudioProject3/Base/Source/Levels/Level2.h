@@ -46,7 +46,6 @@ private:
 	Light* lights[2];
 	Vector3 test;
 
-	CMinimap *theMinimap;
 	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;
 	WinLoseScreen* WinLose;

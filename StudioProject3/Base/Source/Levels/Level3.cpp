@@ -35,15 +35,13 @@ using namespace std;
 Level3* Level3::sInstance = new Level3(SceneManager::GetInstance());
 
 Level3::Level3()
-	: theMinimap(NULL),
-	theMouse(NULL),
+	:theMouse(NULL),
 	theKeyboard(NULL)
 {
 }
 
 Level3::Level3(SceneManager* _sceneMgr)
-	: theMinimap(NULL),
-	theMouse(NULL),
+	:theMouse(NULL),
 	theKeyboard(NULL)
 {
 	_sceneMgr->AddScene("Level3", this);
@@ -51,11 +49,6 @@ Level3::Level3(SceneManager* _sceneMgr)
 
 Level3::~Level3()
 {
-	if (theMinimap)
-	{
-		delete theMinimap;
-		theMinimap = NULL;
-	}
 	if (theMouse)
 	{
 		delete theMouse;
@@ -177,15 +170,6 @@ void Level3::Init()
 	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2.f, -halfWindowHeight + fontSize * 2.5f, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2.f, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-
-	//Minimap
-	theMinimap = Create::Minimap(false);
-	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
-	theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
-	theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
-	theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
-	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
-	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
 
 	// Money Rain
 	for (int i = 0; i < 15; i++)
@@ -437,8 +421,6 @@ void Level3::Render()
 	}
 	else
 	{
-		//Render Minimap
-		theMinimap->RenderUI();
 
 
 		//Do you rendering on screen here. Centre of screen is (0,0)
@@ -476,7 +458,6 @@ void Level3::Exit()
 	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
 	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
 	EntityManager::GetInstance()->ClearEntityList();
-	theMinimap = NULL;
 	theMouse = NULL;
 	theKeyboard = NULL;
 }

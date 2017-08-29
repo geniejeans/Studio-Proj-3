@@ -35,15 +35,13 @@ using namespace std;
 Level4* Level4::sInstance = new Level4(SceneManager::GetInstance());
 
 Level4::Level4()
-	: theMinimap(NULL),
-	theMouse(NULL),
+	: theMouse(NULL),
 	theKeyboard(NULL)
 {
 }
 
 Level4::Level4(SceneManager* _sceneMgr)
-	: theMinimap(NULL),
-	theMouse(NULL),
+	: theMouse(NULL),
 	theKeyboard(NULL)
 {
 	_sceneMgr->AddScene("Level4", this);
@@ -51,11 +49,6 @@ Level4::Level4(SceneManager* _sceneMgr)
 
 Level4::~Level4()
 {
-	if (theMinimap)
-	{
-		delete theMinimap;
-		theMinimap = NULL;
-	}
 	if (theMouse)
 	{
 		delete theMouse;
@@ -178,15 +171,6 @@ void Level4::Init()
 	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + fontSize * 2.f, -halfWindowHeight + fontSize * 2.5f, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	textObj[3] = Create::Text2DObject("text", Vector3(0 - fontSize * 2.f, halfWindowHeight - fontSize, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 
-	//Minimap
-	theMinimap = Create::Minimap(false);
-	theMinimap->SetBackground(MeshBuilder::GetInstance()->GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
-	theMinimap->GetBackground()->textureID = LoadTGA("Image//SkyBox//boxDown.tga");
-	theMinimap->SetBorder(MeshBuilder::GetInstance()->GenerateCircle("MinimapBorder", Color(1, 1, 1), 1.05f));
-	theMinimap->SetAvatar(MeshBuilder::GetInstance()->GenerateQuad("MinimapAvatar", Color(1, 1, 1), 0.25f));
-	theMinimap->GetAvatar()->textureID = LoadTGA("Image//Avatar.tga");
-	theMinimap->SetStencil(MeshBuilder::GetInstance()->GenerateCircle("MinimapStencil", Color(1, 1, 1), 1.f));
-
 	// Money Rain
 	for (int i = 0; i < 15; i++)
 	{
@@ -203,7 +187,7 @@ void Level4::Init()
 	for (int i = 0; i < 15; i++)
 	{
 		theStorm[i] = Create::Storm("THUNDER_STORM", Vector3(Math::RandFloatMinMax(500.0f, -500.0f), 510.f, Math::RandFloatMinMax(500.0f, -500.0f)),
-			Vector3(200.f, 200.f, 1.f),
+			Vector3(20.f, 20.f, 1.f),
 			Vector3(0.f, 0.f, 0.f));
 	}
 
@@ -440,10 +424,6 @@ void Level4::Render()
 	}
 	else
 	{
-		//Render Minimap
-		theMinimap->RenderUI();
-
-
 		//Do you rendering on screen here. Centre of screen is (0,0)
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, 0);
@@ -479,7 +459,6 @@ void Level4::Exit()
 	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
 	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
 	EntityManager::GetInstance()->ClearEntityList();
-	theMinimap = NULL;
 	theMouse = NULL;
 	theKeyboard = NULL;
 }

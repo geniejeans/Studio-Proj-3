@@ -12,7 +12,6 @@
 #include "../Enemy/Enemy3D.h"
 #include "../Hardware Abstraction/Keyboard.h"
 #include "../Hardware Abstraction/mouse.h"
-#include "../MiniMap\Minimap.h"
 #include "../CameraEffects\CameraEffects.h"
 #include "../SpriteEntity.h"
 #include "../Furniture\Furniture.h"
@@ -48,7 +47,6 @@ private:
 	Light* lights[2];
 	Vector3 test;
 
-	CMinimap *theMinimap;
 	EntityBase* testTrack;
 	Bomb* BombTarget;
 	EntityBase* IndicatorTarget;

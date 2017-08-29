@@ -11,7 +11,6 @@
 #include "GenericEntity.h"
 #include "Hardware Abstraction/Keyboard.h"
 #include "Hardware Abstraction/mouse.h"
-#include "MiniMap\Minimap.h"
 #include "CameraEffects\CameraEffects.h"
 #include "SpriteEntity.h"
 #include "Furniture\Furniture.h"
@@ -35,25 +34,7 @@ public:
 private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
-	ShaderProgram* currProg;
-	CPlayerInfo* playerInfo;
-	GroundEntity* groundEntity;
-	FPSCamera camera;
-	//TextEntity* textObj[2];
-	Light* lights[2];
-
-	CMinimap *theMinimap;
-
 	static SceneText* sInstance; // The pointer to the object that gets registered
-	CKeyboard* theKeyboard;
-	CMouse* theMouse;
-	int spawnedTroops = 23;
-
-	float spawnDelay = 0.f;
-	const float coolDown = 5.f;
-
-	MoneyRain* theMoney[50];
-	Thunderstorm* theStorm[50];
 };
 
 #endif
