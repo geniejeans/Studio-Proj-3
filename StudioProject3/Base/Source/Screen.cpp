@@ -10,7 +10,7 @@
 #include "Application.h"
 #include "EntityManager.h"
 #include "MouseController.h"
-
+#include "SoundEngine.h"
 #include <iostream>
 using namespace std;
 
@@ -149,6 +149,10 @@ void Screen::Init()
 		Vector3(QuitButtonScale.x + QuitButtonScaleOffset.x,
 			QuitButtonScale.y + QuitButtonScaleOffset.y,
 			QuitButtonScale.z + QuitButtonScaleOffset.z), true);
+
+	CSoundEngine::GetInstance()->Init();
+	CSoundEngine::GetInstance()->AddSound("BGmusic", "Image//Sounds/BGmusic.mp3");
+	CSoundEngine::GetInstance()->PlayASound("BGmusic", true);
 
 }
 

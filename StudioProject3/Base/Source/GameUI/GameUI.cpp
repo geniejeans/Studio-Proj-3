@@ -5,6 +5,7 @@
 #include "../Enemy/RadarScan.h"
 #include "../MoneyManager/Money.h"
 #include "../Enemy/Shield.h"
+#include "../SoundEngine.h"
 #include <iostream>
 bool GameUI::m_bIsRendered = false;
 bool GameUI::m_bShieldIsPressed = false;
@@ -45,6 +46,12 @@ void GameUI::Update(GroundEntity *groundEntity)
 
 				//set shield to true
 				Shield::GetInstance()->SetShieldActive();
+				if (Shield::GetInstance()->GetShieldActive())
+				{
+					CSoundEngine::GetInstance()->Init();
+					CSoundEngine::GetInstance()->AddSound("Shield_Deployed", "Image//Sounds/Shield_Deployed.mp3");
+					CSoundEngine::GetInstance()->PlayASound("Shield_Deployed", false);
+				}
 
 				// Money Decreases every use of shield.
 				Money::GetInstance()->SetMoney(Money::GetInstance()->GetMoney() - Money::GetInstance()->GetShieldPriceRate());
