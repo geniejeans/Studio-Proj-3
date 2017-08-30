@@ -115,7 +115,7 @@ void EntityManager::Update(double _dt)
 				{
 					(*it7)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true); // Ninja will +10p when destroyed by Bomb
-					Money::GetInstance()->SetIncreaseMoney(10);
+					Money::GetInstance()->SetIncreaseMoney(5);
 					(*it7)->SetHealth((*it7)->GetHealth() - Math::RandIntMinMax(10,30));
 					if ((*it7)->GetHealth() <= 0)
 						(*it7)->SetIsDone(true);
@@ -148,7 +148,7 @@ void EntityManager::Update(double _dt)
 				if ((*it7)->GetHealth() <= 0)
 				{
 					Money::GetInstance()->SetActiveDestroyed(true); //Get 10 points for each ninja destroyed by troops
-					Money::GetInstance()->SetIncreaseMoney(10);
+					Money::GetInstance()->SetIncreaseMoney(5);
 					(*it7)->SetIsDone(true);
 				}
 			}
@@ -414,7 +414,7 @@ void EntityManager::Update(double _dt)
 					{
 						(*it2)->SetIsDone(true);
 						Money::GetInstance()->SetActiveDestroyed(true);
-						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
+						Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(5, 20));
 
 
 						CSoundEngine::GetInstance()->Init();
@@ -435,7 +435,7 @@ void EntityManager::Update(double _dt)
 				{
 					(*it2)->SetBuffer(2);
 					Money::GetInstance()->SetActiveDestroyed(true);
-					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(10, 50));
+					Money::GetInstance()->SetIncreaseMoney(Math::RandIntMinMax(5, 20));
 
 					(*it2)->SetHealth((*it2)->GetHealth() - Math::RandIntMinMax(10, 30));
 					if ((*it2)->GetHealth() <= 0)
