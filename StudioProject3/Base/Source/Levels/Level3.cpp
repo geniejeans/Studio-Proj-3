@@ -208,7 +208,7 @@ void Level3::Init()
 	elapsed_time = 0.0f;
 	complete_time = 240.0f;
 
-	Trees::GetInstance()->SetMaxCount(20);
+	Trees::GetInstance()->SetMaxCount(30);
 	Trees::GetInstance()->SetSpawnRate(5);
 	GameUI::GetInstance()->SetLevelName("Level3");
 	GameUI::SetBombRender(false);
@@ -458,6 +458,7 @@ void Level3::Exit()
 	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
 	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
 	EntityManager::GetInstance()->ClearEntityList();
+	Trees::GetInstance()->SetCountOfTrees(0);
 	theMouse = NULL;
 	theKeyboard = NULL;
 	for (int i = 0; i < 15; i++)

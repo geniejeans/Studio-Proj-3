@@ -373,6 +373,7 @@ void Level2::Exit()
 	GraphicsManager::GetInstance()->RemoveLight("lights[0]");
 	GraphicsManager::GetInstance()->RemoveLight("lights[1]");
 	EntityManager::GetInstance()->ClearEntityList();
+	Trees::GetInstance()->SetCountOfTrees(0);
 	theMouse = NULL;
 	theKeyboard = NULL;
 }
